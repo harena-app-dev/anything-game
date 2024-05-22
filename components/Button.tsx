@@ -3,7 +3,7 @@ import * as React from 'react';
 import './Button.css';
 
 function Button({
-  children,
+  children = null,
   ...props
 }: {
   children?: React.ReactNode;
@@ -16,9 +16,5 @@ function Button({
   );
 }
 
-Button.defaultProps = {
-  children: null,
-  onClick: () => {},
-};
 
 export default Button;

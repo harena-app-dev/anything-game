@@ -16,12 +16,12 @@ export default class MouseManager {
 		this.#deltaMousePosition.set(0, 0);
 	}
 
-	lockCursor() {
+	lockCursor(document: Document) {
 		this.#shouldLockCursor = true;
 		document.body.requestPointerLock();
 	}
 
-	unlockCursor() {
+	unlockCursor(document: Document) {
 		this.#shouldLockCursor = false;
 		document.exitPointerLock();
 	}
@@ -32,7 +32,7 @@ export default class MouseManager {
 		this.#deltaMousePosition.y += event.movementY;
 	}
 
-	constructor() {
+	constructor(document: Document) {
 		document.body.addEventListener(
 			'mousemove',
 			this.onDocumentMouseMove.bind(this),
