@@ -8,8 +8,13 @@ import BackButton from '@/components/BackButton';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useRef, useState } from 'react'
 import '@/components/common.css';
+import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 
-export default function GamePage() {
+const webSocketMessager = new WebSocketMessager();
+
+export default function GamePage() { 
+
+
 	return <div className='row grow' >
 		<Col flex="1">
 			<div className='row'>
@@ -21,7 +26,7 @@ export default function GamePage() {
 		</Col>
 		<Col flex="1">
 			<div className='row'>
-				Messages
+				Console
 			</div>
 			<div className='row grow'>
 				<div className='col grow'>
