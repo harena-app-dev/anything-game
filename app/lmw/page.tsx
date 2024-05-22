@@ -10,19 +10,26 @@ import React, { useRef, useState } from 'react'
 import '@/components/common.css';
 
 export default function GamePage() {
-	return (
-		<div className='row grow' >
-			<Col flex="1">Tree</Col>
-			<Col flex="1">
-				<div className='row grow'>
-					<div className='col grow'>
-						Messages
-					</div>
+	return <div className='row grow' >
+		<Col flex="1">
+			<div className='row'>
+				Tree
+			</div>
+			<div className='row grow'>
+
+			</div>
+		</Col>
+		<Col flex="1">
+			<div className='row'>
+				Messages
+			</div>
+			<div className='row grow'>
+				<div className='col grow'>
 				</div>
-				<div className='row'>
-					<input className='grow' type="text" />
-				</div>
-			</Col>
-		</div>
-	);
+			</div>
+			<div className='row'>
+				<input className='grow' type="text" />
+			</div>
+		</Col>
+	</div>;
 }
