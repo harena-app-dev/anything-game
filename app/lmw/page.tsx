@@ -6,22 +6,20 @@ import BackButton from '@/components/BackButton';
 // import MouseManager from '@/scripts/MouseManager';
 // import FPCamera from '@/scripts/FPCamera';
 // import KeyboardState from '@/scripts/KeyboardState';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '@/components/common.css';
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 
-const webSocketMessager = new WebSocketMessager();
 
-export default function GamePage() { 
+export default function GamePage() {
+	const [consoleMessages, setConsoleMessages] = useState<string[]>(["ERROR: No connection to server"]);
 
-
-	return <div className='row grow' >
+	const element = <div className='row grow' >
 		<Col flex="1">
 			<div className='row'>
 				Tree
 			</div>
 			<div className='row grow'>
-
 			</div>
 		</Col>
 		<Col flex="1">
@@ -29,12 +27,23 @@ export default function GamePage() {
 				Console
 			</div>
 			<div className='row grow'>
-				<div className='col grow'>
-				</div>
+				{consoleMessages.map((message, index) => <div key={index}>{message}</div>)}
 			</div>
 			<div className='row'>
 				<input className='grow' type="text" />
 			</div>
 		</Col>
 	</div>;
+	useEffect(() => {
+		const webSocketMessager = new WebSocketMessager(() => {
+			webSocketMessager.addHandler('consoleMessages', (messages) => {
+				setConsoleMessages(messages);
+			});
+			console.log('sending');
+			webSocketMessager.send('consoleMessages');
+		});
+		return () => {
+		};
+	}, []);
+	return element;
 }

@@ -7,8 +7,9 @@ export default class WebSocketMessager {
 	constructor() {
 		this.wss = new WebSocketServer({ port: 3001 });
 		this.wss.on('connection', (ws) => {
-			console.log(`${ws.url} connected`);
+			console.log(`${ws.protocol} connected`);
 			ws.on('message', (data) => {
+				console.log(`received message: ${data.toString()}`);
 				const message = JSON.parse(data.toString());
 				const handlers = this.messageNamesToHandlers.get(message.name);
 				if (handlers) {
