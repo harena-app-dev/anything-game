@@ -1,6 +1,5 @@
-
-import WebSocketMessager from "./scripts/server/WebSocketMessager";
+import main from "./scripts/server/main";
 
 export function register() {
-	new WebSocketMessager();
+	main();
 }

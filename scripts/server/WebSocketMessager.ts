@@ -5,10 +5,9 @@ export default class WebSocketMessager {
 	wss: WebSocketServer;
 	messageNamesToHandlers: Map<string, Set<Handler>> = new Map();
 	constructor() {
-		console.log('WebSocketMessager constructor');
 		this.wss = new WebSocketServer({ port: 3001 });
 		this.wss.on('connection', (ws) => {
-			console.log('connected');
+			console.log(`${ws.url} connected`);
 			ws.on('message', (data) => {
 				const message = JSON.parse(data.toString());
 				const handlers = this.messageNamesToHandlers.get(message.name);
@@ -28,7 +27,6 @@ export default class WebSocketMessager {
 		this.wss.on('error', (error) => {
 			console.log('error', error);
 		});
-		console.log('WebSocketMessager constructor end'); 
 	}
 	addHandler(name: string, handler: Handler) {
 		if (!this.messageNamesToHandlers.has(name)) {
