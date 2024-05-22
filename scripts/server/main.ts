@@ -1,9 +1,12 @@
+import EntityRegistry from "./EntityRegistry";
 import WebSocketMessager from "./WebSocketMessager";
 
-const webSocketMessager = new WebSocketMessager();
+export const webSocketMessager = new WebSocketMessager();
+
+export const entityRegistry = new EntityRegistry();
 
 export default function main() {
-	webSocketMessager.addHandler('consoleMessages', (ws, _) => {
-		webSocketMessager.send(ws, 'consoleMessages', ['Hello from server', 'Hello from server 2']);
+	webSocketMessager.addHandler('consoleMessages', (wsm, ws, _) => {
+		wsm.send(ws, 'consoleMessages', ['Hello from server', 'Hello from server 2']);
 	});
 } 

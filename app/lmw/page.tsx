@@ -8,6 +8,7 @@ import BackButton from '@/components/BackButton';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
+import Button from '@/components/Button';
 
 
 export default function GamePage() {
@@ -18,7 +19,10 @@ export default function GamePage() {
 			<div className='row title'>
 				Tree
 			</div>
-			<div className='row grow'>
+			<div className='col grow'>
+				<div className='row button'>
+					+
+				</div>
 			</div>
 		</Col>
 		<Col flex="1">
