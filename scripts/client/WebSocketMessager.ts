@@ -27,11 +27,8 @@ export default class WebSocketMessager {
 		this.messageNamesToHandlers.get(name)?.delete(handler);
 	}
 	send(name: string, data: any = {}) {
-		console.log('sending', name, data);
 		const message = JSON.stringify({ name, data });
-		console.log('sending', message);
 		this.ws.send(message);
-		console.log('sent');
 	}
 	close() {
 		this.ws.close();

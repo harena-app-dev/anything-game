@@ -7,7 +7,6 @@ import BackButton from '@/components/BackButton';
 // import FPCamera from '@/scripts/FPCamera';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useEffect, useRef, useState } from 'react'
-import '@/components/common.css';
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 
 
@@ -16,18 +15,18 @@ export default function GamePage() {
 
 	const element = <div className='row grow' >
 		<Col flex="1">
-			<div className='row'>
+			<div className='row title'>
 				Tree
 			</div>
 			<div className='row grow'>
 			</div>
 		</Col>
 		<Col flex="1">
-			<div className='row'>
+			<div className='row title'>
 				Console
 			</div>
-			<div className='row grow'>
-				{consoleMessages.map((message, index) => <div key={index}>{message}</div>)}
+			<div className='col grow'>
+				{consoleMessages.map((message, index) => <div className='row' key={index}>{message}</div>)}
 			</div>
 			<div className='row'>
 				<input className='grow' type="text" />
@@ -39,7 +38,9 @@ export default function GamePage() {
 			webSocketMessager.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});
-			console.log('sending');
+			webSocketMessager.addHandler('newMessage', (message) => {
+				setConsoleMessages([...consoleMessages, message]);
+			});
 			webSocketMessager.send('consoleMessages');
 		});
 		return () => {
