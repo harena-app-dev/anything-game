@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import Col from '@/components/Col';
 import Row from '@/components/Row';
 import BackButton from '@/components/BackButton';
-import MouseManager from '@/components/MouseManager';
-import FPCamera from '@/components/FPCamera';
-import KeyboardState from '@/components/KeyboardState';
+import MouseManager from '@/scripts/MouseManager';
+import FPCamera from '@/scripts/FPCamera';
+import KeyboardState from '@/scripts/KeyboardState';
 
 export default function GamePage() {
   const mouseManager = new MouseManager();
