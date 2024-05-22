@@ -1,10 +1,12 @@
 import * as React from 'react';
 import './Col.css';
 
-function Col({ children = null }: { children?: React.ReactNode }) {
-  return <div className="col">{children}</div>;
+export default function Col({ 
+	children = null,
+	flex = "0"
+}: { children?: React.ReactNode 
+	flex?: string
+}) {
+  return <div className="col" style={{ flex }}
+  >{children}</div>;
 }
-// Col.defaultProps = {
-//   children: null,
-// };
-export default Col;

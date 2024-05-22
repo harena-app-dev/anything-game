@@ -1,4 +1,4 @@
-import './css/style.css'
+// import './css/style.css'
 
 import { Inter, Architects_Daughter } from 'next/font/google'
 
@@ -31,10 +31,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-900 text-gray-200 tracking-tight`}>
-        <div className="flex flex-col min-h-screen overflow-hidden">
-          <Header />
+        <div className="flex flex-col min-h-screen overflow-hidden root">
+          {/* <Header /> */}
           {children}
-          <Banner />
+          {/* <Banner /> */}
         </div>
       </body>
     </html>
