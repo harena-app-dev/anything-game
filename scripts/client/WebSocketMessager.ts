@@ -33,4 +33,7 @@ export default class WebSocketMessager {
 		this.ws.send(message);
 		console.log('sent');
 	}
+	close() {
+		this.ws.close();
+	}
 }

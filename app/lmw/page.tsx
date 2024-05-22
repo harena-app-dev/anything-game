@@ -43,6 +43,7 @@ export default function GamePage() {
 			webSocketMessager.send('consoleMessages');
 		});
 		return () => {
+			webSocketMessager.close();
 		};
 	}, []);
 	return element;
