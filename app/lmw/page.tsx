@@ -15,28 +15,17 @@ export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
 	const [counter, setCounter] = useState(0)
 	const webSocketMessager = useRef<WebSocketMessager>();
-	function handleMessages(messages: string[]) {
-		setConsoleMessages([...consoleMessages, ...messages]);
-	}
-	function handleNewMessage(message: string) {
-		console.log('new message', message);
-		const newMessages = [...consoleMessages, message];
-		setConsoleMessages(newMessages);
-	}
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				console.log('handle consoleMessages', messages);
-				setConsoleMessages([...consoleMessages, ...messages]);
-				// handleMessages(messages);
+				setConsoleMessages(messages);
 			});
 			webSocketMessager.current?.addHandler('newMessage', (message) => {
-				// handleNewMessage(message); 
 				console.log('handle message', message);
 				console.log('effect consoleMessages', consoleMessages);
-				const newMessages = [...consoleMessages, message];
-				setConsoleMessages(newMessages);
+				setConsoleMessages(consoleMessages.concat([message]));
 			});
 			webSocketMessager.current?.send('consoleMessages');
 		});
