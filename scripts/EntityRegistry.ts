@@ -11,6 +11,7 @@ export default class EntityRegistry {
 		return JSON.stringify(this.#entityMap);
 	}
 	fromJson(data: string) {
+		console.log('fromJson', data);
 		this.#entityMap = JSON.parse(data);
 	}
 	set(id: number, data: any) {

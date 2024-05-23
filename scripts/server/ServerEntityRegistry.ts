@@ -10,7 +10,8 @@ export default class ServerEntityRegistry {
 		this.#webSocketMessager = webSocketMessager;
 	}
 	sendTo(ws: WebSocket) {
-		this.#webSocketMessager.send(ws, 'loadEntities', this.#entityRegistry.toJson());
+		this.#webSocketMessager.send(ws, 'loadEntities',
+			{ data: this.#entityRegistry.toJson() });
 	}
 	create(data: any) {
 		const id = this.#entityRegistry.create(data);
