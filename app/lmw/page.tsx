@@ -12,16 +12,31 @@ import Button from '@/components/Button';
 
 
 export default function GamePage() {
-	const [consoleMessages, setConsoleMessages] = useState<string[]>(["ERROR: No connection to server"]);
+	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
+	const [counter, setCounter] = useState(0)
 	const webSocketMessager = useRef<WebSocketMessager>();
-	useEffect(() => {
-
-		webSocketMessager.current = new WebSocketMessager(() => {
+	function handleMessages(messages: string[]) {
+		setConsoleMessages([...consoleMessages, ...messages]);
+	}
+	function handleNewMessage(message: string) {
+		console.log('new message', message);
+		const newMessages = [...consoleMessages, message];
+		setConsoleMessages(newMessages);
+	}
+	useEffect(function () {
+		console.log('useEffect');
+		webSocketMessager.current = new WebSocketMessager(function () {
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
-				setConsoleMessages(messages);
+				console.log('handle consoleMessages', messages);
+				setConsoleMessages([...consoleMessages, ...messages]);
+				// handleMessages(messages);
 			});
 			webSocketMessager.current?.addHandler('newMessage', (message) => {
-				setConsoleMessages([...consoleMessages, message]);
+				// handleNewMessage(message);
+				console.log('handle message', message);
+				console.log('effect consoleMessages', consoleMessages);
+				const newMessages = [...consoleMessages, message];
+				setConsoleMessages(newMessages);
 			});
 			webSocketMessager.current?.send('consoleMessages');
 		});
@@ -29,6 +44,7 @@ export default function GamePage() {
 			webSocketMessager.current?.close();
 		};
 	}, []);
+	console.log('render consoleMessages', consoleMessages);
 	return <div className='row grow' >
 		<Col flex="1">
 			<div className='row title'>

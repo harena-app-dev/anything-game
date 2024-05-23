@@ -1,9 +1,11 @@
-import EntityRegistry from "./EntityRegistry";
+import EntityRegistry from "../EntityRegistry";
+import ServerEntityRegistry from "./ServerEntityRegistry";
 import WebSocketMessager from "./WebSocketMessager";
 import fs from 'fs';
 export const webSocketMessager = new WebSocketMessager();
 
-export const entityRegistry = new EntityRegistry(webSocketMessager);
+const entityRegistry = new EntityRegistry();
+export const serverEntityRegistry = new ServerEntityRegistry(webSocketMessager, entityRegistry);
 
 function registerHandlers() {
 	const handlerFileNames = fs.readdirSync(__dirname + '/handlers');
