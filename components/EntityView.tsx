@@ -12,6 +12,7 @@ export default function ({ entity, webSocketMessager }: { webSocketMessager: Web
 			setEntityState(null);
 		};
 		webSocketMessager.addHandler(`destroyEntity/${entity}`, destroyHandler);
+		webSocketMessager.send(`getEntity/${entity}`);
 		return function () {
 			webSocketMessager.removeHandler(`updateEntity/${entity}`, updateHandler);
 			webSocketMessager.removeHandler(`destroyEntity/${entity}`, destroyHandler);
