@@ -1,5 +1,5 @@
 import WebSocket, { WebSocketServer } from 'ws';
-type Handler = (wsm: WebSocketMessager, ws: WebSocket, data: any) => void;
+export type Handler = (wsm: WebSocketMessager, ws: WebSocket, data: any) => void;
 export default class WebSocketMessager {
 	wss: WebSocketServer;
 	messageNamesToHandlers: Map<string, Set<Handler>> = new Map();
