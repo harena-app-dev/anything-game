@@ -6,7 +6,7 @@ import BackButton from '@/components/BackButton';
 // import MouseManager from '@/scripts/MouseManager';
 // import FPCamera from '@/scripts/FPCamera';
 // import KeyboardState from '@/scripts/KeyboardState';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 import Button from '@/components/Button';
 
@@ -15,17 +15,25 @@ export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
 	const [counter, setCounter] = useState(0)
 	const webSocketMessager = useRef<WebSocketMessager>();
+	const handleMessages = useCallback((messages: string[]) => {
+	}, []);
+	const handleMessage = useCallback((message: string) => {
+	}, []);
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				console.log('handle consoleMessages', messages);
 				setConsoleMessages(messages);
+				// handleMessages(messages);
 			});
 			webSocketMessager.current?.addHandler('newMessage', (message) => {
 				console.log('handle message', message);
 				console.log('effect consoleMessages', consoleMessages);
-				setConsoleMessages(consoleMessages.concat([message]));
+				// setConsoleMessages(consoleMessages.concat([message]));
+				// handleMessage(message);
+				setConsoleMessages(prev => prev.concat([message]));
+
 			});
 			webSocketMessager.current?.send('consoleMessages');
 		});

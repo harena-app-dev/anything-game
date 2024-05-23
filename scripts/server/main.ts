@@ -21,7 +21,5 @@ registerHandlers();
 webSocketMessager.addHandler('consoleMessages', (wsm, ws, _) => {
 	wsm.send(ws, 'consoleMessages', ['Hello from server', 'Hello from server 2']);
 	// interval newMessage "hi"
-	setInterval(() => {
-		wsm.send(ws, 'newMessage', 'hi');
-	}, 1000);
+
 });
