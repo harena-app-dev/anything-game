@@ -32,7 +32,7 @@ export default function GamePage() {
 				// handleMessages(messages);
 			});
 			webSocketMessager.current?.addHandler('newMessage', (message) => {
-				// handleNewMessage(message);
+				// handleNewMessage(message); 
 				console.log('handle message', message);
 				console.log('effect consoleMessages', consoleMessages);
 				const newMessages = [...consoleMessages, message];
