@@ -1,4 +1,3 @@
-import 'server-only'
 import WebSocket, { WebSocketServer } from 'ws';
 type Handler = (wsm: WebSocketMessager, ws: WebSocket, data: any) => void;
 export default class WebSocketMessager {
@@ -40,5 +39,10 @@ export default class WebSocketMessager {
 	}
 	send(ws: WebSocket, name: string, data: any) {
 		ws.send(JSON.stringify({ name, data }));
+	}
+	sendToAll(name: string, data: any) {
+		this.wss.clients.forEach(ws => {
+			this.send(ws, name, data);
+		});
 	}
 }

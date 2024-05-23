@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "dev2": "tsx watch ./scripts/server/main.ts",
+    "dev3": "concurrently --kill-others \"npm run dev\" \"npm run dev2\"",
+	"build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -19,7 +21,9 @@
     "openai": "^4.47.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "server-only": "^0.0.1",
     "three": "^0.164.1",
+    "tsx": "^4.10.5",
     "typescript": "^5.3.3",
     "ws": "^8.16.0"
   },
@@ -29,6 +33,7 @@
     "@types/three": "^0.164.1",
     "@types/ws": "^8.5.10",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6"
   }

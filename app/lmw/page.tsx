@@ -13,14 +13,31 @@ import Button from '@/components/Button';
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState<string[]>(["ERROR: No connection to server"]);
+	const webSocketMessager = useRef<WebSocketMessager>();
+	useEffect(() => {
 
-	const element = <div className='row grow' >
+		webSocketMessager.current = new WebSocketMessager(() => {
+			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
+				setConsoleMessages(messages);
+			});
+			webSocketMessager.current?.addHandler('newMessage', (message) => {
+				setConsoleMessages([...consoleMessages, message]);
+			});
+			webSocketMessager.current?.send('consoleMessages');
+		});
+		return () => {
+			webSocketMessager.current?.close();
+		};
+	}, []);
+	return <div className='row grow' >
 		<Col flex="1">
 			<div className='row title'>
-				Tree
+				Entities
 			</div>
 			<div className='col grow'>
-				<div className='row button'>
+				<div className='row button' onClick={() => {
+					webSocketMessager.current?.send('createEntity');
+				}}>
 					+
 				</div>
 			</div>
@@ -37,19 +54,4 @@ export default function GamePage() {
 			</div>
 		</Col>
 	</div>;
-	useEffect(() => {
-		const webSocketMessager = new WebSocketMessager(() => {
-			webSocketMessager.addHandler('consoleMessages', (messages) => {
-				setConsoleMessages(messages);
-			});
-			webSocketMessager.addHandler('newMessage', (message) => {
-				setConsoleMessages([...consoleMessages, message]);
-			});
-			webSocketMessager.send('consoleMessages');
-		});
-		return () => {
-			webSocketMessager.close();
-		};
-	}, []);
-	return element;
 }
