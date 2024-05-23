@@ -18,8 +18,9 @@ export default class ClientEntityRegistry {
 		});
 	}
 	create(data: any) {
-		const id = this.#entityRegistry.create(data);
-		return id;
+		this.#webSocketMessager.send('createEntity', {data});
+		// const id = this.#entityRegistry.create(data);
+		// return id;
 	}
 	get(id: number) {
 		return this.#entityRegistry.get(id);
