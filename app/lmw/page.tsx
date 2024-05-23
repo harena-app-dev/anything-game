@@ -25,12 +25,12 @@ export default function GamePage() {
 
 			});
 			webSocketMessager.current?.send('consoleMessages');
+			webSocketMessager.current?.send('loadEntities');
 		});
 		return () => {
 			webSocketMessager.current?.close();
 		};
 	}, []);
-	console.log('render consoleMessages', consoleMessages);
 	return <div className='row grow' >
 		<Col flex="1">
 			<div className='row title'>

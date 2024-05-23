@@ -11,6 +11,7 @@ export default class WebSocketMessager {
 		this.ws.onopen = onopen;
 		this.ws.onmessage = (event) => {
 			const message = JSON.parse(event.data);
+			console.log('received message', message);
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				handlers.forEach(handler => handler(message.data));
