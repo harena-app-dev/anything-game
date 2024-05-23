@@ -15,12 +15,12 @@ import EntityRegistry from '@/scripts/EntityRegistry';
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
-	const [clientEntityRegistry, setClientEntityRegistry] = useState<ClientEntityRegistry | null>(null);
+	const clientEntityRegistry = useRef<ClientEntityRegistry>();
 	const webSocketMessager = useRef<WebSocketMessager>();
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
-			setClientEntityRegistry(new ClientEntityRegistry(webSocketMessager.current!, new EntityRegistry()));
+			clientEntityRegistry.current = new ClientEntityRegistry(webSocketMessager.current!, new EntityRegistry());
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});
@@ -41,7 +41,7 @@ export default function GamePage() {
 			</div>
 			<div className='col grow'>
 				<div className='row button' onClick={() => {
-					webSocketMessager.current?.send('createEntity');
+					clientEntityRegistry.current?.create({});
 				}}>
 					+
 				</div>
