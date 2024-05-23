@@ -6,14 +6,12 @@ export const webSocketMessager = new WebSocketMessager();
 export const entityRegistry = new EntityRegistry(webSocketMessager);
 
 function registerHandlers() {
-	// iterate files in ./handlers and register them
-	//  each file default-exports a Handler
-	// use the file name as the handler name
-
-	const handlerFiles = fs.readdirSync(__dirname + '/handlers');
-	for (const handlerFile of handlerFiles) {
-		const handler = require(`./handlers/${handlerFile}`).default;
-		webSocketMessager.addHandler(handlerFile, handler);
+	const handlerFileNames = fs.readdirSync(__dirname + '/handlers');
+	for (const handlerFileName of handlerFileNames) { 
+		const handlerName = handlerFileName.split('.')[0];
+		console.log(`Registering handler: ${handlerName}`);
+		const handler = require(`./handlers/${handlerFileName}`).default;
+		webSocketMessager.addHandler(handlerName, handler);
 	}
 	
 }

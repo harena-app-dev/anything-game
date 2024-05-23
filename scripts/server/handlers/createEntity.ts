@@ -1,6 +1,7 @@
+import WebSocketMessager from "../WebSocketMessager";
 import { entityRegistry } from "../main";
 
-export default function (ws: WebSocket, data: any) {
+export default function (wsm: WebSocketMessager, ws: WebSocket, data: any) {
 	const id = entityRegistry.create(data);
-	ws.send(JSON.stringify({ id }));
+	wsm.send(ws, 'newMessage', `Created entity with id: ${id}`);
 }
