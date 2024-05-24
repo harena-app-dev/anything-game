@@ -17,9 +17,11 @@ export default function ({ entity, registry }: { entity: Entity, registry: Regis
 	}, []);
 	function createExpandableNode() {
 		return <div>
-			<div className="row title">
-				attributes
-			</div>
+			<Expandable createExpandableNode={createExpandableNode}>
+				<div className="row title">
+					{entityState.attributes === undefined ? "no attributes" : <div className="col">Attributes</div>}
+				</div>
+			</Expandable>
 		</div>
 	};
 	return <Expandable createExpandableNode={createExpandableNode}>
