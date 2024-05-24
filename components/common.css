@@ -47,3 +47,6 @@ input:focus {
 	overflow-y: auto;
 	height: 0px;
 }
+.expandable {
+	transition: height 0.5s;
+}

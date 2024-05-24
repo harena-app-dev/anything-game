@@ -3,7 +3,7 @@ import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import ClientRegistry from "@/scripts/client/ClientRegistry";
 import Registry from "@/scripts/Registry";
 type Entity = number;
-export default function ({ entity, registry }: { entity: Entity, registry: Registry}) {
+export default function ({ entity, registry }: { entity: Entity, registry: Registry }) {
 	const [entityState, setEntityState] = useState(registry.get(entity));
 	useEffect(function () {
 		const updateObserver = (registry: Registry, id: number) => {
@@ -14,9 +14,14 @@ export default function ({ entity, registry }: { entity: Entity, registry: Regis
 			registry.removeOnUpdate(entity, updateObserver);
 		};
 	}, []);
-	return <div>
+	const [isExpanded, setIsExpanded] = useState(false);
+	return <div className="expandable button col"
+		onClick={(e) => {
+			setIsExpanded(!isExpanded);
+		}}>
+		{entity}: {JSON.stringify(entityState)}
 		<div>
-			{entity}: {JSON.stringify(entityState)}
+			{isExpanded ? "..." : null}	
 		</div>
 	</div>;
 }

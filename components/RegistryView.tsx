@@ -9,7 +9,6 @@ export default function ({ registry }: { registry: ClientRegistry }) {
 	useEffect(function () {
 		const updateObserver = (registry: Registry, id: number) => {
 			setEntityElements(registry.map((entity) => {
-				console.log('entity', entity);
 				return <EntityView key={entity} registry={registry} entity={entity} />;
 			}));
 		};
