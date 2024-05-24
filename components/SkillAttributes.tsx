@@ -21,8 +21,10 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 			{Object.keys(skillAttributes).map((key) => {
 				console.log(key);
 				return <div className="row" key={key}>
-					<div className="col">{key}</div>
+					<div className="col grow">{key}</div>
+					<div className="col button square-text">+</div>
 					<div className="col">{skillAttributes[key]}</div>
+					<div className="col button square-text">-</div>
 				</div>
 			})}
 		</div>
