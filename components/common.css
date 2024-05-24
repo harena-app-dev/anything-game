@@ -54,9 +54,8 @@ input:focus {
 }
 .title {
 	text-transform: uppercase;
-	padding: 0.5rem;
+	padding: 8px;
 	background-color: #222;
-	font-size: 0.5rem;
 }
 .button {
 	justify-content: center;
