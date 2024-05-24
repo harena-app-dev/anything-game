@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import WebSocketMessager from "../scripts/client/WebSocketMessager";
-import ClientEntityRegistry from "@/scripts/client/ClientEntityRegistry";
+import ClientRegistry from "@/scripts/client/ClientEntityRegistry";
 type Entity = number;
-export default function ({ entity, registry }: { entity: Entity, registry: ClientEntityRegistry}) {
+export default function ({ entity, registry }: { entity: Entity, registry: ClientRegistry}) {
 	const [entityState, setEntityState] = useState(null);
 	useEffect(function () {
 		const listener = (state: any) => {

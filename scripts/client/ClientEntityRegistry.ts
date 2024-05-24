@@ -1,10 +1,10 @@
-import EntityRegistry, { Component, Entity } from "../EntityRegistry";
+import Registry, { Component, Entity } from "../EntityRegistry";
 import WebSocketMessager from "./WebSocketMessager";
 type EntityListener = (data: Component) => void;
-export default class ClientEntityRegistry extends EntityRegistry {
+export default class ClientRegistry extends Registry {
 	#webSocketMessager: WebSocketMessager;
 	#entityObservers: Map<Entity, Set<EntityListener>> = new Map();
-	constructor(webSocketMessager: WebSocketMessager, entityRegistry: EntityRegistry) {
+	constructor(webSocketMessager: WebSocketMessager, entityRegistry: Registry) {
 		super();
 		this.#webSocketMessager = webSocketMessager;
 		webSocketMessager.addHandler('loadEntities', ({data}) => {

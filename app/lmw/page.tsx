@@ -8,19 +8,19 @@ import BackButton from '@/components/BackButton';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-import ClientEntityRegistry from '@/scripts/client/ClientEntityRegistry';
+import ClientRegistry from '@/scripts/client/ClientEntityRegistry';
 import Button from '@/components/Button';
 import EntityRegistry from '@/scripts/EntityRegistry';
 
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
-	const clientEntityRegistry = useRef<ClientEntityRegistry>();
+	const clientEntityRegistry = useRef<ClientRegistry>();
 	const webSocketMessager = useRef<WebSocketMessager>();
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
-			clientEntityRegistry.current = new ClientEntityRegistry(webSocketMessager.current!, new EntityRegistry());
+			clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!, new EntityRegistry());
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});

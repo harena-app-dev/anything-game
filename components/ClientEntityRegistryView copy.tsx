@@ -1,6 +1,6 @@
-import ClientEntityRegistry from "@/scripts/client/ClientEntityRegistry";
+import ClientRegistry from "@/scripts/client/ClientEntityRegistry";
 
-export default function ({ clientEntityRegistry }: { clientEntityRegistry: ClientEntityRegistry }) {
+export default function ({ clientEntityRegistry }: { clientEntityRegistry: ClientRegistry }) {
 	return <div className="col grow">
 		<div className='row title'>
 			Entities
