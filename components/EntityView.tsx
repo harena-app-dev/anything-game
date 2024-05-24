@@ -8,9 +8,9 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 		const listener = (state: any) => {
 			setEntityState(state);
 		};
-		registry.addEntityListener(entity, listener);
+		registry.observe(entity, listener);
 		return () => {
-			registry.removeEntityListener(entity, listener);
+			registry.unobserve(entity, listener);
 		};
 	}, []);
 	return <div>

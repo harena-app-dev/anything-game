@@ -17,13 +17,13 @@ export default class ClientRegistry extends Registry {
 			this.destroy(id);
 		});
 	}
-	addEntityListener(entity: Entity, listener: EntityListener) {
+	observe(entity: Entity, listener: EntityListener) {
 		if (!this.#entityObservers.has(entity)) {
 			this.#entityObservers.set(entity, new Set());
 		}	
 		this.#entityObservers.get(entity)?.add(listener);
 	}
-	removeEntityListener(entity: Entity, listener: EntityListener) {
+	unobserve(entity: Entity, listener: EntityListener) {
 		this.#entityObservers.get(entity)?.delete(listener);
 	}
 	sendCreate() {
