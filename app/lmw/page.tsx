@@ -11,6 +11,7 @@ import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 import ClientRegistry from '@/scripts/client/ClientRegistry';
 import Button from '@/components/Button';
 import Registry from '@/scripts/Registry';
+import EntityView from '@/components/EntityView';
 
 
 export default function GamePage() {
@@ -33,6 +34,10 @@ export default function GamePage() {
 			webSocketMessager.current?.close();
 		};
 	}, []);
+	var entityElements: JSX.Element[] = []; 
+	clientEntityRegistry.current?.each((id, data) => {
+		entityElements.push(<EntityView key={id} entity={id} registry={clientEntityRegistry.current!} />);
+	});
 	return <div className='row grow' >
 		<Col flex="1">
 			<div className='row title'>
@@ -44,6 +49,9 @@ export default function GamePage() {
 				}}>
 					+
 				</div>
+				{
+					entityElements
+				}
 			</div>
 		</Col>
 		<Col flex="1">

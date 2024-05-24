@@ -3,7 +3,7 @@ import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import ClientRegistry from "@/scripts/client/ClientRegistry";
 type Entity = number;
 export default function ({ entity, registry }: { entity: Entity, registry: ClientRegistry}) {
-	const [entityState, setEntityState] = useState(null);
+	const [entityState, setEntityState] = useState(registry.get(entity));
 	useEffect(function () {
 		const listener = (state: any) => {
 			setEntityState(state);
@@ -15,7 +15,7 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 	}, []);
 	return <div>
 		<div>
-			Entity {entity}: {entityState}
+			{entity}: {JSON.stringify(entityState)}
 		</div>
 	</div>;
 }
