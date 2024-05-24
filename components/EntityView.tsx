@@ -35,7 +35,7 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 			</div>
 		}
 		return <div className="col">
-			<div className="row text-wrap">
+			<div className="row long-text">
 				{str}
 			</div>
 			{/* <Expandable expandableNode={createSkillAttributesNode}>
