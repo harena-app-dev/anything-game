@@ -9,6 +9,10 @@ export default class ServerRegistry extends Registry {
 		super();
 		// this.#entityRegistry = entityRegistry;
 		this.#wsm = wsm;
+		wsm.addHandler('loadEntities', (ws: WebSocket) => {
+			console.log('loadEntities');
+			this.sendTo(ws);
+		});
 		wsm.addHandler('createEntity', () => {
 			this.create();
 		});
