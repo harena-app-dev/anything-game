@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import ClientRegistry from "@/scripts/client/ClientRegistry";
 import Registry, { Entity } from "@/scripts/Registry";
-import Attributes from "@/scripts/dnd/Attributes";
 import Expandable from "./Expandable";
 import SkillAttributes from "./SkillAttributes";
 export default function ({ entity, registry }: { entity: Entity, registry: ClientRegistry }) {

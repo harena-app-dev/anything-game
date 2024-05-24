@@ -1,7 +1,10 @@
 import WebSocketMessager from "./server/WebSocketMessager";
 export type Entity = number;
 import DNDEntity from "./dnd/Entity";
-export type EntityComponent = DNDEntity;
+// export type EntityComponent = DNDEntity;
+interface EntityComponent {
+
+}
 export type Observer = (registry: Registry, id: Entity) => void;
 export default class Registry {
 	#entityMap: any;
@@ -67,6 +70,16 @@ export default class Registry {
 	}
 	get(id: Entity) {
 		return this.#entityMap[id];
+	}
+	#componentPools: Map<string, Map<Entity, any>> = new Map();
+	emplace(id: Entity, data: any) {
+		const constructor = data.constructor;
+		const typeName = constructor.name;
+		console.log('emplacing', typeName);
+		if (!this.#componentPools.has(typeName)) {
+			this.#componentPools.set(typeName, new Map());
+		}
+		this.#componentPools.get(typeName)?.set(id, new constructor(data));
 	}
 	patch(id: Entity, data: EntityComponent) {
 		this.#set(id, data);
