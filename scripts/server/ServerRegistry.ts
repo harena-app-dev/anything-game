@@ -1,11 +1,11 @@
-import EntityRegistry from "../EntityRegistry";
+import Registry from "../Registry";
 import WebSocketMessager from "./WebSocketMessager";
 import WebSocket from "ws";
 
-export default class ServerEntityRegistry {
-	#entityRegistry: EntityRegistry;
+export default class ServerRegistry {
+	#entityRegistry: Registry;
 	#webSocketMessager: WebSocketMessager;
-	constructor(webSocketMessager: WebSocketMessager, entityRegistry: EntityRegistry) {
+	constructor(webSocketMessager: WebSocketMessager, entityRegistry: Registry) {
 		this.#entityRegistry = entityRegistry;
 		this.#webSocketMessager = webSocketMessager;
 	}

@@ -8,9 +8,9 @@ import BackButton from '@/components/BackButton';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-import ClientRegistry from '@/scripts/client/ClientEntityRegistry';
+import ClientRegistry from '@/scripts/client/ClientRegistry';
 import Button from '@/components/Button';
-import EntityRegistry from '@/scripts/EntityRegistry';
+import Registry from '@/scripts/Registry';
 
 
 export default function GamePage() {
@@ -20,7 +20,7 @@ export default function GamePage() {
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
-			clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!, new EntityRegistry());
+			clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!, new Registry());
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});

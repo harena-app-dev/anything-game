@@ -1,7 +1,7 @@
 import WebSocketMessager from "./server/WebSocketMessager";
 export type Entity = number;
 export type Component = any;
-export default class EntityRegistry {
+export default class Registry {
 	#entityMap: any;
 	#entityIdCounter: Entity;
 	constructor() {

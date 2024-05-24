@@ -1,4 +1,4 @@
-import Registry, { Component, Entity } from "../EntityRegistry";
+import Registry, { Component, Entity } from "../Registry";
 import WebSocketMessager from "./WebSocketMessager";
 type EntityListener = (data: Component) => void;
 export default class ClientRegistry extends Registry {
