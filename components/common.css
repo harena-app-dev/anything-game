@@ -17,12 +17,9 @@ body {
 .col {
 	display: flex;
 	flex-direction: column;
-	/* overflow: hidden; */
-	overflow: auto;
 }
 .row {
-	/* overflow: hidden; */
-	overflow: auto;
+	/* overflow: auto; */
 	display: flex;
 	flex-direction: row;
 }

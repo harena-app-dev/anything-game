@@ -4,6 +4,7 @@ import ClientRegistry from "@/scripts/client/ClientRegistry";
 import Registry, { Entity } from "@/scripts/Registry";
 import Attributes from "@/scripts/dnd/Attributes";
 import Expandable from "./Expandable";
+import SkillAttributes from "./SkillAttributes";
 export default function ({ entity, registry }: { entity: Entity, registry: ClientRegistry }) {
 	const [entityState, setEntityState] = useState(registry.get(entity));
 	useEffect(function () {
@@ -23,7 +24,6 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 					{str}
 				</div>
 				<div className="col title button grow" onClick={() => {
-					registry.addOnDestroy(entity);
 				}}>
 					create attributes
 				</div>
@@ -38,14 +38,15 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 			<div className="row text-wrap">
 				{str}
 			</div>
-			<Expandable createExpandableNode={createSkillAttributesNode}>
+			{/* <Expandable expandableNode={createSkillAttributesNode}>
 				<div className="row title">
 					<div className="col">Attributes</div>
 				</div>
-			</Expandable>
+			</Expandable> */}
+			<SkillAttributes entity={entity} registry={registry} />
 		</div>
 	};
-	return <Expandable createExpandableNode={createExpandableNode}>
+	return <Expandable expandableNode={createExpandableNode}>
 		{entity}
 	</Expandable>
 }
