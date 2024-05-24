@@ -20,7 +20,7 @@ export default function GamePage() {
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
-			clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!, new Registry());
+			clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!);
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});
@@ -28,7 +28,6 @@ export default function GamePage() {
 				setConsoleMessages(prev => prev.concat([message]));
 			});
 			webSocketMessager.current?.send('consoleMessages');
-			webSocketMessager.current?.send('loadEntities');
 		});
 		return () => {
 			webSocketMessager.current?.close();

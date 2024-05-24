@@ -5,10 +5,16 @@ export default class Registry {
 	#entityMap: any;
 	#entityIdCounter: Entity;
 	constructor() {
-		this.#entityMap = new Map();
+		this.#entityMap = {};
 		this.#entityIdCounter = 0;
 	}
 	toJson() {
+		for (const id in this.#entityMap) {
+			console.log('id', id);
+			console.log('data', this.#entityMap[id]);
+		}
+		console.log('toJson', JSON.stringify(this.#entityMap));
+		console.log('entityIdCounter', this.#entityIdCounter);
 		return JSON.stringify(this.#entityMap);
 	}
 	fromJson(data: string) {
@@ -16,7 +22,8 @@ export default class Registry {
 		this.#entityMap = JSON.parse(data);
 	}
 	set(id: Entity, data: EntityComponent) {
-		this.#entityMap[id] = data;
+		const data2 = data === undefined ? {} : data;
+		this.#entityMap[id] = data2;
 	}
 	create(data: EntityComponent) {
 		const id = this.#entityIdCounter++;
