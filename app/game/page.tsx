@@ -1,8 +1,8 @@
 'use client'
 import * as THREE from 'three';
-import Col from '@/components/Col';
-import Row from '@/components/Row';
-import BackButton from '@/components/BackButton';
+import Col from '@/components/old/Col';
+import Row from '@/components/old/Row';
+import BackButton from '@/components/old/BackButton';
 // import MouseManager from '@/scripts/MouseManager';
 // import FPCamera from '@/scripts/FPCamera';
 // import KeyboardState from '@/scripts/KeyboardState';

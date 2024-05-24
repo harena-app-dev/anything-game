@@ -1,15 +1,15 @@
 'use client'
 import * as THREE from 'three';
-import Col from '@/components/Col';
-import Row from '@/components/Row';
-import BackButton from '@/components/BackButton';
+import Col from '@/components/old/Col';
+import Row from '@/components/old/Row';
+import BackButton from '@/components/old/BackButton';
 // import MouseManager from '@/scripts/MouseManager';
 // import FPCamera from '@/scripts/FPCamera';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 import ClientRegistry from '@/scripts/client/ClientRegistry';
-import Button from '@/components/Button';
+import Button from '@/components/old/Button';
 import Registry from '@/scripts/Registry';
 import EntityView from '@/components/EntityView';
 import RegistryView from '@/components/RegistryView';
