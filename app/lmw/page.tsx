@@ -47,7 +47,7 @@ export default function GamePage() {
 			<div className='row title'>
 				Console
 			</div>
-			<div className='col grow'>
+			<div className='col grow ui'>
 				{consoleMessages.map((message, index) => <div className='row' key={index}>{message}</div>)}
 			</div>
 			<div className='row'>
