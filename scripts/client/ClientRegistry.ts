@@ -19,9 +19,9 @@ export default class ClientRegistry extends Registry {
 		wsm.send('loadEntities');
 	}
 	sendCreate() {
-		if (!this.#wsm) {
-			throw new Error('No connection to server');
-		}
-		this.#wsm.send('createEntity');
+		this.#wsm!.send('createEntity');
+	}
+	sendUpdate(id: Entity, data: EntityComponent) {
+		this.#wsm!.send('updateEntity', {id, data});
 	}
 }

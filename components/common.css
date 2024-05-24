@@ -38,12 +38,13 @@ input:focus {
 }
 .button {
 	justify-content: center;
+	border: 1px solid #000000;
 }
 .button:hover {
 	cursor: pointer;
 	border: 1px solid #fff;
 }
-.flex-scroll-y {
+.scroll-y {
 	overflow-y: auto;
 	height: 0px;
 }

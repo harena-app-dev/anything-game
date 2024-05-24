@@ -2,10 +2,10 @@ import Registry from "../Registry";
 import ServerRegistry from "./ServerRegistry";
 import WebSocketMessager from "./WebSocketMessager";
 import fs from 'fs';
-export const webSocketMessager = new WebSocketMessager();
+export const wsm = new WebSocketMessager();
 
 const entityRegistry = new Registry();
-export const serverEntityRegistry = new ServerRegistry(webSocketMessager, entityRegistry);
+export const serverEntityRegistry = new ServerRegistry(wsm);
 
 function registerHandlers() {
 	const handlerFileNames = fs.readdirSync(__dirname + '/handlers');
@@ -13,13 +13,11 @@ function registerHandlers() {
 		const handlerName = handlerFileName.split('.')[0];
 		console.log(`Registering handler: ${handlerName}`);
 		const handler = require(`./handlers/${handlerFileName}`).default;
-		webSocketMessager.addHandler(handlerName, handler);
+		wsm.addHandler(handlerName, handler);
 	}
 	
 }
-registerHandlers();
-webSocketMessager.addHandler('consoleMessages', (wsm, ws, _) => {
+// registerHandlers();
+wsm.addHandler('consoleMessages', (ws, _) => {
 	wsm.send(ws, 'consoleMessages', ['Hello from server', 'Hello from server 2']);
-	// interval newMessage "hi"
-
 });

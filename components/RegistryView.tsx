@@ -18,11 +18,11 @@ export default function ({ registry }: { registry: ClientRegistry }) {
 		};
 	}, []);
 
-	return <div className='col grow'>
+	return <div className='col'>
 		<div className='row title'>
 			Entities
 		</div>
-		<div className='col grow flex-scroll-y'>
+		<div className='col grow scroll-y'>
 			<div className='row button' onClick={() => {
 				registry.sendCreate();
 			}}>

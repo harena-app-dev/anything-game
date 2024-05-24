@@ -1,5 +1,5 @@
 import WebSocket, { WebSocketServer } from 'ws';
-export type Handler = (wsm: WebSocketMessager, ws: WebSocket, data: any) => void;
+export type Handler = (ws: WebSocket, data: any) => void;
 export default class WebSocketMessager {
 	wss: WebSocketServer;
 	messageNamesToHandlers: Map<string, Set<Handler>> = new Map();
@@ -12,7 +12,7 @@ export default class WebSocketMessager {
 				const message = JSON.parse(data.toString());
 				const handlers = this.messageNamesToHandlers.get(message.name);
 				if (handlers) {
-					handlers.forEach(handler => handler(this, ws, message.data));
+					handlers.forEach(handler => handler(ws, message.data));
 				} else {
 					console.log(`No handler for message name: ${message.name}`);
 				}

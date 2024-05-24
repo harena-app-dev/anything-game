@@ -59,9 +59,9 @@ export default class Registry {
 			observer(this, id);
 		});
 	}
-	create(data: EntityComponent) {
+	create() {
 		const id = this.#entityIdCounter++;
-		this.set(id, data);
+		this.set(id, {});
 		return id;
 	}
 	get(id: Entity) {

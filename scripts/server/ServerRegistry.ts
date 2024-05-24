@@ -2,31 +2,39 @@ import Registry from "../Registry";
 import WebSocketMessager from "./WebSocketMessager";
 import WebSocket from "ws";
 
-export default class ServerRegistry {
-	#entityRegistry: Registry;
-	#webSocketMessager: WebSocketMessager;
-	constructor(webSocketMessager: WebSocketMessager, entityRegistry: Registry) {
-		this.#entityRegistry = entityRegistry;
-		this.#webSocketMessager = webSocketMessager;
+export default class ServerRegistry extends Registry {
+	// #entityRegistry: Registry;
+	#wsm: WebSocketMessager;
+	constructor(wsm: WebSocketMessager) {
+		super();
+		// this.#entityRegistry = entityRegistry;
+		this.#wsm = wsm;
+		wsm.addHandler('createEntity', () => {
+			this.create();
+		});
+		wsm.addHandler('updateEntity', (ws: WebSocket, {id, data}) => {
+			this.patch(id, data);
+		});
+		// wsm.addHandler('destroyEntity', ({id}) => {
+		// 	this.destroy(id);
+		// });
 	}
 	sendTo(ws: WebSocket) {
-		this.#webSocketMessager.send(ws, 'loadEntities',
-			{ data: this.#entityRegistry.toJson() });
+		this.#wsm.send(ws, 'loadEntities',
+			{ data: this.toJson() });
 	}
-	create(data: any) {
-		const id = this.#entityRegistry.create(data);
-		this.#webSocketMessager.sendToAll('updateEntity', { id, data });
+	create() {
+		// const id = this.#entityRegistry.create();
+		const id = super.create();
+		this.#wsm.sendToAll('updateEntity', { id, data: this.get(id) });
 		return id;
 	}
-	get(id: number) {
-		return this.#entityRegistry.get(id);
-	}
 	patch(id: number, data: any) {
-		this.#entityRegistry.patch(id, data);
-		this.#webSocketMessager.sendToAll('updateEntity', { id, data });
+		super.patch(id, data);
+		this.#wsm.sendToAll('updateEntity', { id, data });
 	}
 	destroy(id: number) {
-		this.#entityRegistry.destroy(id);
-		this.#webSocketMessager.sendToAll('destroyEntity', { id });
+		super.destroy(id);
+		this.#wsm.sendToAll('destroyEntity', { id });
 	}
 }

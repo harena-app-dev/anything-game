@@ -4,7 +4,7 @@ import ClientRegistry from "@/scripts/client/ClientRegistry";
 import Registry, { Entity } from "@/scripts/Registry";
 import Attributes from "@/scripts/dnd/Attributes";
 import Expandable from "./Expandable";
-export default function ({ entity, registry }: { entity: Entity, registry: Registry }) {
+export default function ({ entity, registry }: { entity: Entity, registry: ClientRegistry }) {
 	const [entityState, setEntityState] = useState(registry.get(entity));
 	useEffect(function () {
 		const updateObserver = (registry: Registry, id: number) => {
@@ -16,10 +16,19 @@ export default function ({ entity, registry }: { entity: Entity, registry: Regis
 		};
 	}, []);
 	function createExpandableNode() {
+		if (entityState.attributes === undefined) {
+			return <div className="row">
+				<div className="col title button" onClick={() => {
+					registry.addOnDestroy(entity);
+				}}>
+					create attributes
+				</div>
+			</div>
+		}
 		return <div>
 			<Expandable createExpandableNode={createExpandableNode}>
 				<div className="row title">
-					{entityState.attributes === undefined ? "no attributes" : <div className="col">Attributes</div>}
+					<div className="col">Attributes</div>
 				</div>
 			</Expandable>
 		</div>
