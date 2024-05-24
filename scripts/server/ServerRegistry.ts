@@ -19,16 +19,14 @@ export default class ServerRegistry extends Registry {
 		wsm.addHandler('updateEntity', (ws: WebSocket, {id, data}) => {
 			this.patch(id, data);
 		});
-		// wsm.addHandler('destroyEntity', ({id}) => {
-		// 	this.destroy(id);
-		// });
+		wsm.addHandler('destroyEntity', (ws: WebSocket, {id}) => {
+			this.destroy(id);
+		});
 	}
 	sendTo(ws: WebSocket) {
-		this.#wsm.send(ws, 'loadEntities',
-			{ data: this.toJson() });
+		this.#wsm.send(ws, 'loadEntities', { data: this.toJson() });
 	}
 	create() {
-		// const id = this.#entityRegistry.create();
 		const id = super.create();
 		this.#wsm.sendToAll('updateEntity', { id, data: this.get(id) });
 		return id;
