@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import ClientRegistry from "@/scripts/client/ClientRegistry";
+import Registry from "@/scripts/Registry";
 type Entity = number;
-export default function ({ entity, registry }: { entity: Entity, registry: ClientRegistry}) {
+export default function ({ entity, registry }: { entity: Entity, registry: Registry}) {
 	const [entityState, setEntityState] = useState(registry.get(entity));
 	useEffect(function () {
-		const listener = (state: any) => {
-			setEntityState(state);
+		const updateObserver = (registry: Registry, id: number) => {
+			setEntityState(registry.get(entity));
 		};
-		registry.observe(entity, listener);
+		registry.addOnUpdate(entity, updateObserver);
 		return () => {
-			registry.unobserve(entity, listener);
+			registry.removeOnUpdate(entity, updateObserver);
 		};
 	}, []);
 	return <div>

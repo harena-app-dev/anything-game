@@ -4,21 +4,22 @@ import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import ClientRegistry from "@/scripts/client/ClientRegistry";
 import EntityView from "@/components/EntityView";
 
-export default function ({ webSocketMessager: wsm }: { webSocketMessager: WebSocketMessager }) {
-	const [registry, setRegistry] = useState(new ClientRegistry(wsm));
+export default function ({ registry }: { registry: ClientRegistry }) {
+	const [entityElements, setEntityElements] = useState<JSX.Element[]>([]);
 	useEffect(function () {
-		wsm.addHandler('loadEntities', ({ data }: { data: string }) => {
-		});
-		wsm.addHandler('updateEntity', ({ id, data }) => {
-		});
-		wsm.addHandler('destroyEntity', ({ id }) => {
-		});
+		const updateObserver = (registry: Registry, id: number) => {
+			setEntityElements(registry.map((entity) => {
+				console.log('entity', entity);
+				return <EntityView key={entity} registry={registry} entity={entity} />;
+			}));
+		};
+		registry.addOnUpdateAny(updateObserver);
+		return () => {
+			registry.removeOnUpdateAny(updateObserver);
+		};
 	}, []);
-	var entityElements: JSX.Element[] = [];
-	registry.each((id, data) => {
-		entityElements.push(<EntityView key={id} entity={id} registry={registry} />);
-	});
-	return <div className='row grow'>
+
+	return <div className='col grow'>
 		<div className='row title'>
 			Entities
 		</div>

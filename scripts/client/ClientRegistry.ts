@@ -2,11 +2,13 @@ import Registry, { EntityComponent, Entity } from "../Registry";
 import WebSocketMessager from "./WebSocketMessager";
 type EntityListener = (data: EntityComponent) => void;
 export default class ClientRegistry extends Registry {
-	#webSocketMessager: WebSocketMessager;
+	#wsm?: WebSocketMessager;
 	#entityObservers: Map<Entity, Set<EntityListener>> = new Map();
-	constructor(wsm: WebSocketMessager) {
+	constructor() {
 		super();
-		this.#webSocketMessager = wsm;
+	}
+	connect(wsm: WebSocketMessager) {
+		this.#wsm = wsm;
 		wsm.addHandler('loadEntities', ({data}) => {
 			this.fromJson(data);
 		});
@@ -28,6 +30,9 @@ export default class ClientRegistry extends Registry {
 		this.#entityObservers.get(entity)?.delete(listener);
 	}
 	sendCreate() {
-		this.#webSocketMessager.send('createEntity');
+		if (!this.#wsm) {
+			throw new Error('No connection to server');
+		}
+		this.#wsm.send('createEntity');
 	}
 }

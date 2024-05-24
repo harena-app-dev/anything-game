@@ -12,16 +12,19 @@ import ClientRegistry from '@/scripts/client/ClientRegistry';
 import Button from '@/components/Button';
 import Registry from '@/scripts/Registry';
 import EntityView from '@/components/EntityView';
+import RegistryView from '@/components/RegistryView';
 
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
-	const clientEntityRegistry = useRef<ClientRegistry>();
+	// const clientEntityRegistry = useRef<ClientRegistry>();
 	const webSocketMessager = useRef<WebSocketMessager>();
+	const [registry, setRegistry] = useState(new ClientRegistry());
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
-			clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!);
+			// clientEntityRegistry.current = new ClientRegistry(webSocketMessager.current!);
+			registry.connect(webSocketMessager.current!);
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});
@@ -35,25 +38,11 @@ export default function GamePage() {
 		};
 	}, []);
 	var entityElements: JSX.Element[] = []; 
-	clientEntityRegistry.current?.each((id, data) => {
-		entityElements.push(<EntityView key={id} entity={id} registry={clientEntityRegistry.current!} />);
+	registry.each((id, data) => {
+		entityElements.push(<EntityView key={id} entity={id} registry={registry} />);
 	});
 	return <div className='row grow' >
-		<Col flex="1">
-			<div className='row title'>
-				Entities
-			</div>
-			<div className='col grow'>
-				<div className='row button' onClick={() => {
-					clientEntityRegistry.current?.sendCreate();
-				}}>
-					+
-				</div>
-				{
-					entityElements
-				}
-			</div>
-		</Col>
+		<RegistryView registry={registry} />
 		<Col flex="1">
 			<div className='row title'>
 				Console

@@ -15,24 +15,44 @@ export default class Registry {
 	fromJson(data: string) {
 		this.#entityMap = JSON.parse(data);
 	}
-	#updateObservers: Set<Observer> = new Set();
-	addOnUpdate(callback: Observer) {
-		this.#updateObservers.add(callback);
+	#updateAnyObservers: Set<Observer> = new Set();
+	addOnUpdateAny(callback: Observer) {
+		this.#updateAnyObservers.add(callback);
 	}
-	removeOnUpdate(callback: Observer) {
-		this.#updateObservers.delete(callback);
+	removeOnUpdateAny(callback: Observer) {
+		this.#updateAnyObservers.delete(callback);
 	}
-	#destroyObservers: Set<Observer> = new Set();
-	addOnDestroy(callback: Observer) {
-		this.#destroyObservers.add(callback);
+	#updateObservers: Map<Entity, Set<Observer>> = new Map();
+	addOnUpdate(id: Entity, callback: Observer) {
+		if (!this.#updateObservers.has(id)) {
+			this.#updateObservers.set(id, new Set());
+		}
+		this.#updateObservers.get(id)?.add(callback);
 	}
-	removeOnDestroy(callback: Observer) {
-		this.#destroyObservers.delete(callback);
+	removeOnUpdate(id: Entity, callback: Observer) {
+		this.#updateObservers.get(id)?.delete(callback);
+	}
+	#destroyObserversAny: Set<Observer> = new Set();
+	addOnDestroyAny(callback: Observer) {
+		this.#destroyObserversAny.add(callback);
+	}
+	removeOnDestroyAny(callback: Observer) {
+		this.#destroyObserversAny.delete(callback);
+	}
+	#destroyObservers: Map<Entity, Set<Observer>> = new Map();
+	addOnDestroy(id: Entity, callback: Observer) {
+		if (!this.#destroyObservers.has(id)) {
+			this.#destroyObservers.set(id, new Set());
+		}
+		this.#destroyObservers.get(id)?.add(callback);
+	}
+	removeOnDestroy(id: Entity, callback: Observer) {
+		this.#destroyObservers.get(id)?.delete(callback);
 	}
 	set(id: Entity, data: EntityComponent) {
 		const data2 = data === undefined ? {} : data;
 		this.#entityMap[id] = data2;
-		this.#updateObservers.forEach((observer) => {
+		this.#updateAnyObservers.forEach((observer) => {
 			observer(this, id);
 		});
 	}
@@ -48,7 +68,7 @@ export default class Registry {
 		this.set(id, data);
 	}
 	destroy(id: Entity) {
-		this.#destroyObservers.forEach((observer) => {
+		this.#destroyObserversAny.forEach((observer) => {
 			observer(this, id);
 		});
 		this.#entityMap.delete(id);
@@ -57,5 +77,12 @@ export default class Registry {
 		for (const id in this.#entityMap) {
 			callback(Number(id), this.#entityMap[id]);
 		}
+	}
+	map(callback: (id: Entity, data: EntityComponent) => EntityComponent) {
+		const result: any = [];
+		this.each((id, data) => {
+			result.push(callback(id, data));
+		});
+		return result;
 	}
 }
