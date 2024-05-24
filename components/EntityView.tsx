@@ -38,11 +38,6 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 			<div className="row long-text">
 				{str}
 			</div>
-			{/* <Expandable expandableNode={createSkillAttributesNode}>
-				<div className="row title">
-					<div className="col">Attributes</div>
-				</div>
-			</Expandable> */}
 			<SkillAttributes entity={entity} registry={registry} />
 		</div>
 	};
