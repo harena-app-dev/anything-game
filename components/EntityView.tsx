@@ -17,19 +17,28 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 	}, []);
 	function createExpandableNode() {
 		const str = JSON.stringify(entityState);
-		if (entityState.attributes === undefined) {
+		if (entityState.skillAttributes === undefined) {
 			return <div className="row">
-				{str}
-				<div className="col title button" onClick={() => {
+				<div className="col grow text-wrap">
+					{str}
+				</div>
+				<div className="col title button grow" onClick={() => {
 					registry.addOnDestroy(entity);
 				}}>
 					create attributes
 				</div>
+			</div >
+		}
+		function createSkillAttributesNode() {
+			return <div className="row text-wrap">
+				{JSON.stringify(entityState.skillAttributes)}
 			</div>
 		}
-		return <div>
-			{str}
-			<Expandable createExpandableNode={createExpandableNode}>
+		return <div className="col">
+			<div className="row text-wrap">
+				{str}
+			</div>
+			<Expandable createExpandableNode={createSkillAttributesNode}>
 				<div className="row title">
 					<div className="col">Attributes</div>
 				</div>

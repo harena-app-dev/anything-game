@@ -11,18 +11,23 @@ body {
 	font-size: 16px;
 	font-family: 'Roboto', sans-serif;
 }
-.wrap {
+.text-wrap {
 	text-wrap: wrap;
 }
 .col {
 	display: flex;
 	flex-direction: column;
+	/* overflow: hidden; */
 	overflow: auto;
 }
 .row {
+	/* overflow: hidden; */
 	overflow: auto;
 	display: flex;
 	flex-direction: row;
+}
+.ui {
+	padding: 0.5rem;
 }
 .grow {
 	flex-grow: 1;
