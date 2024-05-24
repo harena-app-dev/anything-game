@@ -1,9 +1,7 @@
 import Registry, { EntityComponent, Entity } from "../Registry";
 import WebSocketMessager from "./WebSocketMessager";
-type EntityListener = (data: EntityComponent) => void;
 export default class ClientRegistry extends Registry {
 	#wsm?: WebSocketMessager;
-	#entityObservers: Map<Entity, Set<EntityListener>> = new Map();
 	constructor() {
 		super();
 	}
@@ -19,15 +17,6 @@ export default class ClientRegistry extends Registry {
 			this.destroy(id);
 		});
 		wsm.send('loadEntities');
-	}
-	observe(entity: Entity, listener: EntityListener) {
-		if (!this.#entityObservers.has(entity)) {
-			this.#entityObservers.set(entity, new Set());
-		}	
-		this.#entityObservers.get(entity)?.add(listener);
-	}
-	unobserve(entity: Entity, listener: EntityListener) {
-		this.#entityObservers.get(entity)?.delete(listener);
 	}
 	sendCreate() {
 		if (!this.#wsm) {
