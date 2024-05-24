@@ -1,6 +1,7 @@
 import WebSocketMessager from "./server/WebSocketMessager";
 export type Entity = number;
 export type EntityComponent = any;
+export type Observer = (registry: Registry, id: Entity) => void;
 export default class Registry {
 	#entityMap: any;
 	#entityIdCounter: Entity;
@@ -9,21 +10,31 @@ export default class Registry {
 		this.#entityIdCounter = 0;
 	}
 	toJson() {
-		for (const id in this.#entityMap) {
-			console.log('id', id);
-			console.log('data', this.#entityMap[id]);
-		}
-		console.log('toJson', JSON.stringify(this.#entityMap));
-		console.log('entityIdCounter', this.#entityIdCounter);
 		return JSON.stringify(this.#entityMap);
 	}
 	fromJson(data: string) {
-		console.log('fromJson', data);
 		this.#entityMap = JSON.parse(data);
+	}
+	#updateObservers: Set<Observer> = new Set();
+	addOnUpdate(callback: Observer) {
+		this.#updateObservers.add(callback);
+	}
+	removeOnUpdate(callback: Observer) {
+		this.#updateObservers.delete(callback);
+	}
+	#destroyObservers: Set<Observer> = new Set();
+	addOnDestroy(callback: Observer) {
+		this.#destroyObservers.add(callback);
+	}
+	removeOnDestroy(callback: Observer) {
+		this.#destroyObservers.delete(callback);
 	}
 	set(id: Entity, data: EntityComponent) {
 		const data2 = data === undefined ? {} : data;
 		this.#entityMap[id] = data2;
+		this.#updateObservers.forEach((observer) => {
+			observer(this, id);
+		});
 	}
 	create(data: EntityComponent) {
 		const id = this.#entityIdCounter++;
@@ -37,6 +48,9 @@ export default class Registry {
 		this.set(id, data);
 	}
 	destroy(id: Entity) {
+		this.#destroyObservers.forEach((observer) => {
+			observer(this, id);
+		});
 		this.#entityMap.delete(id);
 	}
 	each(callback: (id: Entity, data: EntityComponent) => void) {
