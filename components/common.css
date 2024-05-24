@@ -11,6 +11,9 @@ body {
 	font-size: 16px;
 	font-family: 'Roboto', sans-serif;
 }
+.expandable {
+	transition: height 0.5s;
+}
 .square-text {
 	width: 16px;
 	height: 16px;

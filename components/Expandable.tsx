@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 export default function ({ children, expandableNode: createExpandableJSX }: { expandableNode: () => ReactNode, children: ReactNode }) {
 	const [isExpanded, setIsExpanded] = useState(false);
-	return <div className="col">
+	return <div className="col expandable">
 		<div className="button title col" onClick={(e) => {
 			setIsExpanded(!isExpanded);
 		}}>

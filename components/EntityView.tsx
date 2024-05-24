@@ -17,7 +17,7 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 		};
 	}, []);
 	function createExpandableNode() {
-		const str = JSON.stringify(entityState);
+		const str = JSON.stringify(entityState, null, 2);
 		if (entityState.skillAttributes === undefined) {
 			return <div className="row">
 				<div className="col grow text-wrap">
@@ -29,15 +29,10 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 				</div>
 			</div >
 		}
-		function createSkillAttributesNode() {
-			return <div className="row text-wrap">
-				{JSON.stringify(entityState.skillAttributes)}
-			</div>
-		}
 		return <div className="col">
-			<div className="row long-text">
+			<pre className="row">
 				{str}
-			</div>
+			</pre>
 			<SkillAttributes entity={entity} registry={registry} />
 		</div>
 	};
