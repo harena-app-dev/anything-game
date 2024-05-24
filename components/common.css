@@ -43,3 +43,7 @@ input:focus {
 	cursor: pointer;
 	border: 1px solid #fff;
 }
+.flex-scroll-y {
+	overflow-y: auto;
+	height: 0px;
+}

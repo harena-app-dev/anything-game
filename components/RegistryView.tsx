@@ -23,7 +23,7 @@ export default function ({ registry }: { registry: ClientRegistry }) {
 		<div className='row title'>
 			Entities
 		</div>
-		<div className='col grow'>
+		<div className='col grow flex-scroll-y'>
 			<div className='row button' onClick={() => {
 				registry.sendCreate();
 			}}>

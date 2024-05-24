@@ -13,7 +13,10 @@ export default class Registry {
 		return JSON.stringify(this.#entityMap);
 	}
 	fromJson(data: string) {
-		this.#entityMap = JSON.parse(data);
+		const entityMap = JSON.parse(data);
+		for (const id in entityMap) {
+			this.set(Number(id), entityMap[id]);
+		}
 	}
 	#updateAnyObservers: Set<Observer> = new Set();
 	addOnUpdateAny(callback: Observer) {
