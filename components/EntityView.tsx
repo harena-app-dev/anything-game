@@ -16,28 +16,14 @@ export default function ({ entity, registry }: { entity: Entity, registry: Regis
 			registry.removeOnUpdate(entity, updateObserver);
 		};
 	}, []);
-	const [isExpanded, setIsExpanded] = useState(false);
-	function createExpandableJSX() {
+	function createExpandableNode() {
 		return <div>
 			<div className="row title">
 				attributes
 			</div>
 		</div>
 	};
-	// const attributes = new Attributes();
-	// console.log(JSON.stringify(attributes));
-	// const attributes2 = JSON.parse(JSON.stringify(attributes)) as Attributes; 
-	// console.log(`2:` + JSON.stringify(attributes2));
-	// return <div className="expandable button col"
-	// 	onClick={(e) => {
-	// 		setIsExpanded(!isExpanded);
-	// 	}}>
-	// 	{entity}: {JSON.stringify(entityState)}
-	// 	<div>
-	// 		{isExpanded ? createExpandableJSX() : null}
-	// 	</div>
-	// </div>;
-	return <Expandable createExpandableJSX={createExpandableJSX}>
+	return <Expandable createExpandableJSX={createExpandableNode}>
 		{entity}: {JSON.stringify(entityState)}
 	</Expandable>
 }
