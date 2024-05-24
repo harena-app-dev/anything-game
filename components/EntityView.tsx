@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
 import WebSocketMessager from "../scripts/client/WebSocketMessager";
+import ClientEntityRegistry from "@/scripts/client/ClientEntityRegistry";
 type Entity = number;
-export default function ({ entity, webSocketMessager }: { webSocketMessager: WebSocketMessager, entity: Entity }) {
+export default function ({ entity, registry }: { entity: Entity, registry: ClientEntityRegistry}) {
 	const [entityState, setEntityState] = useState(null);
 	useEffect(function () {
-		const updateHandler = ({ data }: { data: any }) => {
-			setEntityState(data);
+		const listener = (state: any) => {
+			setEntityState(state);
 		};
-		webSocketMessager.addHandler(`updateEntity/${entity}`, updateHandler);
-		const destroyHandler = () => {
-			setEntityState(null);
+		registry.addEntityListener(entity, listener);
+		return () => {
+			registry.removeEntityListener(entity, listener);
 		};
-		webSocketMessager.addHandler(`destroyEntity/${entity}`, destroyHandler);
-		webSocketMessager.send(`getEntity/${entity}`);
-		return function () {
-			webSocketMessager.removeHandler(`updateEntity/${entity}`, updateHandler);
-			webSocketMessager.removeHandler(`destroyEntity/${entity}`, destroyHandler);
-		}
-	});
+	}, []);
 	return <div>
 		<div>
 			Entity {entity}: {entityState}

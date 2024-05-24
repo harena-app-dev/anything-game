@@ -41,7 +41,7 @@ export default function GamePage() {
 			</div>
 			<div className='col grow'>
 				<div className='row button' onClick={() => {
-					clientEntityRegistry.current?.create({});
+					clientEntityRegistry.current?.sendCreate();
 				}}>
 					+
 				</div>

@@ -32,4 +32,9 @@ export default class EntityRegistry {
 	destroy(id: Entity) {
 		this.#entityMap.delete(id);
 	}
+	each(callback: (id: Entity, data: Component) => void) {
+		for (const id in this.#entityMap) {
+			callback(Number(id), this.#entityMap[id]);
+		}
+	}
 }
