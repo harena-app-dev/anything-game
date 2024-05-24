@@ -1,6 +1,6 @@
 import WebSocketMessager from "./server/WebSocketMessager";
 export type Entity = number;
-export type Component = any;
+export type EntityComponent = any;
 export default class Registry {
 	#entityMap: any;
 	#entityIdCounter: Entity;
@@ -15,10 +15,10 @@ export default class Registry {
 		console.log('fromJson', data);
 		this.#entityMap = JSON.parse(data);
 	}
-	set(id: Entity, data: Component) {
+	set(id: Entity, data: EntityComponent) {
 		this.#entityMap[id] = data;
 	}
-	create(data: Component) {
+	create(data: EntityComponent) {
 		const id = this.#entityIdCounter++;
 		this.set(id, data);
 		return id;
@@ -26,13 +26,13 @@ export default class Registry {
 	get(id: Entity) {
 		return this.#entityMap[id];
 	}
-	patch(id: Entity, data: Component) {
+	patch(id: Entity, data: EntityComponent) {
 		this.set(id, data);
 	}
 	destroy(id: Entity) {
 		this.#entityMap.delete(id);
 	}
-	each(callback: (id: Entity, data: Component) => void) {
+	each(callback: (id: Entity, data: EntityComponent) => void) {
 		for (const id in this.#entityMap) {
 			callback(Number(id), this.#entityMap[id]);
 		}
