@@ -18,7 +18,7 @@ export default function ({ registry }: { registry: ClientRegistry }) {
 		};
 	}, []);
 
-	return <div className='col'>
+	return <div className='col grow'>
 		<div className='row title'>
 			Entities
 		</div>

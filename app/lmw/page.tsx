@@ -37,13 +37,13 @@ export default function GamePage() {
 			webSocketMessager.current?.close();
 		};
 	}, []);
-	var entityElements: JSX.Element[] = []; 
+	var entityElements: JSX.Element[] = [];
 	registry.each((id, data) => {
 		entityElements.push(<EntityView key={id} entity={id} registry={registry} />);
 	});
 	return <div className='row grow' >
 		<RegistryView registry={registry} />
-		<Col flex="1">
+		<div className='col grow' >
 			<div className='row title'>
 				Console
 			</div>
@@ -53,6 +53,6 @@ export default function GamePage() {
 			<div className='row'>
 				<input className='grow' type="text" />
 			</div>
-		</Col>
-	</div>;
+		</div>
+	</div>
 }

@@ -1,6 +1,7 @@
 import WebSocketMessager from "./server/WebSocketMessager";
 export type Entity = number;
-export type EntityComponent = any;
+import DNDEntity from "./dnd/Entity";
+export type EntityComponent = DNDEntity;
 export type Observer = (registry: Registry, id: Entity) => void;
 export default class Registry {
 	#entityMap: any;
@@ -15,7 +16,7 @@ export default class Registry {
 	fromJson(data: string) {
 		const entityMap = JSON.parse(data);
 		for (const id in entityMap) {
-			this.set(Number(id), entityMap[id]);
+			this.#set(Number(id), entityMap[id]);
 		}
 	}
 	#updateAnyObservers: Set<Observer> = new Set();
@@ -52,7 +53,7 @@ export default class Registry {
 	removeOnDestroy(id: Entity, callback: Observer) {
 		this.#destroyObservers.get(id)?.delete(callback);
 	}
-	set(id: Entity, data: EntityComponent) {
+	#set(id: Entity, data: EntityComponent) {
 		const data2 = data === undefined ? {} : data;
 		this.#entityMap[id] = data2;
 		this.#updateAnyObservers.forEach((observer) => {
@@ -61,14 +62,14 @@ export default class Registry {
 	}
 	create() {
 		const id = this.#entityIdCounter++;
-		this.set(id, {});
+		this.#set(id, new DNDEntity());
 		return id;
 	}
 	get(id: Entity) {
 		return this.#entityMap[id];
 	}
 	patch(id: Entity, data: EntityComponent) {
-		this.set(id, data);
+		this.#set(id, data);
 	}
 	destroy(id: Entity) {
 		this.#destroyObserversAny.forEach((observer) => {

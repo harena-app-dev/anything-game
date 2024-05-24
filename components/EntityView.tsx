@@ -16,8 +16,10 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 		};
 	}, []);
 	function createExpandableNode() {
+		const str = JSON.stringify(entityState);
 		if (entityState.attributes === undefined) {
 			return <div className="row">
+				{str}
 				<div className="col title button" onClick={() => {
 					registry.addOnDestroy(entity);
 				}}>
@@ -26,6 +28,7 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 			</div>
 		}
 		return <div>
+			{str}
 			<Expandable createExpandableNode={createExpandableNode}>
 				<div className="row title">
 					<div className="col">Attributes</div>
@@ -34,6 +37,6 @@ export default function ({ entity, registry }: { entity: Entity, registry: Clien
 		</div>
 	};
 	return <Expandable createExpandableNode={createExpandableNode}>
-		{entity}: {JSON.stringify(entityState)}
+		{entity}
 	</Expandable>
 }
