@@ -22,6 +22,9 @@ body {
 .text-wrap {
 	text-wrap: wrap;
 }
+.ms-auto {
+	margin-left: auto;
+}
 .col, 
 .row {
 	display: flex;

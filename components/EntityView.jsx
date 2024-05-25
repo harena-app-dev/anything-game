@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import NetworkedRegistry from "@/scripts/NetworkedRegistry";
-import Registry, { Entity } from "@/scripts/Registry";
 import Expandable from "./Expandable";
 import SkillAttributes from "./SkillAttributes";
-export default function ({ entity, registry }: { entity: Entity, registry: NetworkedRegistry }) {
+export default function ({ entity, registry }) {
 	// const [entityState, setEntityState] = useState(registry.get(entity));
 	// useEffect(function () {
 	// 	const updateObserver = (registry: Registry, id: number) => {
