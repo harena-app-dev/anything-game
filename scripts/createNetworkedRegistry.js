@@ -30,6 +30,7 @@ export function createNetworkedRegistry() {
 				wsm.send('sync');
 			};
 			registry.sync = (jsonString) => {
+				console.log(`syncing ${jsonString}`);
 				const newRegistry = JSON.parse(jsonString);
 				for (let [key, value] of Object.entries(newRegistry)) {
 					registry[key] = value;

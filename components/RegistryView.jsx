@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import Registry from "../scripts/Registry";
-import WebSocketMessager from "../scripts/client/WebSocketMessager";
-import NetworkedRegistry from "@/scripts/NetworkedRegistry";
 import EntityView from "@/components/EntityView";
 
 export default function ({ registry }) {
 	const [entityElements, setEntityElements] = useState([]);
+	console.log(`entityElements: ${entityElements}`);
+	console.log(`entityElements: ${registry.map({
+		callback: ({ entity }) => {
+			return <EntityView key={entity} registry={registry} entity={entity} />;
+		}
+	})}`);
 	useEffect(function () {
-		const updateObserver = (registry, id) => {
-			setEntityElements(registry.map((entity) => {
+		console.log(`useEffect`);
+		setEntityElements(() => registry.map({
+			callback: ({ entity }) => {
 				return <EntityView key={entity} registry={registry} entity={entity} />;
-			}));
-		};
-		// registry.addOnUpdateAny(updateObserver);
+			}
+		}));
 		return () => {
 			// registry.removeOnUpdateAny(updateObserver);
 		};

@@ -3,22 +3,39 @@ export function createRegistry() {
 		entitySet: {},
 		entityIdCounter: 0,
 		componentPools: {},
-		create() {
-			const id = this.entityIdCounter++;
-			this.entitySet[id] = {};
-			return id;
+		size() {
+			return Object.keys(this.entitySet).length;
 		},
-		emplace({ type, id, component }) {
+		create() {
+			const entity = this.entityIdCounter++;
+			this.entitySet[entity] = {};
+			return entity;
+		},
+		emplace({ type, entity, component }) {
 			if (!this.componentPools[type]) {
 				this.componentPools[type] = {};
 			}
-			this.componentPools[type][id] = component;
+			this.componentPools[type][entity] = component;
 		},
-		destroy({id}) {
-			delete this.entitySet[id];
+		destroy({entity}) {
+			delete this.entitySet[entity];
 		},
-		get({ type, id }) {
-			return this.componentPools[type][id];
+		get({ type, entity }) {
+			return this.componentPools[type][entity];
 		},
+		each({ types, callback }) {
+			if (types===undefined) {
+				for (let entity in this.entitySet) {
+					callback({entity});
+				}
+			}
+		},
+		map({ types, callback }) {
+			const result = [];
+			this.each({ types, callback: ({entity}) => {
+				result.push(callback({entity}));
+			}});
+			return result;
+		}
 	};
 }
