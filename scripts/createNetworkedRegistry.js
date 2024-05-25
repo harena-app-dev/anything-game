@@ -38,7 +38,6 @@ export function createNetworkedRegistry() {
 					registry[key] = value;
 				}
 				registry.each({ callback: ({ entity }) => {
-					console.log(`notify: ${entity}`);
 					registry.onCreate.notify({ entity });
 				}});
 			};

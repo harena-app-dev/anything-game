@@ -3,6 +3,7 @@ import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import NetworkedRegistry from "@/scripts/NetworkedRegistry";
 import Expandable from "./Expandable";
 import SkillAttributes from "./SkillAttributes";
+import ComponentView from "./ComponentView";
 export default function ({ entity, registry }) {
 	// const [entityState, setEntityState] = useState(registry.get(entity));
 	// useEffect(function () {
@@ -35,7 +36,12 @@ export default function ({ entity, registry }) {
 	// 	</div>
 	// };
 	// return <Expandable expandableNode={createExpandableNode}>
-	return <Expandable expandableNode={()=>{null}}>
+	return <Expandable expandableNode={()=>{
+		return <div className="col">
+			<ComponentView entity={entity} registry={registry} type="Skills" />
+			<ComponentView entity={entity} registry={registry} type="Integrity" />
+		</div>
+	}}>
 		{entity}
 	</Expandable>
 }
