@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
-import WebSocketMessager from "../scripts/client/WebSocketMessager";
-import NetworkedRegistry from "@/scripts/NetworkedRegistry";
 import Expandable from "./Expandable";
-import SkillAttributes from "./SkillAttributes";
-import ComponentView from "./ComponentView";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import * as React from 'react';
 export default function ({ entity, registry }) {
 	// const [entityState, setEntityState] = useState(registry.get(entity));
 	// useEffect(function () {
@@ -36,12 +40,57 @@ export default function ({ entity, registry }) {
 	// 	</div>
 	// };
 	// return <Expandable expandableNode={createExpandableNode}>
-	return <Expandable expandableNode={()=>{
-		return <div className="col">
-			<ComponentView entity={entity} registry={registry} type="Skills" />
-			<ComponentView entity={entity} registry={registry} type="Integrity" />
-		</div>
-	}}>
-		{entity}
-	</Expandable>
+	// return <Expandable expandableNode={() => {
+	// 	return <div className="col">
+	// 		<Menu>
+	// 			<MenuItem >Skills</MenuItem>
+	// 			<MenuItem >Integrity</MenuItem>
+	// 		</Menu>
+	// 	</div>
+	// }}>
+	// 	{entity}
+	// </Expandable>
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	return (
+		<Accordion>
+			<AccordionSummary
+				expandIcon={<ExpandMoreIcon />}
+				aria-controls="panel1-content"
+				id="panel1-header"
+			>
+				Entity {entity}
+			</AccordionSummary>
+			<AccordionDetails>
+				<Button
+					id="basic-button"
+					aria-controls={open ? 'basic-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					onClick={handleClick}
+				>
+					Add Component
+				</Button>
+				<Menu
+					id="basic-menu"
+					anchorEl={anchorEl}
+					open={open}
+					onClose={handleClose}
+					MenuListProps={{
+						'aria-labelledby': 'basic-button',
+					}}
+				>
+					<MenuItem onClick={handleClose}>Skills</MenuItem>
+					<MenuItem onClick={handleClose}>Integrity</MenuItem>
+				</Menu>
+			</AccordionDetails>
+		</Accordion>
+	);
 }

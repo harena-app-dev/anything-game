@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EntityView from "@/components/EntityView";
-export default function RegistryView ({ registry, size }) {
+export default function RegistryView ({ registry }) {
 	const [entityElements, setEntityElements] = useState([]);
 	useEffect(function () {
 		console.log(`useEffect`);
