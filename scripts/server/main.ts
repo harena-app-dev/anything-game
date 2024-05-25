@@ -6,6 +6,6 @@ export const wsm = new WebSocketMessager();
 export const serverEntityRegistry = createNetworkedRegistry();
 serverEntityRegistry.connect({ wsm, isClient: false });
 
-wsm.addHandler('consoleMessages', (ws, _) => {
+wsm.addHandler('consoleMessages', ({ws, _}) => {
 	wsm.send(ws, 'consoleMessages', ['Hello from server', 'Hello from server 2']);
 });

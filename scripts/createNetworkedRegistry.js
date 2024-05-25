@@ -25,6 +25,28 @@ export function createNetworkedRegistry() {
 				f(args);
 			});
 		}
+		if (isClient) {
+			registry.cmdSync = () => {
+				wsm.send('sync');
+			};
+			registry.sync = (jsonString) => {
+				const newRegistry = JSON.parse(jsonString);
+				for (let [key, value] of Object.entries(newRegistry)) {
+					registry[key] = value;
+				}
+			};
+			wsm.addHandler('sync', ({ ws, args }) => {
+				registry.sync(args);
+			});
+			registry.cmdSync();
+		} else {
+			registry.sync = ({ws}) => {
+				wsm.send(ws, 'sync', registry);
+			};
+			wsm.addHandler('sync', ({ ws, args }) => {
+				wsm.send(ws, 'sync', JSON.stringify(registry));
+			});
+		}
 	}
 	return registry;
 }
