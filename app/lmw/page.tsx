@@ -1,31 +1,16 @@
 'use client'
-import * as THREE from 'three';
-import Col from '@/components/old/Col';
-import Row from '@/components/old/Row';
-import BackButton from '@/components/old/BackButton';
-// import MouseManager from '@/scripts/MouseManager';
-// import FPCamera from '@/scripts/FPCamera';
-// import KeyboardState from '@/scripts/KeyboardState';
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-import Button from '@/components/old/Button';
-import EntityView from '@/components/EntityView';
 import RegistryView from '@/components/RegistryView';
 import { createNetworkedRegistry } from '@/scripts/createNetworkedRegistry';
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
-	// const clientEntityRegistry = useRef<NetworkedRegistry>();
 	const webSocketMessager = useRef<WebSocketMessager>();
 	const [registry, setRegistry] = useState(createNetworkedRegistry());
 	useEffect(function () {
-		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
-			// clientEntityRegistry.current = new NetworkedRegistry(webSocketMessager.current!);
-			console.log('connected');
 			registry.connect({ wsm: webSocketMessager.current!, isClient: true });
-			console.log('connect');
-			// registry.cmdSync();
 			webSocketMessager.current?.addHandler('consoleMessages', ({ws, args}) => {
 				setConsoleMessages(args);
 			});
