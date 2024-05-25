@@ -35,7 +35,6 @@ body {
 }
 .vertical-resizer:hover {
 	background: linear-gradient(#ffffff, #ffffff) no-repeat center/5px 100%;
-	width: 10px;
 	cursor: ew-resize;
 }
 .col, 
