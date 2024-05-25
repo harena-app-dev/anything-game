@@ -25,6 +25,9 @@ body {
 .ms-auto {
 	margin-left: auto;
 }
+.resizable {
+	min-width: min-content;
+}
 .col, 
 .row {
 	display: flex;

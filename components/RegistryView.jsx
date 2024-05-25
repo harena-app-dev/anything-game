@@ -16,7 +16,9 @@ export default function ({ registry }) {
 		};
 	}, []);
 	const [width, setWidth] = useState(256);
-	return <div className='row' style={{ width: width + 'px' }}>
+	return <div className='row resizable' style={{ 
+		width: width + 'px',
+		}}>
 		<div className='col grow' >
 			<div className='row title'>
 				Entities
