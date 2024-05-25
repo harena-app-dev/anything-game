@@ -1,1 +1,12 @@
 - actions
+	- [ ] Manage inventory (drag and drop)
+	- [ ] Open-ended action via text input
+	- [ ] Move to adjacent room
+- mechanics
+	- [ ] Inventories (space and weight)
+	- [ ] Creation
+		- [ ] Requires an integer amount of work
+		- [ ] 1 skill roll per unit of work
+		- [ ] Skill requirement is determined by DM
+		- [ ] Failure results in loss of resources
+	- [ ] Movement (grid of rooms)
