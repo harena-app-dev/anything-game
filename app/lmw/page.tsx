@@ -22,10 +22,12 @@ export default function GamePage() {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
 			// clientEntityRegistry.current = new NetworkedRegistry(webSocketMessager.current!);
-			registry.connect(webSocketMessager.current!);
+			console.log('connected');
+			registry.connect({ wsm: webSocketMessager.current!, isClient: true });
+			console.log('connect');
 			// registry.cmdSync();
-			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
-				setConsoleMessages(messages);
+			webSocketMessager.current?.addHandler('consoleMessages', ({ws, args}) => {
+				setConsoleMessages(args);
 			});
 			webSocketMessager.current?.addHandler('newMessage', (message) => {
 				setConsoleMessages(prev => prev.concat([message]));

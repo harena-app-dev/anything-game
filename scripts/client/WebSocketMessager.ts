@@ -14,7 +14,7 @@ export default class WebSocketMessager {
 			console.log('received message', message);
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
-				handlers.forEach(handler => handler(message.data));
+				handlers.forEach(handler => handler({ws: this.ws, args: message.data}));
 			}
 		}
 	}
@@ -30,6 +30,9 @@ export default class WebSocketMessager {
 	send(name: string, data: any = {}) {
 		const message = JSON.stringify({ name, data });
 		this.ws.send(message);
+	}
+	sendToAll(name: string, data: any = {}) {
+		this.send(name, data);
 	}
 	close() {
 		this.ws.close();
