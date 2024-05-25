@@ -15,20 +15,41 @@ export default function ({ registry }) {
 			registry.onCreate.disconnect(observer);
 		};
 	}, []);
-
-	return <div className='col grow'>
-		<div className='row title'>
-			Entities
-		</div>
-		<div className='col grow scroll-y'>
-			<div className='row button' onClick={() => {
-				registry.cmdCreate();
-			}}>
-				+
+	const [width, setWidth] = useState(256);
+	return <div className='row' style={{ width: width + 'px' }}>
+		<div className='col grow' >
+			<div className='row title'>
+				Entities
 			</div>
-			{
-				entityElements
-			}
+			<div className='col grow scroll-y'>
+				<div className='row button' onClick={() => {
+					registry.cmdCreate();
+				}}>
+					+
+				</div>
+				{
+					entityElements
+				}
+			</div>
+		</div>
+		<div className='col' style={{ width: 2 + 'px', backgroundColor: 'white', cursor: 'ew-resize' }}
+			onMouseDown={(e) => {
+				console.log(`onMouseDown`);
+				const startX = e.clientX;
+				const startWidth = width;
+				const onMouseMove = (e) => {
+					console.log(`onMouseMove`);
+					const dx = e.clientX - startX;
+					setWidth(startWidth + dx);
+				};
+				const onMouseUp = () => {
+					console.log(`onMouseUp`);
+					document.removeEventListener('mousemove', onMouseMove);
+					document.removeEventListener('mouseup', onMouseUp);
+				};
+				document.addEventListener('mousemove', onMouseMove);
+				document.addEventListener('mouseup', onMouseUp);
+			}}>
 		</div>
 	</div>
 }
