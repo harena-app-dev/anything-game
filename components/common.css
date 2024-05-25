@@ -2,8 +2,8 @@
 body {
 	/* background-color: #000000; */
 	/* color: #fff; */
-	padding: 0;
-	margin: 0;
+	/* padding: 0; */
+	/* margin: 0; */
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
@@ -48,7 +48,7 @@ body {
 	flex-direction: row;
 }
 .ui {
-	padding: 0.5rem;
+	/* padding: 0.5rem; */
 }
 .long-text {
 	width: 200px;
@@ -67,11 +67,11 @@ input {
 input:focus {
 	outline: none;
 }
-.title {
+/* .title {
 	text-transform: uppercase;
 	padding: 8px;
 	background-color: #222;
-}
+} */
 .button {
 	justify-content: center;
 	border: 1px solid #000000;

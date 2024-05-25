@@ -4,6 +4,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 export default function RegistryView({ registry }) {
 	const [entityElements, setEntityElements] = useState([]);
@@ -20,37 +22,29 @@ export default function RegistryView({ registry }) {
 		};
 	}, []);
 	const [width, setWidth] = useState(256);
-	return <div className='row resizable' style={{
+	return <Box className='row resizable' style={{
 		width: width + 'px',
 	}}>
 		<div className='col grow' >
-			{/* <div className='row'>
-				<AccordionSummary
-					aria-controls="panel1-content"
-					id="panel1-header"
-					>
-					Entities
-				</AccordionSummary>
-			</div> */}
-			<Typography variant="overline" display="block" gutterBottom>
-				entitites
-			</Typography>
-			<div className='col grow scroll-y'>
-				{/* <div className='row button' onClick={() => {
+				<Typography variant="overline" display="block" gutterBottom>
+					entitites
+				</Typography>
+				<div className='col grow scroll-y'>
+					{/* <div className='row button' onClick={() => {
 					registry.cmdCreate();
 				}}>
 					+
 				</div> */}
-				<Button variant="contained"
-					onClick={() => {
-						registry.cmdCreate();
-					}}>
-					+
-				</Button>
-				{
-					entityElements
-				}
-			</div>
+					<Button variant="contained"
+						onClick={() => {
+							registry.cmdCreate();
+						}}>
+						+
+					</Button>
+					{
+						entityElements
+					}
+				</div>
 		</div>
 		<div className='col vertical-resizer'
 			onMouseDown={(e) => {
@@ -72,5 +66,5 @@ export default function RegistryView({ registry }) {
 				document.addEventListener('mouseup', onMouseUp);
 			}}>
 		</div>
-	</div>
+	</Box>
 }
