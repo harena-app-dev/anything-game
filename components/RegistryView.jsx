@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import EntityView from "@/components/EntityView";
-
-export default function ({ registry }) {
+export default function RegistryView ({ registry, size }) {
 	const [entityElements, setEntityElements] = useState([]);
 	useEffect(function () {
 		console.log(`useEffect`);
@@ -34,7 +33,7 @@ export default function ({ registry }) {
 				}
 			</div>
 		</div>
-		<div className='col' style={{ width: 2 + 'px', backgroundColor: 'white', cursor: 'ew-resize' }}
+		<div className='col vertical-resizer'
 			onMouseDown={(e) => {
 				console.log(`onMouseDown`);
 				const startX = e.clientX;
@@ -42,7 +41,8 @@ export default function ({ registry }) {
 				const onMouseMove = (e) => {
 					console.log(`onMouseMove`);
 					const dx = e.clientX - startX;
-					setWidth(startWidth + dx);
+					const newSize = startWidth + dx;
+					setWidth(newSize);
 				};
 				const onMouseUp = () => {
 					console.log(`onMouseUp`);
