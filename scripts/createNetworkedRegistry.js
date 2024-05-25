@@ -1,12 +1,14 @@
 import {createRegistry} from './createRegistry.js';
-export function createNetworkedRegistry({wsm}) {
+export function createNetworkedRegistry() {
 	const registry = createRegistry();
-	for (let [name, value] of Object.entries(registry)) {
-		if (value instanceof Function) {
-			wsm.addHandler(name, ({ws, args})=>{
-				registry.name.bind(registry)(args);
-			});
+	registry.connect = (wsm) => {
+		for (let [name, value] of Object.entries(registry)) {
+			if (value instanceof Function) {
+				wsm.addHandler(name, ({ws, args})=>{
+					registry.name.bind(registry)(args);
+				});
+			}
 		}
-	}
+	};
 	return registry;
 }

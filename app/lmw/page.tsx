@@ -8,25 +8,22 @@ import BackButton from '@/components/old/BackButton';
 // import KeyboardState from '@/scripts/KeyboardState';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-// import NetworkedRegistry from '@/scripts/client/NetworkedRegistry';
-import NetworkedRegistry from '@/scripts/NetworkedRegistry';
 import Button from '@/components/old/Button';
-import Registry from '@/scripts/Registry';
 import EntityView from '@/components/EntityView';
 import RegistryView from '@/components/RegistryView';
-
+import { createNetworkedRegistry } from '@/scripts/createNetworkedRegistry';
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
 	// const clientEntityRegistry = useRef<NetworkedRegistry>();
 	const webSocketMessager = useRef<WebSocketMessager>();
-	const [registry, setRegistry] = useState(new NetworkedRegistry());
+	const [registry, setRegistry] = useState(createNetworkedRegistry());
 	useEffect(function () {
 		console.log('useEffect');
 		webSocketMessager.current = new WebSocketMessager(function () {
 			// clientEntityRegistry.current = new NetworkedRegistry(webSocketMessager.current!);
 			registry.connect(webSocketMessager.current!);
-			registry.cmdSync();
+			// registry.cmdSync();
 			webSocketMessager.current?.addHandler('consoleMessages', (messages) => {
 				setConsoleMessages(messages);
 			});
@@ -39,10 +36,6 @@ export default function GamePage() {
 			webSocketMessager.current?.close();
 		};
 	}, []);
-	var entityElements: JSX.Element[] = [];
-	registry.each((id, data) => {
-		entityElements.push(<EntityView key={id} entity={id} registry={registry} />);
-	});
 	return <div className='row grow' >
 		<RegistryView registry={registry} />
 		<div className='col grow' >

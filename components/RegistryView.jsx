@@ -4,17 +4,17 @@ import WebSocketMessager from "../scripts/client/WebSocketMessager";
 import NetworkedRegistry from "@/scripts/NetworkedRegistry";
 import EntityView from "@/components/EntityView";
 
-export default function ({ registry }: { registry: NetworkedRegistry }) {
-	const [entityElements, setEntityElements] = useState<JSX.Element[]>([]);
+export default function ({ registry }) {
+	const [entityElements, setEntityElements] = useState([]);
 	useEffect(function () {
-		const updateObserver = (registry: Registry, id: number) => {
+		const updateObserver = (registry, id) => {
 			setEntityElements(registry.map((entity) => {
 				return <EntityView key={entity} registry={registry} entity={entity} />;
 			}));
 		};
-		registry.addOnUpdateAny(updateObserver);
+		// registry.addOnUpdateAny(updateObserver);
 		return () => {
-			registry.removeOnUpdateAny(updateObserver);
+			// registry.removeOnUpdateAny(updateObserver);
 		};
 	}, []);
 
