@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Registry from "../scripts/Registry";
 import WebSocketMessager from "../scripts/client/WebSocketMessager";
-import ClientRegistry from "@/scripts/client/ClientRegistry";
+import NetworkedRegistry from "@/scripts/NetworkedRegistry";
 import EntityView from "@/components/EntityView";
 
-export default function ({ registry }: { registry: ClientRegistry }) {
+export default function ({ registry }: { registry: NetworkedRegistry }) {
 	const [entityElements, setEntityElements] = useState<JSX.Element[]>([]);
 	useEffect(function () {
 		const updateObserver = (registry: Registry, id: number) => {
@@ -24,7 +24,7 @@ export default function ({ registry }: { registry: ClientRegistry }) {
 		</div>
 		<div className='col grow scroll-y'>
 			<div className='row button' onClick={() => {
-				registry.sendCreate();
+				registry.cmdCreate();
 			}}>
 				+
 			</div>
