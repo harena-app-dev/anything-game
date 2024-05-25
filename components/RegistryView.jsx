@@ -11,13 +11,14 @@ export default function ({ registry }) {
 	})}`);
 	useEffect(function () {
 		console.log(`useEffect`);
-		setEntityElements(() => registry.map({
-			callback: ({ entity }) => {
-				return <EntityView key={entity} registry={registry} entity={entity} />;
-			}
-		}));
+		const observer = ({ entity }) => {
+			setEntityElements((entityElements) => {
+				return [...entityElements, <EntityView key={entity} registry={registry} entity={entity} />];
+			});
+		};
+		registry.onCreate.connect(observer);
 		return () => {
-			// registry.removeOnUpdateAny(updateObserver);
+			registry.onCreate.disconnect(observer);
 		};
 	}, []);
 

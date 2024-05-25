@@ -32,7 +32,13 @@ export function createNetworkedRegistry() {
 			registry.sync = (jsonString) => {
 				console.log(`syncing ${jsonString}`);
 				const newRegistry = JSON.parse(jsonString);
+				console.log(`registry.unsynced: ${registry.unsynced}`);
 				for (let [key, value] of Object.entries(newRegistry)) {
+					console.log(`key: ${key}`);
+					if (registry.unsynced.has(key)) {
+						console.log(`skipping ${key}`);
+						continue;
+					}
 					registry[key] = value;
 				}
 			};
