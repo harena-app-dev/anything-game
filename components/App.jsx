@@ -1,4 +1,3 @@
-'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 import RegistryView from '@/components/RegistryView';
@@ -12,28 +11,23 @@ import Grid from '@mui/material/Grid';
 import Entity from '@/scripts/dnd/Entity';
 import EntityView from '@/components/EntityView';
 import Console from '@/components/Console';
-import App from '@/components/App';
-
-const Item = styled(Paper)(({ theme }) => ({
-	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-	...theme.typography.body2,
-	padding: theme.spacing(1),
-	textAlign: 'center',
-	color: theme.palette.text.secondary,
-}));
-
-
-
-const darkTheme = createTheme({
-	palette: {
-		mode: 'dark',
-	},
-});
-
-export default function GamePage() {
-
-	return <ThemeProvider theme={darkTheme}>
-		<CssBaseline />
-		<App />
-	</ThemeProvider>
+export default function App() {
+	const [consoleMessages, setConsoleMessages] = useState([]);
+	const webSocketMessager = useRef();
+	const [registry, setRegistry] = useState(createNetworkedRegistry());
+	useEffect(function () {
+		webSocketMessager.current = new WebSocketMessager(function () {
+			registry.connect({ wsm: webSocketMessager.current, isClient: true });
+		});
+		return () => {
+			webSocketMessager.current?.close();
+		};
+	}, []);
+	return <Box className="row grow">
+		<RegistryView registry={registry} />
+		<Box className='col grow' sx={{ p: 2 }}>
+			<EntityView registry={registry} entity={0} />
+			<Console registry={registry} />
+		</Box>
+	</Box>
 }

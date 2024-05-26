@@ -28,13 +28,13 @@ export default function RegistryView({ registry }) {
 			<Typography variant="overline" display="block" gutterBottom>
 				entitites
 			</Typography>
+			<Button variant="contained"
+				onClick={() => {
+					registry.cmdCreate();
+				}}>
+				+
+			</Button>
 			<Stack className=' grow col scroll-y'>
-				<Button variant="contained"
-					onClick={() => {
-						registry.cmdCreate();
-					}}>
-					+
-				</Button>
 				{
 					entityElements
 				}
