@@ -41,47 +41,6 @@ import { visuallyHidden } from '@mui/utils';
 import BasicMenu from "./BasicMenu";
 import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
 
-export function RegistryView({ registry, setViewedEntity }) {
-	const [entityElements, setEntityElements] = useState([]);
-	useEffect(function () {
-		console.log(`useEffect`);
-		const observer = ({ entity }) => {
-			setEntityElements((entityElements) => {
-				return [...entityElements, <Button key={entity} onClick={() => {
-					setViewedEntity(entity);
-				}}>
-					{entity}
-				</Button>];
-			});
-		};
-		registry.onCreate.connect(observer);
-		return () => {
-			registry.onCreate.disconnect(observer);
-		};
-	}, []);
-	const [width, setWidth] = useState(256);
-	return <Box className='row grow' sx={{ p: 2 }}>
-		<Stack className='col' spacing={2}>
-			<Typography variant="overline" display="block" gutterBottom>
-				entitites
-			</Typography>
-			<Button variant="contained"
-				onClick={() => {
-					registry.cmdCreate();
-				}}>
-				+
-			</Button>
-			<Stack className=' grow col scroll-y'>
-				{
-					entityElements
-				}
-			</Stack>
-		</Stack>
-	</Box>
-
-}
-
-
 function createData(id, name, calories, fat, carbs, protein) {
 	return {
 		id,
@@ -280,19 +239,20 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ setViewedEntity, registry }) {
-	console.log(`registry.size()`, registry.size());
-	const [rows, setRows] = React.useState( registry.map({
+	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);
 		}
 	}));
+	const [order, setOrder] = React.useState('asc');
+	const [orderBy, setOrderBy] = React.useState('calories');
+	const [selected, setSelected] = React.useState([]);
+	const [page, setPage] = React.useState(0);
+	const [dense, setDense] = React.useState(false);
+	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const [isSelecting, setIsSelecting] = React.useState(false);
 	useEffect(function () {
-		console.log(`useEffect`);
 		const onCreate = ({ entity }) => {
-			console.log(`observer`, entity);
-			// setEntityElements((entityElements) => {
-			// 	return 
-			// });
 			setRows((rows) => {
 				return [...rows, createData(entity, entity)];
 			});
@@ -304,19 +264,20 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 			});
 		};
 		registry.onDestroy.connect(onDestroy);
+		const onKeydown = (event) => {
+			if (event.key === 'Escape') {
+				setIsSelecting((prev) => {
+					return false;
+				});
+			}
+		};
+		document.addEventListener('keydown', onKeydown);
 		return () => {
 			registry.onCreate.disconnect(onCreate);
 			registry.onDestroy.disconnect(onDestroy);
+			document.removeEventListener('keydown', onKeydown);
 		};
-	}, []);
-
-	const [order, setOrder] = React.useState('asc');
-	const [orderBy, setOrderBy] = React.useState('calories');
-	const [selected, setSelected] = React.useState([]);
-	const [page, setPage] = React.useState(0);
-	const [dense, setDense] = React.useState(false);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const [isSelecting, setIsSelecting] = React.useState(false);
+	}, [registry]);
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === 'asc';
 		setOrder(isAsc ? 'desc' : 'asc');
@@ -377,7 +338,8 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 	const visibleRows = stableSort(rows, getComparator(order, orderBy));
 
 	return (
-		<Box className='row grow'>
+		<Box className='row grow'
+		>
 			<Paper className='col grow'>
 				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting}
 					registry={registry}

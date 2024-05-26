@@ -94,12 +94,11 @@ export function Registry() {
 				}
 				return;
 			}
-			// find the intersection of the entity sets
 			const entitySets = types.map(type => this.typesToEntitiesToComponents[type]);
 			const intersection = Object.keys(entitySets[0]);
 			for (let i = 1; i < entitySets.length; i++) {
 				const entitySet = entitySets[i];
-				for (let entity in intersection) {
+				for (let entity of intersection) {
 					if (entitySet[entity] === undefined) {
 						delete intersection[entity];
 					}
