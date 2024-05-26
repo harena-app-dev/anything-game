@@ -147,7 +147,7 @@ function EnhancedTableToolbar(props) {
 	const actions = [
 		// { icon: <ShareIcon />, name: 'Share' },
 		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
-		{ icon: <AddIcon />, name: 'Add', onClick: () => registry.cmdCreate() },
+		{ icon: <AddIcon />, name: 'Create', onClick: () => registry.cmdCreate() },
 	];
 	return (
 		<Toolbar
