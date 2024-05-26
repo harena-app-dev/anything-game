@@ -120,10 +120,6 @@ function getComparator(order, orderBy) {
 		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index]);
 	stabilizedThis.sort((a, b) => {
@@ -217,11 +213,11 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected, setIsSelecting } = props;
+	const { numSelected, setIsSelecting, registry } = props;
 	const actions = [
 		// { icon: <ShareIcon />, name: 'Share' },
-		{ icon: <RuleIcon />, name: 'Select'},
-		{ icon: <AddIcon />, name: 'Add'},
+		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
+		{ icon: <AddIcon />, name: 'Add', onClick: () => registry.cmdCreate() },
 	];
 	return (
 		<Toolbar
@@ -263,12 +259,12 @@ function EnhancedTableToolbar(props) {
 			) : (
 				<BasicMenu button={<MoreHorizRounded />} >
 					{actions.map((action) => (
-						<MenuItem key={action.name}>
+						<MenuItem key={action.name} onClick={action.onClick}>
 							{action.icon}
 							{action.name}
 						</MenuItem>
 					))}
-							
+
 				</BasicMenu>
 			)}
 		</Toolbar>
@@ -280,11 +276,28 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ setViewedEntity, registry }) {
-	const rows = registry.map({
+	console.log(`registry.size()`, registry.size());
+	const [rows, setRows] = React.useState( registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);
 		}
-	});
+	}));
+	useEffect(function () {
+		console.log(`useEffect`);
+		const observer = ({ entity }) => {
+			console.log(`observer`, entity);
+			// setEntityElements((entityElements) => {
+			// 	return 
+			// });
+			setRows((rows) => {
+				return [...rows, createData(entity, entity)];
+			});
+		};
+		registry.onCreate.connect(observer);
+		return () => {
+			registry.onCreate.disconnect(observer);
+		};
+	}, []);
 
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
@@ -350,16 +363,14 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-	const visibleRows = React.useMemo(
-		() =>
-			stableSort(rows, getComparator(order, orderBy)),
-		[order, orderBy, page, rowsPerPage],
-	);
+	const visibleRows = stableSort(rows, getComparator(order, orderBy));
 
 	return (
 		<Box className='row grow'>
 			<Paper className='col grow'>
-				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting} />
+				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting}
+					registry={registry}
+				/>
 				<TableContainer className='col grow'>
 					<Table
 						// sx={{ minWidth: 750 }}
