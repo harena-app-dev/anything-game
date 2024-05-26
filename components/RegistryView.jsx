@@ -6,8 +6,17 @@ import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import RuleIcon from '@mui/icons-material/Rule';
 import Container from '@mui/material/Container';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
-import { Stack } from "@mui/material";
+import { MenuItem, Stack } from "@mui/material";
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
@@ -29,6 +38,9 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import BasicMenu from "./BasicMenu";
+import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
+import { registry } from "@/scripts/server/main";
 
 export function RegistryView({ registry, setViewedEntity }) {
 	const [entityElements, setEntityElements] = useState([]);
@@ -74,25 +86,24 @@ export function RegistryView({ registry, setViewedEntity }) {
 function createData(id, name, calories, fat, carbs, protein) {
 	return {
 		id,
-		name,
 	};
 }
 
-const rows = [
-	createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-	createData(2, 'Donut', 452, 25.0, 51, 4.9),
-	createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-	createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-	createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-	createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-	createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-	createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-	createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-	createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-	createData(13, 'Oreo', 437, 18.0, 63, 4.0),
-];
+// const rows = [
+// 	createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
+// 	createData(2, 'Donut', 452, 25.0, 51, 4.9),
+// 	createData(3, 'Eclair', 262, 16.0, 24, 6.0),
+// 	createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
+// 	createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
+// 	createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
+// 	createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
+// 	createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
+// 	createData(9, 'KitKat', 518, 26.0, 65, 7.0),
+// 	createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
+// 	createData(11, 'Marshmallow', 318, 0, 81, 2.0),
+// 	createData(12, 'Nougat', 360, 19.0, 9, 37.0),
+// 	createData(13, 'Oreo', 437, 18.0, 63, 4.0),
+// ];
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -134,7 +145,19 @@ const headCells = [
 		label: 'ID',
 	}
 ];
+{/* <Stack direction="row">
+					<Tooltip title="Select">
+						<IconButton onClick={() => setIsSelecting(prev => !prev)}>
 
+							<RuleIcon />
+						</IconButton>
+					</Tooltip>
+					<Tooltip title="Filter list">
+						<IconButton>
+							<FilterListIcon />
+						</IconButton>
+					</Tooltip>
+				</Stack> */}
 function EnhancedTableHead(props) {
 	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, isSelecting } =
 		props;
@@ -196,7 +219,11 @@ EnhancedTableHead.propTypes = {
 
 function EnhancedTableToolbar(props) {
 	const { numSelected, setIsSelecting } = props;
-
+	const actions = [
+		// { icon: <ShareIcon />, name: 'Share' },
+		{ icon: <RuleIcon />, name: 'Select'},
+		{ icon: <AddIcon />, name: 'Add'},
+	];
 	return (
 		<Toolbar
 			sx={{
@@ -235,19 +262,15 @@ function EnhancedTableToolbar(props) {
 					</IconButton>
 				</Tooltip>
 			) : (
-				<Stack direction="row">
-					<Tooltip title="Select">
-						<IconButton onClick={() => setIsSelecting(prev => !prev)}>
-
-							<RuleIcon />
-						</IconButton>
-					</Tooltip>
-					<Tooltip title="Filter list">
-						<IconButton>
-							<FilterListIcon />
-						</IconButton>
-					</Tooltip>
-				</Stack>
+				<BasicMenu button={<MoreHorizRounded />} >
+					{actions.map((action) => (
+						<MenuItem key={action.name}>
+							{action.icon}
+							{action.name}
+						</MenuItem>
+					))}
+							
+				</BasicMenu>
 			)}
 		</Toolbar>
 	);
@@ -257,7 +280,13 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ setViewedEntity }) {
+export default function EnhancedTable({ setViewedEntity, registry }) {
+	const rows = registry.map({
+		callback: ({ entity }) => {
+			return createData(entity, entity);
+		}
+	});
+
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
 	const [selected, setSelected] = React.useState([]);
@@ -280,7 +309,7 @@ export default function EnhancedTable({ setViewedEntity }) {
 		setSelected([]);
 	};
 
-	const handleClick = ({event, id, setViewedEntity}) => {
+	const handleClick = ({ event, id, setViewedEntity }) => {
 		if (!isSelecting) {
 			setViewedEntity(id);
 			return;
@@ -356,7 +385,7 @@ export default function EnhancedTable({ setViewedEntity }) {
 								return (
 									<TableRow
 										hover
-										onClick={(event) => handleClick({event, id: row.id, setViewedEntity})}
+										onClick={(event) => handleClick({ event, id: row.id, setViewedEntity })}
 										role="checkbox"
 										aria-checked={isItemSelected}
 										tabIndex={-1}
