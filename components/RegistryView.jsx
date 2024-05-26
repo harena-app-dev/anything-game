@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
+import RuleIcon from '@mui/icons-material/Rule';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Stack } from "@mui/material";
@@ -135,7 +136,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, isSelecting } =
 		props;
 	const createSortHandler = (property) => (event) => {
 		onRequestSort(event, property);
@@ -146,15 +147,18 @@ function EnhancedTableHead(props) {
 		<TableHead>
 			<TableRow>
 				<TableCell padding="checkbox">
-					<Checkbox
-						color="primary"
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount > 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-						inputProps={{
-							'aria-label': 'select all desserts',
-						}}
-					/>
+					{
+						isSelecting &&
+						<Checkbox
+							color="primary"
+							indeterminate={numSelected > 0 && numSelected < rowCount}
+							checked={rowCount > 0 && numSelected === rowCount}
+							onChange={onSelectAllClick}
+							inputProps={{
+								'aria-label': 'select all desserts',
+							}}
+						/>
+					}
 				</TableCell>
 				{headCells.map((headCell) => (
 					<TableCell
@@ -192,7 +196,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected } = props;
+	const { numSelected, isSelecting, setIsSelecting } = props;
 
 	return (
 		<Toolbar
@@ -232,11 +236,18 @@ function EnhancedTableToolbar(props) {
 					</IconButton>
 				</Tooltip>
 			) : (
-				<Tooltip title="Filter list">
-					<IconButton>
-						<FilterListIcon />
-					</IconButton>
-				</Tooltip>
+				<Stack direction="row">
+					<Tooltip title="Select">
+						<IconButton>
+							<RuleIcon />
+						</IconButton>
+					</Tooltip>
+					<Tooltip title="Filter list">
+						<IconButton>
+							<FilterListIcon />
+						</IconButton>
+					</Tooltip>
+				</Stack>
 			)}
 		</Toolbar>
 	);
@@ -253,7 +264,7 @@ export default function EnhancedTable() {
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+	const [isSelecting, setIsSelecting] = React.useState(false);
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === 'asc';
 		setOrder(isAsc ? 'desc' : 'asc');
@@ -270,6 +281,9 @@ export default function EnhancedTable() {
 	};
 
 	const handleClick = (event, id) => {
+		if (!isSelecting) {
+			return;
+		}
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -349,13 +363,15 @@ export default function EnhancedTable() {
 										sx={{ cursor: 'pointer' }}
 									>
 										<TableCell padding="checkbox">
-											<Checkbox
-												color="primary"
-												checked={isItemSelected}
-												inputProps={{
-													'aria-labelledby': labelId,
-												}}
-											/>
+											{
+												isSelecting &&
+												<Checkbox
+													color="primary"
+													checked={isItemSelected}
+													inputProps={{
+														'aria-labelledby': labelId,
+													}}
+												/>}
 										</TableCell>
 										<TableCell
 											component="th"
