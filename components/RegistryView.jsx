@@ -315,7 +315,7 @@ export default function EnhancedTable() {
 
 	return (
 		<Box className='row grow'>
-			<Paper sx={{ width: '100%', mb: 2 }} className='col grow'>
+			<Paper className='col grow'>
 				<EnhancedTableToolbar numSelected={selected.length} />
 				<TableContainer className='col grow'>
 					<Table
