@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev2": "tsx watch ./scripts/server/main.ts",
+    "dev2": "tsx watch ./scripts/server/main.js",
     "dev3": "concurrently --kill-others \"npm run dev\" \"npm run dev2\"",
     "build": "next build",
     "start": "next start",
