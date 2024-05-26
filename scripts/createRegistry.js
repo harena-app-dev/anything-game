@@ -15,17 +15,24 @@ export function Observable() {
 		}
 	}
 }
-export function createRegistry() {
+export function assert(condition, message) {
+	if (!condition) {
+		throw new Error(message);
+	}
+}
+export function Registry() {
 	const registry = {
-		entitySet: {},
-		entityIdCounter: 0,
+		// entitySet: {},
+		entitySet: [],
+		destroyedSet: [],
 		typesToEntitiesToComponents: {},
 		entitiesToTypes: {},
 		onCreate: Observable(),
 		onDestroy: Observable(),
 		unsynced: new Set(['onCreate']),
 		size() {
-			return Object.keys(this.entitySet).length;
+			// return Object.keys(this.entitySet).length;
+			return this.entitySet.length;
 		},
 		getTypes({ entity }) {
 			return this.entitiesToTypes[entity];
@@ -42,9 +49,16 @@ export function createRegistry() {
 			return this.get({ type, entity });
 		},
 		create() {
-			const entity = this.entityIdCounter++;
-			this.entitySet[entity] = {};
+			let entity;
+			if (this.destroyedSet.length > 0) {
+				entity = this.destroyedSet.pop();
+				return entity;
+			} else {
+				entity = this.entitySet.length;
+			}
+			this.entitySet.push(entity);
 			this.entitiesToTypes[entity] = [];
+			console.log(`created entity ${entity}`);
 			this.onCreate.notify({ entity });
 			return entity;
 		},
@@ -57,7 +71,14 @@ export function createRegistry() {
 			return component;
 		},
 		destroy({ entity }) {
-			delete this.entitySet[entity];
+			if (!this.entitySet.includes(entity)) {
+				console.error(`entity ${entity} does not exist`);
+				return;
+			}
+			// delete this.entitySet[entity];
+			const index = this.entitySet.indexOf(entity);
+			this.entitySet.splice(index, 1);
+			this.destroyedSet.push(entity);
 		},
 		has({ type, entity }) {
 			return this.typesToEntitiesToComponents[type] !== undefined && this.typesToEntitiesToComponents[type][entity] !== undefined;
@@ -67,7 +88,8 @@ export function createRegistry() {
 		},
 		each({ types, callback }) {
 			if (types === undefined) {
-				for (let entity in this.entitySet) {
+				for (let entity of this.entitySet) {
+					console.log(`each entity ${entity}`);
 					callback({ entity });
 				}
 				return;
@@ -83,7 +105,7 @@ export function createRegistry() {
 					}
 				}
 			}
-			for (let entity in intersection) {
+			for (let entity of intersection) {
 				callback({ entity });
 			}
 		},

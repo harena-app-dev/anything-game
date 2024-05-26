@@ -1,6 +1,6 @@
-import { createRegistry } from './createRegistry.js';
+import { Registry } from './createRegistry.js';
 export function createNetworkedRegistry() {
-	const registry = createRegistry();
+	const registry = Registry();
 	registry.connect = ({ wsm, isClient }) => {
 		for (let [name, value] of Object.entries(registry)) {
 			if (!(value instanceof Function)) {

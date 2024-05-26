@@ -254,7 +254,7 @@ function EnhancedTableToolbar(props) {
 				<Tooltip title="Delete">
 					<IconButton onClick={() => {
 						selected.forEach((entity) => {
-							registry.cmdDestroy({ entity });
+							registry.cmdDestroy({ entity: Number(entity) });
 						});
 					}}>
 						<DeleteIcon />
