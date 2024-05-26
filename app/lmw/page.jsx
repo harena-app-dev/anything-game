@@ -5,7 +5,20 @@ import RegistryView from '@/components/RegistryView';
 import { createNetworkedRegistry } from '@/scripts/createNetworkedRegistry';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+
+const Item = styled(Paper)(({ theme }) => ({
+	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+	...theme.typography.body2,
+	padding: theme.spacing(1),
+	textAlign: 'center',
+	color: theme.palette.text.secondary,
+}));
+
+
 
 const darkTheme = createTheme({
 	palette: {
@@ -34,7 +47,7 @@ export default function GamePage() {
 	}, []);
 	return <ThemeProvider theme={darkTheme}>
 		<CssBaseline />
-		<Box className='row grow' >
+		<Box className="row grow">
 			<RegistryView registry={registry} />
 			<Box className='col grow' >
 				<div className='row title'>
@@ -48,5 +61,6 @@ export default function GamePage() {
 				</div>
 			</Box>
 		</Box>
+
 	</ThemeProvider>
 }

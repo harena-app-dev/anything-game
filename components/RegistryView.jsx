@@ -23,14 +23,12 @@ export default function RegistryView({ registry }) {
 		};
 	}, []);
 	const [width, setWidth] = useState(256);
-	return <Box className='row resizable' style={{
-		width: width + 'px',
-	}} sx={{ p: 2 }}>
-		<Stack className='col grow' spacing={2}>
+	return <Box className='row grow' sx={{ p: 2 }}>
+		<Stack className='col' spacing={2}>
 			<Typography variant="overline" display="block" gutterBottom>
 				entitites
 			</Typography>
-			<Stack className='col grow scroll-y'>
+			<Stack className=' grow col scroll-y'>
 				<Button variant="contained"
 					onClick={() => {
 						registry.cmdCreate();
@@ -42,25 +40,6 @@ export default function RegistryView({ registry }) {
 				}
 			</Stack>
 		</Stack>
-		{/* <div className='col vertical-resizer'
-			onMouseDown={(e) => {
-				console.log(`onMouseDown`);
-				const startX = e.clientX;
-				const startWidth = width;
-				const onMouseMove = (e) => {
-					console.log(`onMouseMove`);
-					const dx = e.clientX - startX;
-					const newSize = startWidth + dx;
-					setWidth(newSize);
-				};
-				const onMouseUp = () => {
-					console.log(`onMouseUp`);
-					document.removeEventListener('mousemove', onMouseMove);
-					document.removeEventListener('mouseup', onMouseUp);
-				};
-				document.addEventListener('mousemove', onMouseMove);
-				document.addEventListener('mouseup', onMouseUp);
-			}}>
-		</div> */}
 	</Box>
+
 }
