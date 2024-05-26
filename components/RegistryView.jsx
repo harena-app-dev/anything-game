@@ -83,19 +83,6 @@ const headCells = [
 		label: 'ID',
 	}
 ];
-{/* <Stack direction="row">
-					<Tooltip title="Select">
-						<IconButton onClick={() => setIsSelecting(prev => !prev)}>
-
-							<RuleIcon />
-						</IconButton>
-					</Tooltip>
-					<Tooltip title="Filter list">
-						<IconButton>
-							<FilterListIcon />
-						</IconButton>
-					</Tooltip>
-				</Stack> */}
 function EnhancedTableHead(props) {
 	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, isSelecting } =
 		props;
@@ -241,7 +228,11 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 		registry.onCreate.connect(onCreate);
 		const onDestroy = ({ entity }) => {
 			setRows((rows) => {
+				console.log(`setRows destroy ${entity}`); 
 				return rows.filter((row) => row.id !== entity);
+			});
+			setSelected((selected) => {
+				return selected.filter((id) => id !== entity);
 			});
 		};
 		registry.onDestroy.connect(onDestroy);

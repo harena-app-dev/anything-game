@@ -28,7 +28,7 @@ export function Registry() {
 		entitiesToTypes: {},
 		onCreate: Observable(),
 		onDestroy: Observable(),
-		unsynced: new Set(['onCreate']),
+		unsynced: new Set(['onCreate', 'onDestroy']),
 		size() {
 			// return Object.keys(this.entitySet).length;
 			return this.entitySet.length;
@@ -56,7 +56,6 @@ export function Registry() {
 			}
 			this.entitySet.push(entity);
 			this.entitiesToTypes[entity] = [];
-			console.log(`created entity ${entity}`);
 			this.onCreate.notify({ entity });
 			return entity;
 		},
@@ -73,7 +72,7 @@ export function Registry() {
 				console.error(`entity ${entity} does not exist`);
 				return;
 			}
-			// delete this.entitySet[entity];
+			this.onDestroy.notify({ entity });
 			const index = this.entitySet.indexOf(entity);
 			this.entitySet.splice(index, 1);
 			this.destroyedSet.push(entity);
@@ -87,7 +86,6 @@ export function Registry() {
 		each({ types, callback }) {
 			if (types === undefined) {
 				for (let entity of this.entitySet) {
-					console.log(`each entity ${entity}`);
 					callback({ entity });
 				}
 				return;
