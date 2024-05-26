@@ -1,1 +1,1 @@
-export { Brain } from './Brain';
+export { Creature } from './Creature';

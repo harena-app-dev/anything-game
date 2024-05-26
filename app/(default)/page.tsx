@@ -12,11 +12,6 @@ import Testimonials from '@/components/old/testimonials'
 export default function Home() {
   return (
     <>
-      <Hero />
-      <Features />
-      <Zigzag />
-      <Testimonials />
-      <Newsletter />
     </>
   )
 }
