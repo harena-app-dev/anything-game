@@ -8,6 +8,12 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import * as React from 'react';
+import ComponentView from "./ComponentView";
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+
 export default function ({ entity, registry }) {
 	// const [entityState, setEntityState] = useState(registry.get(entity));
 	// useEffect(function () {
@@ -58,7 +64,7 @@ export default function ({ entity, registry }) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-
+	const types = registry.getTypes({ entity });
 	return (
 		<Accordion>
 			<AccordionSummary
@@ -78,6 +84,14 @@ export default function ({ entity, registry }) {
 				>
 					Add Component
 				</Button>
+				{
+					types.length === 0 ? <Alert severity="info">
+						This entity has no components.
+					</Alert> :
+					types.map(type => {
+						return <ComponentView key={type} entity={entity} type={type} registry={registry} />
+					})
+				}
 				<Menu
 					id="basic-menu"
 					anchorEl={anchorEl}
@@ -87,8 +101,10 @@ export default function ({ entity, registry }) {
 						'aria-labelledby': 'basic-button',
 					}}
 				>
-					<MenuItem onClick={handleClose}>Skills</MenuItem>
-					<MenuItem onClick={handleClose}>Integrity</MenuItem>
+					{registry.getSingleton({ type: 'RegisteredComponents' }).components.map(component => {
+						return <MenuItem key={component}
+							onClick={handleClose}>{component}</MenuItem>
+					})}
 				</Menu>
 			</AccordionDetails>
 		</Accordion>

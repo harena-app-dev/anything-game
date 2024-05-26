@@ -1,20 +1,35 @@
 import { useEffect, useState } from "react";
-import WebSocketMessager from "../scripts/client/WebSocketMessager";
-import NetworkedRegistry from "@/scripts/NetworkedRegistry";
-import Expandable from "./Expandable";
-import SkillAttributes from "./SkillAttributes";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import * as React from 'react';
+import ComponentView from "./ComponentView";
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+
 export default function ({ entity, registry, type }) {
-	// const [componentState, setComponentState] = useState(registry.get({ entity, type }));
-	// useEffect(function () {
-	// 	const updateObserver = (registry: Registry, id: number) => {
-	// 		setEntityState(registry.get(entity));
-	// 	};
-	// 	registry.addOnUpdate(entity, updateObserver);
-	// 	return () => {
-	// 		registry.removeOnUpdate(entity, updateObserver);
-	// 	};
-	// }, []);
-	return <Expandable expandableNode={()=>{null}}>
-		{type}
-	</Expandable>
+	const [jsonState, setJsonState] = useState(JSON.stringify(registry.get({ type, entity }), null, 2)); 
+	return <Accordion>
+		<AccordionSummary
+			expandIcon={<ExpandMoreIcon />}
+			aria-controls="panel1-content"
+			id="panel1-header"
+		>
+			{type}
+		</AccordionSummary>
+		<AccordionDetails>
+			<TextField
+				label="JSON"
+				multiline
+				value={jsonState}
+				
+			/>
+		</AccordionDetails>
+	</Accordion>
 }
