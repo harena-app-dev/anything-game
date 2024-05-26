@@ -25,7 +25,7 @@ export default function App() {
 	const [viewedEntity, setViewedEntity] = useState(0);
 	return <Box className="row grow">
 		<RegistryView registry={registry} setViewedEntity={setViewedEntity} />
-		<Box className='col grow' sx={{ p: 2 }}>
+		<Box className='col grow'>
 			<EntityView registry={registry} entity={viewedEntity} />
 			<Console registry={registry} />
 		</Box>
