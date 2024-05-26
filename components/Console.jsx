@@ -14,7 +14,7 @@ export default function Console({ registry }) {
 		setAnchorEl(null);
 	};
 	return (
-		<Accordion>
+		<Accordion defaultExpanded>
 			<AccordionSummary
 				expandIcon={<ExpandMoreIcon />}
 				aria-controls="panel1-content"

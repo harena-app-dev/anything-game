@@ -30,7 +30,7 @@ export default function ({ entity, registry }) {
 	};
 	const types = registry.getTypes({ entity });
 	return (
-		<Accordion>
+		<Accordion defaultExpanded>
 			<AccordionSummary
 				expandIcon={<ExpandMoreIcon />}
 				aria-controls="panel1-content"
