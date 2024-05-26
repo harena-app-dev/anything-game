@@ -338,8 +338,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 	const visibleRows = stableSort(rows, getComparator(order, orderBy));
 
 	return (
-		<Box className='row grow'
-		>
+		<Box className='row'>
 			<Paper className='col grow'>
 				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting}
 					registry={registry}
