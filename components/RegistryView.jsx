@@ -40,7 +40,6 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import BasicMenu from "./BasicMenu";
 import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
-import { registry } from "@/scripts/server/main";
 
 export function RegistryView({ registry, setViewedEntity }) {
 	const [entityElements, setEntityElements] = useState([]);
