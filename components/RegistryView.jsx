@@ -213,7 +213,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected, setIsSelecting, registry } = props;
+	const { numSelected, setIsSelecting, registry, selected } = props;
 	const actions = [
 		// { icon: <ShareIcon />, name: 'Share' },
 		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
@@ -252,7 +252,11 @@ function EnhancedTableToolbar(props) {
 
 			{numSelected > 0 ? (
 				<Tooltip title="Delete">
-					<IconButton>
+					<IconButton onClick={() => {
+						selected.forEach((entity) => {
+							registry.cmdDestroy({ entity });
+						});
+					}}>
 						<DeleteIcon />
 					</IconButton>
 				</Tooltip>
@@ -377,6 +381,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 			<Paper className='col grow'>
 				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting}
 					registry={registry}
+					selected={selected}
 				/>
 				<TableContainer className='col grow'>
 					<Table
