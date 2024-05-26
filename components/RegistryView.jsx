@@ -344,6 +344,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 					registry={registry}
 					selected={selected}
 				/>
+				{`registry.size() = ${registry.size()}`}
 				<TableContainer className='col grow'>
 					<Table
 						// sx={{ minWidth: 750 }}

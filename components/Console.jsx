@@ -29,7 +29,6 @@ export default function Console({ registry }) {
 					label="Enter a command"
 					placeholder="Command"
 					multiline
-					sx={{ mt: 'auto' }}
 				/>
 			</AccordionDetails>
 		</Accordion>

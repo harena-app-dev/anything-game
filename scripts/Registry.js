@@ -51,7 +51,6 @@ export function Registry() {
 			let entity;
 			if (this.destroyedSet.length > 0) {
 				entity = this.destroyedSet.pop();
-				return entity;
 			} else {
 				entity = this.entitySet.length;
 			}
