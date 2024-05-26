@@ -28,7 +28,7 @@ export default function ({ entity, registry, type }) {
 				label="JSON"
 				multiline
 				value={jsonState}
-				
+				disabled
 			/>
 		</AccordionDetails>
 	</Accordion>
