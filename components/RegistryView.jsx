@@ -309,10 +309,7 @@ export default function EnhancedTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
+      stableSort(rows, getComparator(order, orderBy)),
     [order, orderBy, page, rowsPerPage],
   );
 
