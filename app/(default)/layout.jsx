@@ -27,19 +27,12 @@ const darkTheme = createTheme({
 });
 
 export default function GamePage() {
-	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
+	const [consoleMessages, setConsoleMessages] = useState([]);
 	const webSocketMessager = useRef();
 	const [registry, setRegistry] = useState(createNetworkedRegistry());
 	useEffect(function () {
 		webSocketMessager.current = new WebSocketMessager(function () {
 			registry.connect({ wsm: webSocketMessager.current, isClient: true });
-			webSocketMessager.current.addHandler('consoleMessages', ({ ws, args }) => {
-				setConsoleMessages(args);
-			});
-			webSocketMessager.current?.addHandler('newMessage', (message) => {
-				setConsoleMessages(prev => prev.concat([message]));
-			});
-			webSocketMessager.current?.send('consoleMessages');
 		});
 		return () => {
 			webSocketMessager.current?.close();
