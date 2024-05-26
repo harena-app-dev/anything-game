@@ -22,6 +22,7 @@ export function createRegistry() {
 		typesToEntitiesToComponents: {},
 		entitiesToTypes: {},
 		onCreate: Observable(),
+		onDestroy: Observable(),
 		unsynced: new Set(['onCreate']),
 		size() {
 			return Object.keys(this.entitySet).length;

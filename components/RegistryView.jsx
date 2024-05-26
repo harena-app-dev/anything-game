@@ -284,7 +284,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 	}));
 	useEffect(function () {
 		console.log(`useEffect`);
-		const observer = ({ entity }) => {
+		const onCreate = ({ entity }) => {
 			console.log(`observer`, entity);
 			// setEntityElements((entityElements) => {
 			// 	return 
@@ -293,9 +293,16 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 				return [...rows, createData(entity, entity)];
 			});
 		};
-		registry.onCreate.connect(observer);
+		registry.onCreate.connect(onCreate);
+		const onDestroy = ({ entity }) => {
+			setRows((rows) => {
+				return rows.filter((row) => row.id !== entity);
+			});
+		};
+		registry.onDestroy.connect(onDestroy);
 		return () => {
-			registry.onCreate.disconnect(observer);
+			registry.onCreate.disconnect(onCreate);
+			registry.onDestroy.disconnect(onDestroy);
 		};
 	}, []);
 

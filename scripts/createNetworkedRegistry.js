@@ -31,6 +31,9 @@ export function createNetworkedRegistry() {
 			};
 			registry.sync = (jsonString) => {
 				const newRegistry = JSON.parse(jsonString);
+				registry.each({ callback: ({ entity }) => {
+					registry.onDestroy.notify({ entity });
+				}});
 				for (let [key, value] of Object.entries(newRegistry)) {
 					if (registry.unsynced.has(key)) {
 						continue;
