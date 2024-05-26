@@ -231,9 +231,6 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
 	const [selected, setSelected] = React.useState([]);
-	const [page, setPage] = React.useState(0);
-	const [dense, setDense] = React.useState(false);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [isSelecting, setIsSelecting] = React.useState(false);
 	useEffect(function () {
 		const onCreate = ({ entity }) => {
@@ -300,14 +297,8 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 		}
 		setSelected(newSelected);
 	};
-
 	const isSelected = (id) => selected.indexOf(id) !== -1;
-
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
 	const visibleRows = stableSort(rows, getComparator(order, orderBy));
-
 	return (
 		<Box className='row'>
 			<Paper className='col grow'>
@@ -317,9 +308,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 				/>
 				<TableContainer className='col grow'>
 					<Table
-						// sx={{ minWidth: 750 }}
 						aria-labelledby="tableTitle"
-						size={dense ? 'small' : 'medium'}
 						className='col grow'
 					>
 						<EnhancedTableHead
@@ -335,7 +324,6 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 							{visibleRows.map((row, index) => {
 								const isItemSelected = isSelected(row.id);
 								const labelId = `enhanced-table-checkbox-${index}`;
-
 								return (
 									<TableRow
 										hover
