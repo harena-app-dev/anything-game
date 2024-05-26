@@ -1,5 +1,5 @@
-import { Registry } from './createRegistry.js';
-export function createNetworkedRegistry() {
+import { Registry } from './Registry.js';
+export function NetworkedRegistry() {
 	const registry = Registry();
 	registry.connect = ({ wsm, isClient }) => {
 		for (let [name, value] of Object.entries(registry)) {

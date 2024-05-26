@@ -22,7 +22,6 @@ export function assert(condition, message) {
 }
 export function Registry() {
 	const registry = {
-		// entitySet: {},
 		entitySet: [],
 		destroyedSet: [],
 		typesToEntitiesToComponents: {},

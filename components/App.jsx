@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 import RegistryView from '@/components/RegistryView';
-import { createNetworkedRegistry as NetworkedRegistry } from '@/scripts/createNetworkedRegistry';
+import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { styled } from '@mui/material/styles';
