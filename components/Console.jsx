@@ -24,7 +24,6 @@ export default function Console({ registry }) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	const types = registry.getTypes({ entity });
 	return (
 		<Accordion>
 			<AccordionSummary
@@ -35,6 +34,14 @@ export default function Console({ registry }) {
 				Console
 			</AccordionSummary>
 			<AccordionDetails>
+				<Stack spacing={2}>
+				</Stack>
+				<TextField
+					id="outlined-textarea"
+					label="Enter a command"
+					placeholder="Command"
+					multiline
+				/>
 			</AccordionDetails>
 		</Accordion>
 	);

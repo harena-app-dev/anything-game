@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Entity from '@/scripts/dnd/Entity';
 import EntityView from '@/components/EntityView';
+import Console from '@/components/Console';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -46,17 +47,7 @@ export default function GamePage() {
 			<RegistryView registry={registry} />
 			<Box className='col grow' sx={{ p: 2 }}>
 				<EntityView registry={registry} entity={0} />
-				<Box className='col grow' >
-					<div className='row title'>
-						Console
-					</div>
-					<div className='col grow ui'>
-						{consoleMessages.map((message, index) => <div className='row' key={index}>{message}</div>)}
-					</div>
-					<div className='row'>
-						<input className='grow' type="text" />
-					</div>
-				</Box>
+				<Console registry={registry} />
 			</Box>
 		</Box>
 
