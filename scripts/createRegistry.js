@@ -1,11 +1,9 @@
-export function Components() {
-	return {
-		components: []
-	};
-}
+// import fs from 'fs';
+// import path from 'path';
+import * as Components from './components/index.js';
 export function createObservable() {
 	return {
-		observers: new Set(), 
+		observers: new Set(),
 		connect(callback) {
 			this.observers.add(callback);
 		},
@@ -18,13 +16,13 @@ export function createObservable() {
 	}
 }
 export function createRegistry() {
-	return {
+	const registry = {
 		entitySet: {},
 		entityIdCounter: 0,
 		typesToEntitiesToComponents: {},
 		entitiesToTypes: {},
 		onCreate: createObservable(),
-		unsynced: new Set([ 'onCreate' ]),
+		unsynced: new Set(['onCreate']),
 		size() {
 			return Object.keys(this.entitySet).length;
 		},
@@ -46,7 +44,7 @@ export function createRegistry() {
 			const entity = this.entityIdCounter++;
 			this.entitySet[entity] = {};
 			this.entitiesToTypes[entity] = [];
-			this.onCreate.notify({entity});
+			this.onCreate.notify({ entity });
 			return entity;
 		},
 		emplace({ type, entity, component }) {
@@ -57,7 +55,7 @@ export function createRegistry() {
 			this.entitiesToTypes[entity].push(type);
 			return component;
 		},
-		destroy({entity}) {
+		destroy({ entity }) {
 			delete this.entitySet[entity];
 		},
 		has({ type, entity }) {
@@ -67,9 +65,9 @@ export function createRegistry() {
 			return this.typesToEntitiesToComponents[type][entity];
 		},
 		each({ types, callback }) {
-			if (types===undefined) {
+			if (types === undefined) {
 				for (let entity in this.entitySet) {
-					callback({entity});
+					callback({ entity });
 				}
 				return;
 			}
@@ -85,15 +83,25 @@ export function createRegistry() {
 				}
 			}
 			for (let entity in intersection) {
-				callback({entity});
+				callback({ entity });
 			}
 		},
 		map({ types, callback }) {
 			const result = [];
-			this.each({ types, callback: ({entity}) => {
-				result.push(callback({entity}));
-			}});
+			this.each({
+				types, callback: ({ entity }) => {
+					result.push(callback({ entity }));
+				}
+			});
 			return result;
 		}
 	};
+	const registeredComponents = {
+		components: []
+	};
+	for (let [name, component] of Object.entries(Components)) {
+		registeredComponents.components.push(name);
+	}
+	registry.emplace({ type: `RegisteredComponents`, entity: registry.create(), component: registeredComponents });
+	return registry;
 }
