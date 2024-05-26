@@ -1,7 +1,7 @@
 // import fs from 'fs';
 // import path from 'path';
 import * as Components from './components/index.js';
-export function createObservable() {
+export function Observable() {
 	return {
 		observers: new Set(),
 		connect(callback) {
@@ -21,7 +21,7 @@ export function createRegistry() {
 		entityIdCounter: 0,
 		typesToEntitiesToComponents: {},
 		entitiesToTypes: {},
-		onCreate: createObservable(),
+		onCreate: Observable(),
 		unsynced: new Set(['onCreate']),
 		size() {
 			return Object.keys(this.entitySet).length;
