@@ -143,10 +143,9 @@ function EnhancedTableHead(props) {
 	};
 
 	return (
-
 		<TableHead>
 			<TableRow>
-				<TableCell padding="checkbox">
+				<TableCell padding={isSelecting ? 'checkbox' : ''}>
 					{
 						isSelecting &&
 						<Checkbox
@@ -196,7 +195,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected, isSelecting, setIsSelecting } = props;
+	const { numSelected, setIsSelecting } = props;
 
 	return (
 		<Toolbar
@@ -238,7 +237,8 @@ function EnhancedTableToolbar(props) {
 			) : (
 				<Stack direction="row">
 					<Tooltip title="Select">
-						<IconButton>
+						<IconButton onClick={() => setIsSelecting(prev => !prev)}>
+
 							<RuleIcon />
 						</IconButton>
 					</Tooltip>
@@ -330,7 +330,7 @@ export default function EnhancedTable() {
 	return (
 		<Box className='row grow'>
 			<Paper className='col grow'>
-				<EnhancedTableToolbar numSelected={selected.length} />
+				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting} />
 				<TableContainer className='col grow'>
 					<Table
 						// sx={{ minWidth: 750 }}
@@ -339,6 +339,7 @@ export default function EnhancedTable() {
 						className='col grow'
 					>
 						<EnhancedTableHead
+							isSelecting={isSelecting}
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
@@ -360,19 +361,20 @@ export default function EnhancedTable() {
 										tabIndex={-1}
 										key={row.id}
 										selected={isItemSelected}
-										sx={{ cursor: 'pointer' }}
+										sx={{ cursor: 'pointer', p: 1 }}
 									>
-										<TableCell padding="checkbox">
-											{
-												isSelecting &&
+										{
+											isSelecting &&
+											<TableCell sx={{ p: 0 }}>
 												<Checkbox
 													color="primary"
 													checked={isItemSelected}
 													inputProps={{
 														'aria-labelledby': labelId,
 													}}
-												/>}
-										</TableCell>
+												/>
+											</TableCell>
+										}
 										<TableCell
 											component="th"
 											id={labelId}
@@ -381,10 +383,6 @@ export default function EnhancedTable() {
 										>
 											{row.id}
 										</TableCell>
-										<TableCell align="right">{row.calories}</TableCell>
-										<TableCell align="right">{row.fat}</TableCell>
-										<TableCell align="right">{row.carbs}</TableCell>
-										<TableCell align="right">{row.protein}</TableCell>
 									</TableRow>
 								);
 							})}
