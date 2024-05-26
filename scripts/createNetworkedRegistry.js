@@ -15,8 +15,8 @@ export function createNetworkedRegistry() {
 			} else {
 				const f = registry[name].bind(registry);
 				registry[name] = (args) => {
-					f(args);
 					wsm.sendToAll(name, args);
+					return f(args);
 				}
 			}
 			const f = registry[name].bind(registry);

@@ -1,3 +1,8 @@
+export function Components() {
+	return {
+		components: []
+	};
+}
 export function createObservable() {
 	return {
 		observers: new Set(), 
@@ -16,7 +21,8 @@ export function createRegistry() {
 	return {
 		entitySet: {},
 		entityIdCounter: 0,
-		componentPools: {},
+		typesToEntitiesToComponents: {},
+		entitiesToTypes: {},
 		onCreate: createObservable(),
 		unsynced: new Set([ 'onCreate' ]),
 		size() {
@@ -25,23 +31,26 @@ export function createRegistry() {
 		create() {
 			const entity = this.entityIdCounter++;
 			this.entitySet[entity] = {};
-			for (let type in this.onCreate) {
-				console.log(`type: ${type}`);
-			}
+			this.entitiesToTypes[entity] = [];
 			this.onCreate.notify({entity});
 			return entity;
 		},
 		emplace({ type, entity, component }) {
-			if (!this.componentPools[type]) {
-				this.componentPools[type] = {};
+			if (!this.typesToEntitiesToComponents[type]) {
+				this.typesToEntitiesToComponents[type] = {};
 			}
-			this.componentPools[type][entity] = component;
+			this.typesToEntitiesToComponents[type][entity] = component;
+			this.entitiesToTypes[entity].push(type);
+			return component;
 		},
 		destroy({entity}) {
 			delete this.entitySet[entity];
 		},
+		has({ type, entity }) {
+			return this.typesToEntitiesToComponents[type] !== undefined && this.typesToEntitiesToComponents[type][entity] !== undefined;
+		},
 		get({ type, entity }) {
-			return this.componentPools[type][entity];
+			return this.typesToEntitiesToComponents[type][entity];
 		},
 		each({ types, callback }) {
 			if (types===undefined) {

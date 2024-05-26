@@ -6,7 +6,7 @@ import DNDEntity from "./dnd/Entity";
 // export default class Registry {
 // 	protected entitySet: Set<Entity> = new Set();
 // 	protected entityIdCounter: Entity;
-// 	protected componentPools: Map<string, Map<Entity, Component>> = new Map();
+// 	protected typesToEntitiesToComponents: Map<string, Map<Entity, Component>> = new Map();
 // 	protected updateAnyObservers: Set<Observer> = new Set();
 // 	protected updateObservers: Map<Entity, Set<Observer>> = new Map();
 // 	protected destroyObserversAny: Set<Observer> = new Set();
@@ -18,7 +18,7 @@ import DNDEntity from "./dnd/Entity";
 // 		return JSON.stringify({
 // 			entitySet: Array.from(this.entitySet),
 // 			entityIdCounter: this.entityIdCounter,
-// 			componentPools: Array.from(this.componentPools.entries()).map(([typeName, pool]) => {
+// 			typesToEntitiesToComponents: Array.from(this.typesToEntitiesToComponents.entries()).map(([typeName, pool]) => {
 // 				return [typeName, Array.from(pool.entries())];
 // 			}),
 // 		});
@@ -27,7 +27,7 @@ import DNDEntity from "./dnd/Entity";
 // 		const obj = JSON.parse(data);
 // 		this.entitySet = new Set(obj.entitySet);
 // 		this.entityIdCounter = obj.entityIdCounter;
-// 		this.componentPools = new Map(obj.componentPools.map(([typeName, pool]: [string, [Entity, Component][]]) => {
+// 		this.typesToEntitiesToComponents = new Map(obj.typesToEntitiesToComponents.map(([typeName, pool]: [string, [Entity, Component][]]) => {
 // 			return [typeName, new Map(pool)];
 // 		}));
 // 	}
@@ -76,14 +76,14 @@ import DNDEntity from "./dnd/Entity";
 // 	}
 // 	get(typeName: string, id: Entity) {
 // 		// return this.#entitySet[id];
-// 		return this.componentPools.get(typeName)?.get(id);
+// 		return this.typesToEntitiesToComponents.get(typeName)?.get(id);
 // 	}
 // 	// patch(id: Entity, data: Component) {
 // 	patch(typeName: string, id: Entity, data: Component) {
 // 		// this.#set(id, data);
 // 		// const constructor = data.constructor;
 // 		// const typeName = constructor.name;
-// 		this.componentPools.get(typeName)?.set(id, data);
+// 		this.typesToEntitiesToComponents.get(typeName)?.set(id, data);
 // 		this.updateAnyObservers.forEach((observer) => {
 // 			observer(this, id);
 // 		});
@@ -95,10 +95,10 @@ import DNDEntity from "./dnd/Entity";
 // 		this.entitySet.delete(id);
 // 	}
 // 	each(typeName: string, callback: (id: Entity, data: Component) => void) {
-// 		if (!this.componentPools.has(typeName)) {
+// 		if (!this.typesToEntitiesToComponents.has(typeName)) {
 // 			return;
 // 		}
-// 		this.componentPools.get(typeName)?.forEach((data, id) => {
+// 		this.typesToEntitiesToComponents.get(typeName)?.forEach((data, id) => {
 // 			callback(id, data);
 // 		});
 // 	}
