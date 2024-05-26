@@ -5,6 +5,7 @@ import RegistryView from '@/components/RegistryView';
 import { createNetworkedRegistry } from '@/scripts/createNetworkedRegistry';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
 
 const darkTheme = createTheme({
 	palette: {
@@ -14,12 +15,12 @@ const darkTheme = createTheme({
 
 export default function GamePage() {
 	const [consoleMessages, setConsoleMessages] = useState(["ERROR: No connection to server"]);
-	const webSocketMessager = useRef<WebSocketMessager>();
+	const webSocketMessager = useRef();
 	const [registry, setRegistry] = useState(createNetworkedRegistry());
 	useEffect(function () {
 		webSocketMessager.current = new WebSocketMessager(function () {
-			registry.connect({ wsm: webSocketMessager.current!, isClient: true });
-			webSocketMessager.current?.addHandler('consoleMessages', ({ ws, args }) => {
+			registry.connect({ wsm: webSocketMessager.current, isClient: true });
+			webSocketMessager.current.addHandler('consoleMessages', ({ ws, args }) => {
 				setConsoleMessages(args);
 			});
 			webSocketMessager.current?.addHandler('newMessage', (message) => {
@@ -33,9 +34,9 @@ export default function GamePage() {
 	}, []);
 	return <ThemeProvider theme={darkTheme}>
 		<CssBaseline />
-		<div className='row grow' >
+		<Box className='row grow' >
 			<RegistryView registry={registry} />
-			<div className='col grow' >
+			<Box className='col grow' >
 				<div className='row title'>
 					Console
 				</div>
@@ -45,7 +46,7 @@ export default function GamePage() {
 				<div className='row'>
 					<input className='grow' type="text" />
 				</div>
-			</div>
-		</div>
+			</Box>
+		</Box>
 	</ThemeProvider>
 }

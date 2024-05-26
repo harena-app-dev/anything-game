@@ -13,49 +13,9 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import { Stack } from "@mui/material";
 
 export default function ({ entity, registry }) {
-	// const [entityState, setEntityState] = useState(registry.get(entity));
-	// useEffect(function () {
-	// 	const updateObserver = (registry: Registry, id: number) => {
-	// 		setEntityState(registry.get(entity));
-	// 	};
-	// 	registry.addOnUpdate(entity, updateObserver);
-	// 	return () => {
-	// 		registry.removeOnUpdate(entity, updateObserver);
-	// 	};
-	// }, []);
-	// function createExpandableNode() {
-	// 	const str = JSON.stringify(entityState, null, 2);
-	// 	if (entityState.skillAttributes === undefined) {
-	// 		return <div className="row">
-	// 			<div className="col grow text-wrap">
-	// 				{str}
-	// 			</div>
-	// 			<div className="col title button grow" onClick={() => {
-	// 			}}>
-	// 				create attributes
-	// 			</div>
-	// 		</div >
-	// 	}
-	// 	return <div className="col">
-	// 		<pre className="row">
-	// 			{str}
-	// 		</pre>
-	// 		<SkillAttributes entity={entity} registry={registry} />
-	// 	</div>
-	// };
-	// return <Expandable expandableNode={createExpandableNode}>
-	// return <Expandable expandableNode={() => {
-	// 	return <div className="col">
-	// 		<Menu>
-	// 			<MenuItem >Skills</MenuItem>
-	// 			<MenuItem >Integrity</MenuItem>
-	// 		</Menu>
-	// 	</div>
-	// }}>
-	// 	{entity}
-	// </Expandable>
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
@@ -75,23 +35,25 @@ export default function ({ entity, registry }) {
 				Entity {entity}
 			</AccordionSummary>
 			<AccordionDetails>
-				<Button
-					id="basic-button"
-					aria-controls={open ? 'basic-menu' : undefined}
-					aria-haspopup="true"
-					aria-expanded={open ? 'true' : undefined}
-					onClick={handleClick}
-				>
-					Add Component
-				</Button>
-				{
-					types.length === 0 ? <Alert severity="info">
-						This entity has no components.
-					</Alert> :
-					types.map(type => {
-						return <ComponentView key={type} entity={entity} type={type} registry={registry} />
-					})
-				}
+				<Stack spacing={2}>
+					<Button
+						id="basic-button"
+						aria-controls={open ? 'basic-menu' : undefined}
+						aria-haspopup="true"
+						aria-expanded={open ? 'true' : undefined}
+						onClick={handleClick}
+					>
+						Add Component
+					</Button>
+					{
+						types.length === 0 ? <Alert severity="info">
+							This entity has no components.
+						</Alert> :
+							types.map(type => {
+								return <ComponentView key={type} entity={entity} type={type} registry={registry} />
+							})
+					}
+				</Stack>
 				<Menu
 					id="basic-menu"
 					anchorEl={anchorEl}

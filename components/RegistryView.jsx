@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { Stack } from "@mui/material";
 
 export default function RegistryView({ registry }) {
 	const [entityElements, setEntityElements] = useState([]);
@@ -24,29 +25,24 @@ export default function RegistryView({ registry }) {
 	const [width, setWidth] = useState(256);
 	return <Box className='row resizable' style={{
 		width: width + 'px',
-	}}>
-		<div className='col grow' >
-				<Typography variant="overline" display="block" gutterBottom>
-					entitites
-				</Typography>
-				<div className='col grow scroll-y'>
-					{/* <div className='row button' onClick={() => {
-					registry.cmdCreate();
-				}}>
+	}} sx={{ p: 2 }}>
+		<Stack className='col grow' spacing={2}>
+			<Typography variant="overline" display="block" gutterBottom>
+				entitites
+			</Typography>
+			<Stack className='col grow scroll-y'>
+				<Button variant="contained"
+					onClick={() => {
+						registry.cmdCreate();
+					}}>
 					+
-				</div> */}
-					<Button variant="contained"
-						onClick={() => {
-							registry.cmdCreate();
-						}}>
-						+
-					</Button>
-					{
-						entityElements
-					}
-				</div>
-		</div>
-		<div className='col vertical-resizer'
+				</Button>
+				{
+					entityElements
+				}
+			</Stack>
+		</Stack>
+		{/* <div className='col vertical-resizer'
 			onMouseDown={(e) => {
 				console.log(`onMouseDown`);
 				const startX = e.clientX;
@@ -65,6 +61,6 @@ export default function RegistryView({ registry }) {
 				document.addEventListener('mousemove', onMouseMove);
 				document.addEventListener('mouseup', onMouseUp);
 			}}>
-		</div>
+		</div> */}
 	</Box>
 }
