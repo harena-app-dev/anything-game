@@ -8,13 +8,18 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Stack } from "@mui/material";
 
-export default function RegistryView({ registry }) {
+export default function RegistryView({ registry, setViewedEntity }) {
 	const [entityElements, setEntityElements] = useState([]);
 	useEffect(function () {
 		console.log(`useEffect`);
 		const observer = ({ entity }) => {
 			setEntityElements((entityElements) => {
-				return [...entityElements, <EntityView key={entity} registry={registry} entity={entity} />];
+				// return [...entityElements, <EntityView key={entity} registry={registry} entity={entity} />];
+				return [...entityElements, <Button key={entity} onClick={() => {
+					setViewedEntity(entity);
+				}}>
+					{entity}
+				</Button>];
 			});
 		};
 		registry.onCreate.connect(observer);
