@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import Entity from '@/scripts/dnd/Entity';
 import EntityView from '@/components/EntityView';
 import Console from '@/components/Console';
+import Scene from './Scene';
 export default function App() {
 	const webSocketMessager = useRef();
 	const [registry, setRegistry] = useState(NetworkedRegistry());
@@ -29,5 +30,6 @@ export default function App() {
 			<EntityView registry={registry} entity={viewedEntity} />
 			<Console registry={registry} />
 		</Box>
+		<Scene registry={registry} />
 	</Box>
 }
