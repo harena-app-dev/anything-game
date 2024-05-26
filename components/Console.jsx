@@ -14,7 +14,7 @@ export default function Console({ registry }) {
 		setAnchorEl(null);
 	};
 	return (
-		<Accordion defaultExpanded>
+		<Accordion defaultExpanded className="col grow">
 			<AccordionSummary
 				expandIcon={<ExpandMoreIcon />}
 				aria-controls="panel1-content"
@@ -22,14 +22,14 @@ export default function Console({ registry }) {
 			>
 				Console
 			</AccordionSummary>
-			<AccordionDetails>
+			<AccordionDetails className="col grow">
 				<Stack spacing={2}>
 				</Stack>
 				<TextField
-					id="outlined-textarea"
 					label="Enter a command"
 					placeholder="Command"
 					multiline
+					sx={{ mt: 'auto' }}
 				/>
 			</AccordionDetails>
 		</Accordion>
