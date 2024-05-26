@@ -257,7 +257,7 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ setViewedEntity }) {
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
 	const [selected, setSelected] = React.useState([]);
@@ -280,8 +280,9 @@ export default function EnhancedTable() {
 		setSelected([]);
 	};
 
-	const handleClick = (event, id) => {
+	const handleClick = ({event, id, setViewedEntity}) => {
 		if (!isSelecting) {
+			setViewedEntity(id);
 			return;
 		}
 		const selectedIndex = selected.indexOf(id);
@@ -355,7 +356,7 @@ export default function EnhancedTable() {
 								return (
 									<TableRow
 										hover
-										onClick={(event) => handleClick(event, row.id)}
+										onClick={(event) => handleClick({event, id: row.id, setViewedEntity})}
 										role="checkbox"
 										aria-checked={isItemSelected}
 										tabIndex={-1}
