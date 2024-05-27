@@ -25,10 +25,11 @@ export function Registry() {
 		entitySet: [],
 		destroyedSet: [],
 		typesToEntitiesToComponents: {},
+		typesToConstructors: {},
 		entitiesToTypes: {},
 		onCreate: Observable(),
 		onDestroy: Observable(),
-		unsynced: new Set(['onCreate', 'onDestroy']),
+		unsynced: new Set(['onCreate', 'onDestroy', 'typesToConstructors']),
 		size() {
 			// return Object.keys(this.entitySet).length;
 			return this.entitySet.length;
@@ -83,6 +84,9 @@ export function Registry() {
 		get({ type, entity }) {
 			return this.typesToEntitiesToComponents[type][entity];
 		},
+		valid({ entity }) {
+			return this.entitySet.includes(entity);
+		},
 		each({ types, callback }) {
 			if (types === undefined) {
 				for (let entity of this.entitySet) {
@@ -114,13 +118,14 @@ export function Registry() {
 			return result;
 		}
 	};
-	const registeredComponents = {
-		components: []
-	};
+	// const registeredComponents = {
+		// components: []
+	// };
 	for (let [name, component] of Object.entries(Components)) {
-		console.log(`Registering component ${name}`);
-		registeredComponents.components.push(name);
+		// console.log(`Registering component ${name}`);
+		// registeredComponents.components.push(name);
+		registry.typesToConstructors[name] = component;
 	}
-	registry.emplace({ type: `RegisteredComponents`, entity: registry.create(), component: registeredComponents });
+	// registry.emplace({ type: `RegisteredComponents`, entity: registry.create(), component: registeredComponents });
 	return registry;
 }

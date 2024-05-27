@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
@@ -30,6 +30,48 @@ export default function ({ entity, registry }) {
 		setAnchorEl(null);
 	};
 	const types = registry.getTypes({ entity });
+	const details = (!registry.valid({ entity })) ? <AccordionDetails>
+		<Alert severity="error">
+			Entity {entity} does not exist.
+		</Alert>
+	</AccordionDetails> : <AccordionDetails>
+			<Stack spacing={2}>
+				<Button
+					id="basic-button"
+					aria-controls={open ? 'basic-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					onClick={onAddComponentClick}
+				>
+					Add Component
+				</Button>
+				{
+					types.length === 0 ? <Alert severity="info">
+						This entity has no components.
+					</Alert> :
+						types.map(type => {
+							return <ComponentView key={type} entity={entity} type={type} registry={registry} />
+						})
+				}
+			</Stack>
+			<Menu
+				id="basic-menu"
+				anchorEl={anchorEl}
+				open={open}
+				onClose={handleClose}
+				MenuListProps={{
+					'aria-labelledby': 'basic-button',
+				}}
+			>
+				{/* {registry.getSingleton({ type: 'RegisteredComponents' }).components.map(component => { */}
+				{
+					Object.keys(registry.typesToConstructors).map(component => {
+						// return <MenuItem key={component} onClick={handleClose}>{component}</MenuItem>
+						return <AddComponent key={component} entity={entity} type={component} registry={registry} />
+					})
+				}
+			</Menu>
+		</AccordionDetails>
 	return (
 		<Accordion defaultExpanded>
 			<AccordionSummary
@@ -39,41 +81,7 @@ export default function ({ entity, registry }) {
 			>
 				Entity {entity}
 			</AccordionSummary>
-			<AccordionDetails>
-				<Stack spacing={2}>
-					<Button
-						id="basic-button"
-						aria-controls={open ? 'basic-menu' : undefined}
-						aria-haspopup="true"
-						aria-expanded={open ? 'true' : undefined}
-						onClick={onAddComponentClick}
-					>
-						Add Component
-					</Button>
-					{
-						types.length === 0 ? <Alert severity="info">
-							This entity has no components.
-						</Alert> :
-							types.map(type => {
-								return <ComponentView key={type} entity={entity} type={type} registry={registry} />
-							})
-					}
-				</Stack>
-				<Menu
-					id="basic-menu"
-					anchorEl={anchorEl}
-					open={open}
-					onClose={handleClose}
-					MenuListProps={{
-						'aria-labelledby': 'basic-button',
-					}}
-				>
-					{registry.getSingleton({ type: 'RegisteredComponents' }).components.map(component => {
-						// return <MenuItem key={component} onClick={handleClose}>{component}</MenuItem>
-						return <AddComponent key={component} entity={entity} type={component} registry={registry} />
-					})}
-				</Menu>
-			</AccordionDetails>
+			{details}
 		</Accordion>
 	);
 }

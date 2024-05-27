@@ -1,5 +1,3 @@
-export function Sprite({ path }) {
-	return {
-		path: "rogue.png"
-	}
+export function Sprite({ path = "rogue.png" } = {}) {
+	return arguments[0];
 }
