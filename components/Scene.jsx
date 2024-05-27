@@ -1,12 +1,10 @@
 import { Accordion, AccordionDetails, AccordionSummary } from './Accordion';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TextField from '@mui/material/TextField';
-import { Stack } from "@mui/material";
-import { createRoot } from 'react-dom/client'
 import React, { useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
+import Box from '@mui/material/Box';
 
-function Box(props) {
+function ThreeBox(props) {
 	// This reference gives us direct access to the THREE.Mesh object
 	const ref = useRef()
 	// Hold state for hovered and clicked events
@@ -37,29 +35,20 @@ export default function Scene({ registry }) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	if (!navigator.gpu) {
-		throw new Error("WebGPU not supported on this browser.");
-	} else {
-		console.log("WebGPU supported!");
-	}
+	// if (!navigator.gpu) {
+	// 	throw new Error("WebGPU not supported on this browser.");
+	// } else {
+	// 	console.log("WebGPU supported!");
+	// }
 	return (
-		<Accordion defaultExpanded className="col grow">
-			<AccordionSummary
-				expandIcon={<ExpandMoreIcon />}
-				aria-controls="panel1-content"
-				id="panel1-header"
-			>
-				Scene
-			</AccordionSummary>
-			<AccordionDetails className="col grow">
-				<Canvas className="">
-					<ambientLight intensity={Math.PI / 2} />
-					<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-					<pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-					<Box position={[-1.2, 0, 0]} />
-					<Box position={[1.2, 0, 0]} />
-				</Canvas>
-			</AccordionDetails>
-		</Accordion>
+		<Box className="col grow">
+			<Canvas className="">
+				<ambientLight intensity={Math.PI / 2} />
+				<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+				<pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+				<ThreeBox position={[-1.2, 0, 0]} />
+				<ThreeBox position={[1.2, 0, 0]} />
+			</Canvas>
+		</Box>
 	);
 }
