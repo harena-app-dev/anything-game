@@ -1,6 +1,6 @@
 // import fs from 'fs';
 // import path from 'path';
-import * as Components from './components/index.js';
+import * as Components from './components/index.auto.js';
 export function Observable() {
 	return {
 		observers: new Set(),
@@ -118,6 +118,7 @@ export function Registry() {
 		components: []
 	};
 	for (let [name, component] of Object.entries(Components)) {
+		console.log(`Registering component ${name}`);
 		registeredComponents.components.push(name);
 	}
 	registry.emplace({ type: `RegisteredComponents`, entity: registry.create(), component: registeredComponents });
