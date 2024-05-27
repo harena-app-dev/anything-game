@@ -118,14 +118,8 @@ export function Registry() {
 			return result;
 		}
 	};
-	// const registeredComponents = {
-		// components: []
-	// };
 	for (let [name, component] of Object.entries(Components)) {
-		// console.log(`Registering component ${name}`);
-		// registeredComponents.components.push(name);
 		registry.typesToConstructors[name] = component;
 	}
-	// registry.emplace({ type: `RegisteredComponents`, entity: registry.create(), component: registeredComponents });
 	return registry;
 }
