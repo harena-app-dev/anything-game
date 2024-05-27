@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import { MenuItem } from '@mui/material';
+import { MenuItem, Stack, TextField } from '@mui/material';
 
 const style = {
 	position: 'absolute',
@@ -39,9 +39,18 @@ export default function ({ registry, entity, type }) {
 				aria-describedby="child-modal-description"
 			>
 				<Box sx={{ ...style }}>
-					<h2 id="child-modal-title">{`Add component "${type}" to entity ${entity}`}</h2>
-		
-					<Button onClick={handleClose}>Close</Button>
+					<Stack spacing={2}>
+						<h2 id="child-modal-title">{`Add component "${type}" to entity ${entity}`}</h2>
+						<TextField
+							label="JSON"
+							multiline
+							defaultValue={JSON.stringify(registry.typesToConstructors[type](), null, 2)}
+						/>
+						<Stack spacing={2} direction="row">
+							<Button onClick={handleClose}>Cancel</Button>
+							<Button onClick={handleClose}>Emplace</Button>
+						</Stack>
+					</Stack>
 				</Box>
 			</Modal>
 		</MenuItem>
