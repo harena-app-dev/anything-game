@@ -93,9 +93,9 @@ function EnhancedTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell padding={'checkbox'}>
-					{
-						isSelecting &&
+				{
+					isSelecting &&
+					<TableCell padding={'checkbox'}>
 						<Checkbox
 							color="primary"
 							indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -105,13 +105,12 @@ function EnhancedTableHead(props) {
 								'aria-label': 'select all desserts',
 							}}
 						/>
-					}
-				</TableCell>
+					</TableCell>
+				}
 				{headCells.map((headCell) => (
 					<TableCell
 						key={headCell.id}
 						align={headCell.numeric ? 'right' : 'left'}
-						padding={headCell.disablePadding ? 'none' : 'normal'}
 						sortDirection={orderBy === headCell.id ? order : false}
 					>
 						<TableSortLabel
@@ -145,15 +144,12 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
 	const { numSelected, setIsSelecting, registry, selected } = props;
 	const actions = [
-		// { icon: <ShareIcon />, name: 'Share' },
 		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
 		{ icon: <AddIcon />, name: 'Create', onClick: () => registry.cmdCreate() },
 	];
 	return (
 		<Toolbar
 			sx={{
-				pl: { sm: 2 },
-				pr: { xs: 1, sm: 1 },
 				...(numSelected > 0 && {
 					bgcolor: (theme) =>
 						alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
@@ -319,18 +315,15 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 									<TableRow
 										hover
 										onClick={(event) => handleClick({ event, id: row.id, setViewedEntity })}
-										role="checkbox"
-										aria-checked={isItemSelected}
 										tabIndex={-1}
 										key={row.id}
 										selected={isItemSelected}
-										sx={{ cursor: 'pointer', p: 1 }}
+										sx={{ cursor: 'pointer' }}
 									>
 										{
 											isSelecting &&
 											<TableCell sx={{ p: 0 }} padding={'checkbox'}>
 												<Checkbox
-													color="primary"
 													checked={isItemSelected}
 													inputProps={{
 														'aria-labelledby': labelId,
@@ -338,12 +331,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 												/>
 											</TableCell>
 										}
-										<TableCell
-											component="th"
-											id={labelId}
-											scope="row"
-											padding="none"
-										>
+										<TableCell>
 											{row.id}
 										</TableCell>
 									</TableRow>
