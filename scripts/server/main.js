@@ -2,7 +2,7 @@
 import WebSocketMessager from "./WebSocketMessager";
 import { NetworkedRegistry } from "../NetworkedRegistry";
 
-export const wsm = new WebSocketMessager();
+export const wsm = WebSocketMessager();
 export const registry = NetworkedRegistry();
 registry.onCreate.connect(({ entity }) => {
 	wsm.sendToAll('newMessage', `Entity ${entity} created`);
