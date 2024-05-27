@@ -25,7 +25,7 @@ export default function Scene({ registry }) {
 		sceneElement.appendChild(renderer.domElement);
 
 		const geometry = new THREE.BoxGeometry(1, 1, 1);
-		const map = new THREE.TextureLoader().load('images/rogue.png');
+		const map = new THREE.TextureLoader().load('sprites/rogue.png');
 		map.magFilter = THREE.NearestFilter;
 		map.minFilter = THREE.NearestFilter;
 		const material = new THREE.MeshBasicMaterial({ transparent: true, map: map });

@@ -1,5 +1,5 @@
 export function Sprite({ path }) {
 	return {
-		path
+		path: "rogue.png"
 	}
 }
