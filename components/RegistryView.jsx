@@ -228,7 +228,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 		registry.onCreate.connect(onCreate);
 		const onDestroy = ({ entity }) => {
 			setRows((rows) => {
-				console.log(`setRows destroy ${entity}`); 
+				console.log(`setRows destroy ${entity}`);
 				return rows.filter((row) => row.id !== entity);
 			});
 			setSelected((selected) => {

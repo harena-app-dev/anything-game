@@ -1,8 +1,9 @@
 import { Accordion, AccordionDetails, AccordionSummary } from './Accordion';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import Box from '@mui/material/Box';
+import { TextureLoader } from 'three';
 
 function ThreeBox(props) {
 	// This reference gives us direct access to the THREE.Mesh object
@@ -27,27 +28,22 @@ function ThreeBox(props) {
 	)
 }
 export default function Scene({ registry }) {
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
 	// if (!navigator.gpu) {
 	// 	throw new Error("WebGPU not supported on this browser.");
 	// } else {
 	// 	console.log("WebGPU supported!");
 	// }
+	const colorMap = useLoader(TextureLoader, 'images/hgiU2hA.png')
 	return (
 		<Box className="col grow">
 			<Canvas className="">
 				<ambientLight intensity={Math.PI / 2} />
 				<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
 				<pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-				<ThreeBox position={[-1.2, 0, 0]} />
-				<ThreeBox position={[1.2, 0, 0]} />
+				<mesh>
+					<boxGeometry args={[1, 1, 1]} />
+					<meshStandardMaterial map={colorMap} transparent />
+				</mesh>
 			</Canvas>
 		</Box>
 	);
