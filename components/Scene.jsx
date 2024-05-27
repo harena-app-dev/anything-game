@@ -27,23 +27,34 @@ function ThreeBox(props) {
 		</mesh>
 	)
 }
+function Rogue(props) {
+	const ref = useRef()
+	const colorMap = useLoader(TextureLoader, 'images/hgiU2hA.png')
+
+	useFrame((state, delta) => (ref.current.rotation.z += delta))
+	return (
+		<mesh
+			{...props}
+			ref={ref}
+		>
+			<boxGeometry args={[1, 1, 1]} />
+			<meshStandardMaterial map={colorMap} transparent />
+		</mesh>
+	)
+}
 export default function Scene({ registry }) {
 	// if (!navigator.gpu) {
 	// 	throw new Error("WebGPU not supported on this browser.");
 	// } else {
 	// 	console.log("WebGPU supported!");
 	// }
-	const colorMap = useLoader(TextureLoader, 'images/hgiU2hA.png')
 	return (
 		<Box className="col grow">
 			<Canvas className="">
 				<ambientLight intensity={Math.PI / 2} />
 				<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
 				<pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-				<mesh>
-					<boxGeometry args={[1, 1, 1]} />
-					<meshStandardMaterial map={colorMap} transparent />
-				</mesh>
+				<Rogue position={[0, 0, 0]} />
 			</Canvas>
 		</Box>
 	);

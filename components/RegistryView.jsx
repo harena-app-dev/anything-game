@@ -93,7 +93,7 @@ function EnhancedTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell padding={isSelecting ? 'checkbox' : ''}>
+				<TableCell padding={'checkbox'}>
 					{
 						isSelecting &&
 						<Checkbox
@@ -328,7 +328,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 									>
 										{
 											isSelecting &&
-											<TableCell sx={{ p: 0 }}>
+											<TableCell sx={{ p: 0 }} padding={'checkbox'}>
 												<Checkbox
 													color="primary"
 													checked={isItemSelected}
