@@ -1,10 +1,11 @@
 import { Accordion, AccordionDetails, AccordionSummary } from './Accordion';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import Box from '@mui/material/Box';
 import { TextureLoader } from 'three';
 import * as THREE from 'three';
+import KeyboardState from '@/scripts/client/KeyboardState';
 
 function ThreeBox(props) {
 	// This reference gives us direct access to the THREE.Mesh object
@@ -29,28 +30,40 @@ function ThreeBox(props) {
 	)
 }
 function Sprite(props) {
-	const { spritePath, scale } = props
 	const ref = useRef()
+	const { spritePath, scale } = props
 	const colorMap = useLoader(TextureLoader, `images/${spritePath}`)
 	colorMap.magFilter = THREE.NearestFilter;
-	colorMap.minFilter = THREE.NearestFilter; 
-	// useFrame((state, delta) => (ref.current.rotation.z += delta))
+	colorMap.minFilter = THREE.NearestFilter;
 	return (
 		<mesh
 			{...props}
 			ref={ref}
 		>
-			<boxGeometry args={scale === undefined ? [1,1,1] : scale} />
+			<boxGeometry args={scale === undefined ? [1, 1, 1] : scale} />
 			<meshStandardMaterial map={colorMap} transparent />
 		</mesh>
 	)
 }
-function Rogue(props) {
-	// const ref = useRef()
+const keyState = new KeyboardState()
 
-	// useFrame((state, delta) => (ref.current.rotation.z += delta))
+function Rogue(props) {
+	const ref = useRef()
+	useFrame((state, delta) => {
+		if (keyState.isKeyDown("q")) {
+			ref.current.position.z += 0.01;
+		} 
+		if (keyState.isKeyDown("e")) {
+			ref.current.position.z -= 0.01;
+		}
+	})
 	return (
-		<Sprite {...props} spritePath={"rogue.png"} />
+		<mesh
+			{...props}
+			ref={ref}
+		>
+			<Sprite {...props} spritePath={"rogue.png"}/>
+		</mesh>
 	)
 }
 export default function Scene({ registry }) {
@@ -65,6 +78,8 @@ export default function Scene({ registry }) {
 			terrainSprites.push(<Sprite key={`terrain-${x}-${y}`} position={[x, y, 0]} spritePath={"grass.png"} scale={[1, 1, 1]} />)
 		}
 	}
+
+
 	return (
 		<Box className="col grow">
 			<Canvas className="">
