@@ -36,9 +36,7 @@ export default function ({ registry, entity, type }) {
 			>
 				<Box sx={{ ...style }}>
 					<h2 id="child-modal-title">{`Add component "${type}" to entity ${entity}`}</h2>
-					<p id="child-modal-description">
-						Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-					</p>
+		
 					<Button onClick={handleClose}>Close Child Modal</Button>
 				</Box>
 			</Modal>

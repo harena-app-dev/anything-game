@@ -27,7 +27,7 @@ export default function ({ entity, registry }) {
 		setAnchorEl(event.currentTarget);
 	};
 	const handleClose = () => {
-		// setAnchorEl(null);
+		setAnchorEl(null);
 	};
 	const types = registry.getTypes({ entity });
 	return (
