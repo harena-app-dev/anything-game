@@ -1,7 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
 
 // export type Handler = (ws, data) => void;
-export default function WebSocketMessager() {
+export default function WebSocketMessager({port}) {
 	const wsm = {
 		addHandler(name, handler) {
 			if (!this.messageNamesToHandlers.has(name)) {
@@ -21,7 +21,7 @@ export default function WebSocketMessager() {
 			});
 		},
 		messageNamesToHandlers: new Map(),
-		wss: new WebSocketServer({ port: 3001 }),
+		wss: new WebSocketServer({ port}),
 	};
 	wsm.wss.on('connection', (ws) => {
 		console.log(`${ws.protocol} connected`);
