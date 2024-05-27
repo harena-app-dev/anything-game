@@ -70,9 +70,7 @@ export default function ({ entity, registry }) {
 				>
 					{registry.getSingleton({ type: 'RegisteredComponents' }).components.map(component => {
 						// return <MenuItem key={component} onClick={handleClose}>{component}</MenuItem>
-						return <MenuItem key={component}>
-							<AddComponent entity={entity} type={component} registry={registry} />
-						</MenuItem>
+						return <AddComponent key={component} entity={entity} type={component} registry={registry} />
 					})}
 				</Menu>
 			</AccordionDetails>

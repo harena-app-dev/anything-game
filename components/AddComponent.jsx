@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import { MenuItem } from '@mui/material';
 
 const style = {
 	position: 'absolute',
@@ -21,13 +22,16 @@ export default function ({ registry, entity, type }) {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => {
 		setOpen(true);
+		console.log(`open: ${open}`);
 	};
-	const handleClose = () => {
+	const handleClose = (e) => {
 		setOpen(false);
+		e.stopPropagation();
+		console.log(`open: ${open}`);
 	};
 	return (
-		<React.Fragment>
-			<Button onClick={handleOpen}>{type}</Button>
+		<MenuItem onClick={handleOpen}>
+			{type}
 			<Modal
 				open={open}
 				onClose={handleClose}
@@ -37,9 +41,9 @@ export default function ({ registry, entity, type }) {
 				<Box sx={{ ...style }}>
 					<h2 id="child-modal-title">{`Add component "${type}" to entity ${entity}`}</h2>
 		
-					<Button onClick={handleClose}>Close Child Modal</Button>
+					<Button onClick={handleClose}>Close</Button>
 				</Box>
 			</Modal>
-		</React.Fragment>
+		</MenuItem>
 	);
 }
