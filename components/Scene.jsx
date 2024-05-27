@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import Box from '@mui/material/Box';
 import { TextureLoader } from 'three';
+import * as THREE from 'three';
 
 function ThreeBox(props) {
 	// This reference gives us direct access to the THREE.Mesh object
@@ -27,19 +28,29 @@ function ThreeBox(props) {
 		</mesh>
 	)
 }
-function Rogue(props) {
+function Sprite(props) {
+	const { spritePath, scale } = props
 	const ref = useRef()
-	const colorMap = useLoader(TextureLoader, 'images/hgiU2hA.png')
-
-	useFrame((state, delta) => (ref.current.rotation.z += delta))
+	const colorMap = useLoader(TextureLoader, `images/${spritePath}`)
+	colorMap.magFilter = THREE.NearestFilter;
+	colorMap.minFilter = THREE.NearestFilter; 
+	// useFrame((state, delta) => (ref.current.rotation.z += delta))
 	return (
 		<mesh
 			{...props}
 			ref={ref}
 		>
-			<boxGeometry args={[1, 1, 1]} />
+			<boxGeometry args={scale === undefined ? [1,1,1] : scale} />
 			<meshStandardMaterial map={colorMap} transparent />
 		</mesh>
+	)
+}
+function Rogue(props) {
+	// const ref = useRef()
+
+	// useFrame((state, delta) => (ref.current.rotation.z += delta))
+	return (
+		<Sprite {...props} spritePath={"rogue.png"} />
 	)
 }
 export default function Scene({ registry }) {
@@ -48,13 +59,20 @@ export default function Scene({ registry }) {
 	// } else {
 	// 	console.log("WebGPU supported!");
 	// }
+	const terrainSprites = [];
+	for (let x = -10; x < 10; x++) {
+		for (let y = -10; y < 10; y++) {
+			terrainSprites.push(<Sprite key={`terrain-${x}-${y}`} position={[x, y, 0]} spritePath={"grass.png"} scale={[1, 1, 1]} />)
+		}
+	}
 	return (
 		<Box className="col grow">
 			<Canvas className="">
 				<ambientLight intensity={Math.PI / 2} />
-				<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-				<pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-				<Rogue position={[0, 0, 0]} />
+				{/* <spotLight position={[0, 0, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
+				<pointLight position={[0, 0, 1]} decay={0} intensity={1} />
+				<Rogue position={[0, 0, 0.01]} />
+				{terrainSprites}
 			</Canvas>
 		</Box>
 	);
