@@ -1,7 +1,7 @@
 import { Registry } from './Registry.js';
 export function NetworkedRegistry() {
 	const registry = Registry();
-	registry.connect = ({ wsm, isClient }) => {
+	registry.connect = ({ wsm, isClient, em }) => {
 		for (let [name, value] of Object.entries(registry)) {
 			if (!(value instanceof Function)) {
 				continue;
@@ -11,6 +11,16 @@ export function NetworkedRegistry() {
 				console.log(`cmdName: ${cmdName}`);
 				registry[cmdName] = (args) => {
 					wsm.send(name, args);
+				};
+				const fetchName = `fetch${name[0].toUpperCase()}${name.slice(1)}`;
+				registry[fetchName] = (args) => {
+					return fetch(`http://localhost:3002/${name}`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(args),
+					});
 				};
 			} else {
 				const f = registry[name].bind(registry);

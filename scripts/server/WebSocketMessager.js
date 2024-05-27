@@ -1,6 +1,4 @@
-import WebSocket, { WebSocketServer } from 'ws';
-
-// export type Handler = (ws, data) => void;
+import { WebSocketServer } from 'ws';
 export default function WebSocketMessager({port}) {
 	const wsm = {
 		addHandler(name, handler) {
