@@ -18,15 +18,16 @@ import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 import { Accordion, AccordionSummary, AccordionDetails } from './Accordion';
+import AddComponent from "./AddComponent";
 
 export default function ({ entity, registry }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
-	const handleClick = (event) => {
+	const onAddComponentClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 	const handleClose = () => {
-		setAnchorEl(null);
+		// setAnchorEl(null);
 	};
 	const types = registry.getTypes({ entity });
 	return (
@@ -45,7 +46,7 @@ export default function ({ entity, registry }) {
 						aria-controls={open ? 'basic-menu' : undefined}
 						aria-haspopup="true"
 						aria-expanded={open ? 'true' : undefined}
-						onClick={handleClick}
+						onClick={onAddComponentClick}
 					>
 						Add Component
 					</Button>
@@ -68,8 +69,10 @@ export default function ({ entity, registry }) {
 					}}
 				>
 					{registry.getSingleton({ type: 'RegisteredComponents' }).components.map(component => {
-						return <MenuItem key={component}
-							onClick={handleClose}>{component}</MenuItem>
+						// return <MenuItem key={component} onClick={handleClose}>{component}</MenuItem>
+						return <MenuItem key={component}>
+							<AddComponent entity={entity} type={component} registry={registry} />
+						</MenuItem>
 					})}
 				</Menu>
 			</AccordionDetails>
