@@ -27,7 +27,7 @@ export default function Console({ registry }) {
 				</Stack>
 				<TextField
 					label="Enter a command"
-					placeholder="Command"
+					placeholder="help"
 					multiline
 				/>
 			</AccordionDetails>
