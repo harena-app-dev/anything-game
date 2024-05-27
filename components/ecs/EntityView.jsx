@@ -1,4 +1,4 @@
-import Expandable from "./Expandable";
+import Expandable from "../Expandable";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
@@ -17,7 +17,7 @@ import { Skeleton, Stack } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
-import { Accordion, AccordionSummary, AccordionDetails } from './Accordion';
+import { Accordion, AccordionSummary, AccordionDetails } from '../Accordion';
 import AddComponent from "./AddComponent";
 
 export default function ({ entity, registry }) {

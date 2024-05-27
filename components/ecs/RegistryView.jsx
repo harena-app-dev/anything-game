@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import EntityView from "@/components/EntityView";
+import EntityView from "@/components/ecs/EntityView";
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -38,7 +38,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import BasicMenu from "./BasicMenu";
+import BasicMenu from "../BasicMenu";
 import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
 
 function createData(id) {

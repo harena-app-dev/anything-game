@@ -2,7 +2,7 @@
 
 import { Inter, Architects_Daughter } from 'next/font/google'
 
-import Header from '@/components/ui/header'
+import Header from '@/components/old/header'
 import Banner from '@/components/old/banner'
 import '@/components/common.css';
 

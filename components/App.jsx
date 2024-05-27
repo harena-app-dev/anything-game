@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-import RegistryView from '@/components/RegistryView';
+import RegistryView from '@/components/ecs/RegistryView';
 import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Entity from '@/scripts/dnd/Entity';
-import EntityView from '@/components/EntityView';
+import EntityView from '@/components/ecs/EntityView';
 import Console from '@/components/Console';
 import Scene from './Scene';
 export default function App() {
