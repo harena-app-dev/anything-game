@@ -95,7 +95,7 @@ function EnhancedTableHead(props) {
 			<TableRow>
 				{
 					isSelecting &&
-					<TableCell padding={'checkbox'}>
+					<TableCell sx={{  }} padding={'checkbox'}>
 						<Checkbox
 							color="primary"
 							indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -108,7 +108,7 @@ function EnhancedTableHead(props) {
 					</TableCell>
 				}
 				{headCells.map((headCell) => (
-					<TableCell
+					<TableCell sx={{ height: 64 }}
 						key={headCell.id}
 						align={headCell.numeric ? 'right' : 'left'}
 						sortDirection={orderBy === headCell.id ? order : false}
@@ -322,7 +322,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 									>
 										{
 											isSelecting &&
-											<TableCell sx={{ p: 0 }} padding={'checkbox'}>
+											<TableCell sx={{  }} padding={'checkbox'}>
 												<Checkbox
 													checked={isItemSelected}
 													inputProps={{
@@ -331,7 +331,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 												/>
 											</TableCell>
 										}
-										<TableCell>
+										<TableCell sx={{ height: 64 }}>
 											{row.id}
 										</TableCell>
 									</TableRow>
