@@ -13,6 +13,7 @@ export function fetchCmd({ name, args }) {
 }
 export function NetworkedRegistry() {
 	const registry = Registry();
+
 	registry.connect = ({ wsm, isClient, em }) => {
 		for (let [name, value] of Object.entries(registry)) {
 			if (!(value instanceof Function)) {
@@ -44,7 +45,17 @@ export function NetworkedRegistry() {
 				em.setHandler({
 					name,
 					handler: (args) => {
-						return registry[name](args);
+						const result = registry[name](args);
+						const notificationEntity = registry.create();
+						registry.emplace({
+							entity: notificationEntity,
+							type: 'Notification',
+							component: {
+								message: `${name}(${JSON.stringify(args, null, 2)})`,
+								severity: 'success',
+							},
+						});
+						return result;
 					},
 				});
 			}

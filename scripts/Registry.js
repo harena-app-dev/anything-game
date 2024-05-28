@@ -74,14 +74,19 @@ export function Registry() {
 			this.onCreate.notify({ entity });
 			return entity;
 		},
+		createNotification ({ message, severity }) {
+			const entity = registry.create();
+			registry.emplace({ type: 'Notification', entity, component: { message, severity } });
+			return entity;
+		},
 		emplace({ type, entity, component }) {
 			if (!this.typesToEntitiesToComponents[type]) {
 				this.typesToEntitiesToComponents[type] = {};
 			}
-			this.typesToEntitiesToComponents[type][entity] = component;
 			if (this.entitiesToTypes[entity].includes(type)) {
-				console.error(`entity ${entity} already has component of type ${type}`);
-			} 
+				return;
+			}
+			this.typesToEntitiesToComponents[type][entity] = component;
 			this.entitiesToTypes[entity].push(type);
 			this.onEmplace[type].notify({ entity, component });
 			return component;
@@ -136,9 +141,13 @@ export function Registry() {
 			return result;
 		}
 	};
-	for (let [name, component] of Object.entries(Components)) {
-		registry.typesToConstructors[name] = component;
-		registry.onEmplace[name] = Observable();
+	for (let [type, constructor] of Object.entries(Components)) {
+		console.log(`registering ${type}`);
+		registry.typesToConstructors[type] = constructor;
+		registry.onEmplace[type] = Observable();
+		for (let key of Object.keys(registry.onEmplace[type])) {
+			console.log(`onEmplace[${type}][${key}]`);
+		}
 	}
 	return registry;
 }

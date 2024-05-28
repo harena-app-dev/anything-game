@@ -33,7 +33,6 @@ export default function ({ registry, entity, type }) {
 		registry.fetchEmplace({ entity, type, component: JSON.parse(json) })
 			.then((comp) => {
 				setOpen(false);
-				console.log(`Emplaced component ${JSON.stringify(comp)}`);
 			});
 	};
 	return (

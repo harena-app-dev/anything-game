@@ -25,17 +25,18 @@ export default function App() {
 			return;
 		}
 
-		setOpen(false);
+		setIsSnackbarOpen(false);
 	};
 
 	useEffect(function () {
+		function onNotification({ entity, component }) {
+			const { message, severity } = component;
+			setIsSnackbarOpen(true);
+			setSnackbarMessage(message);
+			setSnackbarSeverity(severity);
+		};
+		registry.onEmplace['Notification'].connect(onNotification);
 		webSocketMessager.current = new WebSocketMessager(function () {
-			registry.onEmplace['Notification'] = function ({ entity, component }) {
-				const { message, severity } = component;
-				setIsSnackbarOpen(true);
-				setSnackbarMessage(message);
-				setSnackbarSeverity(severity);
-			}
 			registry.connect({ wsm: webSocketMessager.current, isClient: true });
 			registry.promiseSync().then(() => {
 				setContent(<React.Fragment>
@@ -45,6 +46,7 @@ export default function App() {
 			});
 		});
 		return () => {
+			registry.onEmplace['Notification'].disconnect(onNotification);
 			webSocketMessager.current?.close();
 		};
 	}, []);
@@ -62,7 +64,9 @@ export default function App() {
 				variant="filled"
 				sx={{ width: '100%' }}
 			>
-				{snackbarMessage}
+				<pre>
+					{snackbarMessage}
+				</pre>
 			</Alert>
 		</Snackbar>
 	</Box>
