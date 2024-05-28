@@ -44,7 +44,6 @@ export function Registry() {
 		onCreate: Observable(),
 		onEmplace: {},
 		onDestroy: Observable(),
-		unsynced: new Set(['onCreate', 'onDestroy', 'typesToConstructors', 'onEmplace', 'unsynced']),
 		size() {
 			return this.entitySet.length;
 		},
@@ -63,6 +62,7 @@ export function Registry() {
 			this.onCreate.notify({ entity });
 			return entity;
 		},
+		onEmplaceAny: Observable(),
 		emplace({ type, entity, component }) {
 			if (this.entitiesToTypes[entity].includes(type)) {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);				
@@ -73,6 +73,7 @@ export function Registry() {
 			this.getPool({type})[entity] = component;
 			this.entitiesToTypes[entity].push(type);
 			this.onEmplace[type].notify({ entity, component });
+			this.onEmplaceAny.notify({ entity, type, component });
 			return component;
 		},
 		getOrEmplace({ type, entity, component }) {

@@ -29,7 +29,19 @@ export default function ({ entity, registry }) {
 	const closeMenu = () => {
 		setAnchorEl(null);
 	};
-	const types = registry.getTypes({ entity });
+	// const types = registry.getTypes({ entity });
+	const [types, setTypes] = React.useState(registry.getTypes({ entity }));
+	// console.log(`types: ${JSON.stringify
+	console.log(`types: ${JSON.stringify(types, null, 2)}`);
+	React.useEffect(() => {
+		const callback = ({ entity, type, component }) => {
+			setTypes(registry.getTypes({ entity }));
+		}
+		registry.onEmplaceAny.connect(callback);
+		return () => {
+			registry.onEmplaceAny.disconnect(callback);
+		}
+	}, []);
 	const details = (!registry.valid({ entity })) ? <AccordionDetails>
 		<Alert severity="error">
 			Entity {entity} does not exist.
@@ -63,10 +75,8 @@ export default function ({ entity, registry }) {
 					'aria-labelledby': 'basic-button',
 				}}
 			>
-				{/* {registry.getSingleton({ type: 'RegisteredComponents' }).components.map(component => { */}
 				{
 					Object.keys(registry.typesToConstructors).map(component => {
-						// return <MenuItem key={component} onClick={handleClose}>{component}</MenuItem>
 						return <AddComponent key={component} entity={entity} type={component} registry={registry} closeMenu={closeMenu} />
 					})
 				}

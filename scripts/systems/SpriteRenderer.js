@@ -19,11 +19,9 @@ export default function ({ registry, scene }) {
 				texture.magFilter = THREE.NearestFilter
 				texture.minFilter = THREE.NearestFilter
 				this.pathsToTextures[path] = texture
-				// material = new THREE.MeshBasicMaterial({ transparent: true, map: texture })
 				material = new THREE.SpriteMaterial({ map: texture });
 				this.pathsToMaterials[path] = material
 			}
-			// const sprite = new THREE.Mesh(geometry, material)
 			const sprite = new THREE.Sprite(material);
 			sprite.position.set(position.x, position.y, position.z)
 			this.entitiesToMeshes[entity] = sprite
@@ -37,7 +35,6 @@ export default function ({ registry, scene }) {
 						this.onLoad({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
 					const position = registry.get({ type: "Position", entity })
-					position.x += 0.001
 					this.entitiesToMeshes[entity].position.set(position.x, position.y, position.z)
 				}
 			})

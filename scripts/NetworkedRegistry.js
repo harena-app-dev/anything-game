@@ -84,16 +84,18 @@ export function NetworkedRegistry() {
 						}
 					});
 					for (let [key, value] of Object.entries(newRegistry)) {
-						if (registry.unsynced.has(key)) {
+						if ( key === 'typesToConstructors'
+							|| key.startsWith('on')
+						) {
 							continue;
 						}
 						registry[key] = value;
 					}
-					registry.each({
-						callback: ({ entity }) => {
-							registry.onCreate.notify({ entity });
-						}
-					});
+					// registry.each({
+					// 	callback: ({ entity }) => {
+					// 		registry.onCreate.notify({ entity });
+					// 	}
+					// });
 				});
 				// wsm.addHandler('sync', ({ ws, args }) => {
 				// 	registry.sync(args);
