@@ -22,6 +22,7 @@ export default function ({ registry, scene }) {
 				this.pathsToMaterials[path] = material
 			}
 			const cube = new THREE.Mesh(geometry, material)
+			this.entitiesToMeshes[entity] = cube
 			scene.add(cube)
 		},
 		onRender() {
