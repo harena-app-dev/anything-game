@@ -137,12 +137,8 @@ export function Registry() {
 		}
 	};
 	for (let [type, constructor] of Object.entries(Components)) {
-		console.log(`registering ${type}`);
 		registry.typesToConstructors[type] = constructor;
 		registry.onEmplace[type] = Observable();
-		for (let key of Object.keys(registry.onEmplace[type])) {
-			console.log(`onEmplace[${type}][${key}]`);
-		}
 	}
 	return registry;
 }

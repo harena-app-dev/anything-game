@@ -48,7 +48,6 @@ export function NetworkedRegistry() {
 						const notificationEntity = registry.create();
 						try {
 							const result = registry[name](args);
-							console.log(`success: ${name}(${JSON.stringify(args, null, 2)})`);
 							registry.emplace({
 								entity: notificationEntity,
 								type: 'Notification',
