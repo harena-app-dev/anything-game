@@ -40,6 +40,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import BasicMenu from "../BasicMenu";
 import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
+import Console from "../Console";
 
 function createData(id) {
 	return {
@@ -95,7 +96,7 @@ function EnhancedTableHead(props) {
 			<TableRow>
 				{
 					isSelecting &&
-					<TableCell sx={{  }} padding={'checkbox'}>
+					<TableCell sx={{}} padding={'checkbox'}>
 						<Checkbox
 							color="primary"
 							indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -205,7 +206,8 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ setViewedEntity, registry }) {
+export default function EnhancedTable({ registry }) {
+	const [viewedEntity, setViewedEntity] = useState(0);
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);
@@ -322,7 +324,7 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 									>
 										{
 											isSelecting &&
-											<TableCell sx={{  }} padding={'checkbox'}>
+											<TableCell sx={{}} padding={'checkbox'}>
 												<Checkbox
 													checked={isItemSelected}
 													inputProps={{
@@ -344,6 +346,10 @@ export default function EnhancedTable({ setViewedEntity, registry }) {
 					</Table>
 				</TableContainer>
 			</Paper>
+			<Box className='col'>
+				<EntityView registry={registry} entity={viewedEntity} />
+				<Console registry={registry} />
+			</Box>
 		</Box>
 	);
 }
