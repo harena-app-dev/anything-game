@@ -1,11 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary } from './Accordion';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import React, { useEffect, useRef, useState } from 'react'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import React, { useEffect } from 'react'
 import Box from '@mui/material/Box';
-import { TextureLoader } from 'three';
 import * as THREE from 'three';
-import KeyboardState from '@/scripts/client/KeyboardState';
 export default function Scene({ registry }) {
 	// if (!navigator.gpu) {
 	// 	throw new Error("WebGPU not supported on this browser.");
