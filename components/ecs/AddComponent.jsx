@@ -18,7 +18,7 @@ const style = {
 	pb: 3,
 };
 
-export default function ({ registry, entity, type }) {
+export default function ({ registry, entity, type, closeMenu }) {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => {
 		setOpen(true);
@@ -33,6 +33,7 @@ export default function ({ registry, entity, type }) {
 		registry.fetchEmplace({ entity, type, component: JSON.parse(json) })
 			.then((comp) => {
 				setOpen(false);
+				closeMenu();
 			});
 	};
 	return (

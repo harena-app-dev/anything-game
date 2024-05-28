@@ -23,10 +23,10 @@ import AddComponent from "./AddComponent";
 export default function ({ entity, registry }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
-	const onAddComponentClick = (event) => {
+	const openMenu = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
-	const handleClose = () => {
+	const closeMenu = () => {
 		setAnchorEl(null);
 	};
 	const types = registry.getTypes({ entity });
@@ -41,7 +41,7 @@ export default function ({ entity, registry }) {
 					aria-controls={open ? 'basic-menu' : undefined}
 					aria-haspopup="true"
 					aria-expanded={open ? 'true' : undefined}
-					onClick={onAddComponentClick}
+					onClick={openMenu}
 				>
 					Add Component
 				</Button>
@@ -58,7 +58,7 @@ export default function ({ entity, registry }) {
 				id="basic-menu"
 				anchorEl={anchorEl}
 				open={open}
-				onClose={handleClose}
+				onClose={closeMenu}
 				MenuListProps={{
 					'aria-labelledby': 'basic-button',
 				}}
@@ -67,7 +67,7 @@ export default function ({ entity, registry }) {
 				{
 					Object.keys(registry.typesToConstructors).map(component => {
 						// return <MenuItem key={component} onClick={handleClose}>{component}</MenuItem>
-						return <AddComponent key={component} entity={entity} type={component} registry={registry} />
+						return <AddComponent key={component} entity={entity} type={component} registry={registry} closeMenu={closeMenu} />
 					})
 				}
 			</Menu>
