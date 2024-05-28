@@ -4,7 +4,8 @@ export default function ({ registry, scene }) {
 	const system = {
 		pathsToTextures: {},
 		pathsToMaterials: {},
-		onEmplace: function ({ entity, component }) {
+		entitiesToMeshes: {},
+		onLoad: function ({ entity, component }) {
 			const { path } = component
 			const geometry = new THREE.BoxGeometry(1, 1, 1)
 			let texture
@@ -22,7 +23,19 @@ export default function ({ registry, scene }) {
 			}
 			const cube = new THREE.Mesh(geometry, material)
 			scene.add(cube)
+		},
+		onRender() {
+			registry.each({
+				types: ["Sprite"], 
+				callback: ({ entity }) => {
+					console.log(`Rendering sprite for entity ${entity}`) // eslint-disable-line no-console
+					if (!this.entitiesToMeshes[entity]) {
+						this.onLoad({ entity, component: registry.get("Sprite", entity) })
+					}
+				}
+			})
 		}
 	}
-	registry.onEmplace["Sprite"].connect(system.onEmplace.bind(system))
+	registry.onEmplace["Sprite"].connect(system.onLoad.bind(system))
+	return system
 }

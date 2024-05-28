@@ -52,7 +52,7 @@ export function Registry() {
 			return this.entitiesToTypes[entity];
 		},
 		getSingleton({ type }) {
-			const entities = this.typesToEntitiesToComponents[type];
+			const entities = this.getPool({type});
 			if (entities === undefined) {
 				console.error(`no entities of type ${type}`);
 			}
@@ -80,13 +80,10 @@ export function Registry() {
 			return entity;
 		},
 		emplace({ type, entity, component }) {
-			if (!this.typesToEntitiesToComponents[type]) {
-				this.typesToEntitiesToComponents[type] = {};
-			}
 			if (this.entitiesToTypes[entity].includes(type)) {
 				return;
 			}
-			this.typesToEntitiesToComponents[type][entity] = component;
+			this.getPool({type})[entity] = component;
 			this.entitiesToTypes[entity].push(type);
 			this.onEmplace[type].notify({ entity, component });
 			return component;
@@ -102,10 +99,16 @@ export function Registry() {
 			this.destroyedSet.push(entity);
 		},
 		has({ type, entity }) {
-			return this.typesToEntitiesToComponents[type] !== undefined && this.typesToEntitiesToComponents[type][entity] !== undefined;
+			return this.getPool({type}) !== undefined && this.getPool({type})[entity] !== undefined;
+		},
+		getPool({ type }) {
+			if (this.typesToEntitiesToComponents[type] === undefined) {
+				this.typesToEntitiesToComponents[type] = {};
+			}
+			return this.typesToEntitiesToComponents[type];
 		},
 		get({ type, entity }) {
-			return this.typesToEntitiesToComponents[type][entity];
+			return this.getPool({type})[entity];
 		},
 		valid({ entity }) {
 			return this.entitySet.includes(entity);
@@ -117,7 +120,7 @@ export function Registry() {
 				}
 				return;
 			}
-			const entitySets = types.map(type => this.typesToEntitiesToComponents[type]);
+			const entitySets = types.map(type => this.getPool({type}));
 			const intersection = Object.keys(entitySets[0]);
 			for (let i = 1; i < entitySets.length; i++) {
 				const entitySet = entitySets[i];

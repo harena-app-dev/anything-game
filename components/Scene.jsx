@@ -4,43 +4,20 @@ import * as THREE from 'three';
 import SpriteRenderer from '@/scripts/systems/SpriteRenderer';
 
 export default function Scene({ registry }) {
-	// if (!navigator.gpu) {
-	// 	throw new Error("WebGPU not supported on this browser.");
-	// } else {
-	// 	console.log("WebGPU supported!");
-	// }
-	const [spriteRenderer, setSpriteRenderer] = useState();
-
 	useEffect(() => {
 		const scene = new THREE.Scene();
-		setSpriteRenderer(SpriteRenderer({ registry, scene }));
+		const spriteRenderer = new SpriteRenderer({ registry, scene });
 		const renderer = new THREE.WebGLRenderer();
 		const sceneElement = document.getElementById("scene");
-		// renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.setSize(sceneElement.clientWidth, sceneElement.clientHeight);
-		const camera = new THREE.PerspectiveCamera(75, sceneElement.clientWidth / sceneElement.clientHeight
-			, 0.1, 1000);
-
+		const camera = new THREE.PerspectiveCamera(75, sceneElement.clientWidth / sceneElement.clientHeight, 0.1, 1000);
 		sceneElement.appendChild(renderer.domElement);
-
-		const geometry = new THREE.BoxGeometry(1, 1, 1);
-		const map = new THREE.TextureLoader().load('sprites/rogue.png');
-		map.magFilter = THREE.NearestFilter;
-		map.minFilter = THREE.NearestFilter;
-		const material = new THREE.MeshBasicMaterial({ transparent: true, map: map });
-		const cube = new THREE.Mesh(geometry, material);
-		scene.add(cube);
-
 		camera.position.z = 5;
 
 		function animate() {
 			requestAnimationFrame(animate);
-
-			// cube.rotation.x += 0.01;
-			// cube.rotation.y += 0.01;
-			cube.rotation.z += 0.01;
-
 			renderer.render(scene, camera);
+			// spriteRenderer.onRender();
 		}
 
 		animate();
