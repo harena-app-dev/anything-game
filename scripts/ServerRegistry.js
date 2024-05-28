@@ -36,27 +36,8 @@ export default function ServerRegistry() {
 				name,
 				handler: (args) => {
 					const notificationEntity = registry.create();
-					try {
-						const result = registry[name](args);
-						registry.emplace({
-							entity: notificationEntity,
-							type: 'Notification',
-							component: {
-								message: `${name}(${JSON.stringify(args, null, 2)})`,
-								severity: 'success',
-							},
-						});
-						return result;
-					} catch (e) {
-						registry.emplace({
-							entity: notificationEntity,
-							type: 'Notification',
-							component: {
-								message: `${name}(${JSON.stringify(args, null, 2)}) failed: ${e.message}`,
-								severity: 'error',
-							},
-						});
-					}
+					const result = registry[name](args);
+					return result;
 				},
 			});
 			wsm.addHandler(name, ({ ws, args }) => {
