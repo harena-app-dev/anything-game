@@ -19,7 +19,11 @@ export default function ServerRegistry() {
 			if (!(value instanceof Function)) {
 				continue;
 			}
-			if (name.startsWith('get')) {
+			if (name.startsWith('get')
+				|| name.startsWith('has')
+				|| name.startsWith('each')
+				|| name.startsWith('map')
+			) {
 				continue;
 			}
 			const prevFunction = registry[name].bind(registry);
