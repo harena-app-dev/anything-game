@@ -45,17 +45,29 @@ export function NetworkedRegistry() {
 				em.setHandler({
 					name,
 					handler: (args) => {
-						const result = registry[name](args);
 						const notificationEntity = registry.create();
-						registry.emplace({
-							entity: notificationEntity,
-							type: 'Notification',
-							component: {
-								message: `${name}(${JSON.stringify(args, null, 2)})`,
-								severity: 'success',
-							},
-						});
-						return result;
+						try {
+							const result = registry[name](args);
+							console.log(`success: ${name}(${JSON.stringify(args, null, 2)})`);
+							registry.emplace({
+								entity: notificationEntity,
+								type: 'Notification',
+								component: {
+									message: `${name}(${JSON.stringify(args, null, 2)})`,
+									severity: 'success',
+								},
+							});
+							return result;
+						} catch (e) {
+							registry.emplace({
+								entity: notificationEntity,
+								type: 'Notification',
+								component: {
+									message: `${name}(${JSON.stringify(args, null, 2)}) failed: ${e.message}`,
+									severity: 'error',
+								},
+							});
+						}
 					},
 				});
 			}

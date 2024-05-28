@@ -65,7 +65,7 @@ export function Registry() {
 		},
 		emplace({ type, entity, component }) {
 			if (this.entitiesToTypes[entity].includes(type)) {
-				return;
+				throw new Error(`Entity ${entity} already has component of type ${type}`);				
 			}
 			if (component === undefined) {
 				component = this.typesToConstructors[type]();
@@ -83,8 +83,7 @@ export function Registry() {
 		},
 		destroy({ entity }) {
 			if (!this.valid({entity})) {
-				console.error(`entity ${entity} does not exist`);
-				return;
+				throw new Error(`Entity ${entity} does not exist`);
 			}
 			this.onDestroy.notify({ entity });
 			const index = this.entitySet.indexOf(entity);
