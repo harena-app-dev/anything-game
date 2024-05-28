@@ -28,9 +28,8 @@ export default function ({ registry, scene }) {
 			registry.each({
 				types: ["Sprite"], 
 				callback: ({ entity }) => {
-					console.log(`Rendering sprite for entity ${entity}`) // eslint-disable-line no-console
 					if (!this.entitiesToMeshes[entity]) {
-						this.onLoad({ entity, component: registry.get("Sprite", entity) })
+						this.onLoad({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
 				}
 			})

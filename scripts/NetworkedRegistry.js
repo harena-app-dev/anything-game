@@ -61,7 +61,6 @@ export function NetworkedRegistry() {
 			}
 			const f = registry[name].bind(registry);
 			wsm.addHandler(name, ({ ws, args }) => {
-				console.log(`handling ${name}`);
 				f(args);
 			});
 		}

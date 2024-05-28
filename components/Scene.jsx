@@ -17,7 +17,13 @@ export default function Scene({ registry }) {
 		function animate() {
 			requestAnimationFrame(animate);
 			renderer.render(scene, camera);
-			// spriteRenderer.onRender();
+			// registry.each({
+			// 	types: ["Sprite"], 
+			// 	callback: ({ entity }) => {
+			// 		console.log(`Rendering sprite for entity ${entity}`) // eslint-disable-line no-console
+			// 	}
+			// })
+			spriteRenderer.onRender();
 		}
 
 		animate();

@@ -89,7 +89,7 @@ export function Registry() {
 			return component;
 		},
 		destroy({ entity }) {
-			if (!this.valid(entity)) {
+			if (!this.valid({entity})) {
 				console.error(`entity ${entity} does not exist`);
 				return;
 			}
@@ -111,6 +111,7 @@ export function Registry() {
 			return this.getPool({type})[entity];
 		},
 		valid({ entity }) {
+			console.log(`entitySet: ${this.entitySet}`)
 			return this.entitySet.includes(entity);
 		},
 		each({ types, callback }) {

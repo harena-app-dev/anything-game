@@ -6,7 +6,7 @@ export default function ExpressMessager({ port }) {
 		app: express(),
 		setHandler({ name, handler }) {
 			em.app.post(`/${name}`, (req, res) => {
-				console.log(`handling ${name}`)
+				console.log(`handling post ${name}`)
 				const result = handler(req.body)
 				res.send(JSON.stringify(result))
 			})
