@@ -43,6 +43,7 @@ export default function App() {
 		return () => {
 			registry.onEmplace['Notification'].disconnect(onNotification);
 			webSocketMessager.current?.close();
+			clientSystem.deconstruct();
 		};
 	}, []);
 

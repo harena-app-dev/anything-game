@@ -35,20 +35,39 @@ export default function ({ registry }) {
 			return fetchCmd({ name: 'destroy', args: { entity } })
 		},
 	}
+	const createHandler =
 	system.wsm.addHandler('create', () => {
 		registry.create();
 	});
-	system.wsm.addHandler('emplace', ({ entity, component, type }) => {
+	const emplaceHandler = system.wsm.addHandler('emplace', ({ ws, args }) => {
+		const { entity, component, type } = args;
 		registry.emplace({ entity, component, type });
 	});
-	system.wsm.addHandler('update', ({ entity, component, type }) => {
+	const updateHandler =
+	// system.wsm.addHandler('update', ({ entity, component, type }) => {
+	system.wsm.addHandler('update', ({ ws, args }) => {
+		const { entity, component, type } = args;
 		registry.update({ entity, component, type });
 	});
-	system.wsm.addHandler('erase', ({ entity, type }) => {
+	const eraseHandler =
+	// system.wsm.addHandler('erase', ({ entity, type }) => {
+	system.wsm.addHandler('erase', ({ ws, args }) => {
+		const { entity, type } = args;
 		registry.erase({ entity, type });
 	});
-	system.wsm.addHandler('destroy', ({ entity }) => {
+	const destroyHandler =
+	// system.wsm.addHandler('destroy', ({ entity }) => {
+	system.wsm.addHandler('destroy', ({ ws, args }) => {
+		const { entity } = args;
 		registry.destroy({ entity });
 	});
+	system.deconstruct = () => {
+		system.wsm.removeHandler(createHandler);
+		system.wsm.removeHandler(emplaceHandler);
+		system.wsm.removeHandler(updateHandler);
+		system.wsm.removeHandler(eraseHandler);
+		system.wsm.removeHandler(destroyHandler);
+		system.wsm.close();
+	}
 	return system
 }

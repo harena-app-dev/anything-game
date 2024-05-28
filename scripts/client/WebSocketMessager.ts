@@ -22,7 +22,7 @@ export default class WebSocketMessager {
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				handlers.forEach(handler => {
-					console.log('calling handler', handler);
+					console.log(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
 					handler({ws: this.ws, args: message.data})
 				});
 			}
@@ -33,6 +33,7 @@ export default class WebSocketMessager {
 			this.messageNamesToHandlers.set(name, new Set());
 		}
 		this.messageNamesToHandlers.get(name)?.add(handler);
+		return handler;
 	}
 	removeHandler(name: string, handler: Handler) {
 		this.messageNamesToHandlers.get(name)?.delete(handler);

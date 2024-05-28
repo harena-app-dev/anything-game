@@ -68,6 +68,7 @@ export default function Registry() {
 		onErase: Observable(),
 		onDestroy: Observable(),
 		emplace({ type, entity, component }) {
+			console.log(`emplace ${type} ${entity} ${component}`);
 			if (this.entitiesToTypes[entity].includes(type)) {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);				
 			}
