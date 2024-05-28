@@ -67,10 +67,19 @@ export function Registry() {
 			if (this.entitiesToTypes[entity].includes(type)) {
 				return;
 			}
+			if (component === undefined) {
+				component = this.typesToConstructors[type]();
+			}
 			this.getPool({type})[entity] = component;
 			this.entitiesToTypes[entity].push(type);
 			this.onEmplace[type].notify({ entity, component });
 			return component;
+		},
+		getOrEmplace({ type, entity, component }) {
+			if (!this.has({ type, entity })) {
+				this.emplace({ type, entity, component });
+			}
+			return this.get({ type, entity });
 		},
 		destroy({ entity }) {
 			if (!this.valid({entity})) {

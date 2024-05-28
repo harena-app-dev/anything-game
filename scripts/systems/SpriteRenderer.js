@@ -6,6 +6,7 @@ export default function ({ registry, scene }) {
 		pathsToMaterials: {},
 		entitiesToMeshes: {},
 		onLoad: function ({ entity, component }) {
+			const position = registry.getOrEmplace({ type: "Position", entity })
 			const { path } = component
 			const geometry = new THREE.BoxGeometry(1, 1, 1)
 			let texture
@@ -22,6 +23,7 @@ export default function ({ registry, scene }) {
 				this.pathsToMaterials[path] = material
 			}
 			const cube = new THREE.Mesh(geometry, material)
+			cube.position.set(position.x, position.y, position.z)
 			this.entitiesToMeshes[entity] = cube
 			scene.add(cube)
 		},
