@@ -19,6 +19,7 @@ import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 import { Accordion, AccordionSummary, AccordionDetails } from '../Accordion';
 import AddComponent from "./AddComponent";
+import { nullEntity } from "@/scripts/Registry";
 
 export default function ({ entity, registry }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,7 +45,7 @@ export default function ({ entity, registry }) {
 	console.log(`types: ${types}`)
 	console.log(`types: ${registry.getTypes({ entity })}`)
 	let details;
-	if (entity === -1) {
+	if (entity === nullEntity) {
 		details = <AccordionDetails>
 			<Alert severity="info">
 				Select an entity to view its components.

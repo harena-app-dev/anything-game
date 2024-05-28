@@ -1,6 +1,7 @@
 // import fs from 'fs';
 // import path from 'path';
 import * as Components from './components/index.auto.js';
+export const nullEntity = -1;
 export function Observable() {
 	return {
 		observers: new Set(),

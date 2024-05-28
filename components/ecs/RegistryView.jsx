@@ -41,6 +41,7 @@ import { visuallyHidden } from '@mui/utils';
 import BasicMenu from "../BasicMenu";
 import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
 import Console from "../Console";
+import { nullEntity } from "@/scripts/Registry";
 
 function createData(id) {
 	return {
@@ -180,7 +181,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ registry }) {
-	const [viewedEntity, setViewedEntity] = useState(-1);
+	const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);
@@ -297,7 +298,9 @@ export default function EnhancedTable({ registry }) {
 									>
 										{
 											isSelecting &&
-											<TableCell sx={{}} padding={'checkbox'}>
+											<TableCell sx={{
+												m: "auto"
+												}} padding={'checkbox'}>
 												<Checkbox
 													checked={isItemSelected}
 													inputProps={{
@@ -306,7 +309,9 @@ export default function EnhancedTable({ registry }) {
 												/>
 											</TableCell>
 										}
-										<TableCell sx={{ height: 64 }}>
+										<TableCell sx={{ 
+											m: "auto",
+											height: 64 }}>
 											{row.id}
 										</TableCell>
 									</TableRow>
