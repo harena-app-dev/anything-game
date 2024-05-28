@@ -12,7 +12,6 @@ export default function App() {
 	const webSocketMessager = useRef();
 	// const [registry, setRegistry] = useState(NetworkedRegistry());
 	// const [registry, setRegistry] = useState(ClientRegistry());
-	const [registry, setRegistry] = useState(Registry());
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -32,20 +31,12 @@ export default function App() {
 			setSnackbarMessage(message);
 			setSnackbarSeverity(severity);
 		};
+		const registry = Registry()
 		registry.onEmplace['Notification'].connect(onNotification);
 		const clientSystem = Client({ registry });
-		// webSocketMessager.current = new WebSocketMessager(function () {
-		// 	// registry.connect({ wsm: webSocketMessager.current, isClient: true });
-		// 	registry.promiseSync().then(() => {
-		// 		setContent(<React.Fragment>
-		// 			<RegistryView registry={registry} />
-		// 			<Scene registry={registry} />
-		// 		</React.Fragment>);
-		// 	});
-		// });
 		clientSystem.promiseSync().then(() => {
 			setContent(<React.Fragment>
-				<RegistryView registry={registry} />
+				<RegistryView registry={registry} client={clientSystem} />
 				<Scene registry={registry} />
 			</React.Fragment>);
 		});

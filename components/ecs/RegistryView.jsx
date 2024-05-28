@@ -144,10 +144,10 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected, setIsSelecting, registry, selected } = props;
+	const { numSelected, setIsSelecting, registry, selected, client } = props;
 	const actions = [
 		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
-		{ icon: <AddIcon />, name: 'Create', onClick: () => registry.cmdCreate() },
+		{ icon: <AddIcon />, name: 'Create', onClick: () => client.promiseCreate() },
 	];
 	return (
 		<Stack direction="column" spacing={0}>
@@ -155,7 +155,7 @@ function EnhancedTableToolbar(props) {
 				<Tooltip title="Delete">
 					<IconButton onClick={() => {
 						selected.forEach((entity) => {
-							registry.cmdDestroy({ entity: Number(entity) });
+							client.promiseDestroy({ entity: Number(entity) });
 						});
 					}}>
 						<DeleteIcon />
@@ -180,7 +180,7 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ registry }) {
+export default function ({ registry, client }) {
 	const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
@@ -268,6 +268,7 @@ export default function EnhancedTable({ registry }) {
 				<EnhancedTableToolbar numSelected={selected.length} setIsSelecting={setIsSelecting}
 					registry={registry}
 					selected={selected}
+					client={client}
 				/>
 				<TableContainer className='col grow'>
 					<Table
@@ -325,7 +326,7 @@ export default function EnhancedTable({ registry }) {
 				</TableContainer>
 			</Paper>
 			<Box className='col'>
-				<EntityView registry={registry} entity={viewedEntity} />
+				<EntityView registry={registry} entity={viewedEntity} client={client} />
 				<Console registry={registry} />
 			</Box>
 		</Box>

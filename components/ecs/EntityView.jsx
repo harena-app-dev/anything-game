@@ -1,27 +1,17 @@
-import Expandable from "../old/Expandable";
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import MuiAccordion from '@mui/material/Accordion';
-import MuiAccordionActions from '@mui/material/AccordionActions';
-import MuiAccordionSummary from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import * as React from 'react';
 import ComponentView from "./ComponentView";
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import { Skeleton, Stack } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import { Stack } from "@mui/material";
 
 import { Accordion, AccordionSummary, AccordionDetails } from '../Accordion';
 import AddComponent from "./AddComponent";
 import { nullEntity } from "@/scripts/Registry";
 
-export default function ({ entity, registry }) {
+export default function ({ entity, registry, client }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const openMenu = (event) => {
@@ -30,20 +20,7 @@ export default function ({ entity, registry }) {
 	const closeMenu = () => {
 		setAnchorEl(null);
 	};
-	// const [types, setTypes] = React.useState(registry.getTypes({ entity }));
 	const types = registry.getTypes({ entity });
-	// React.useEffect(() => {
-	// 	const callback = ({ entity, type, component }) => {
-	// 		setTypes(registry.getTypes({ entity }));
-	// 	}
-	// 	registry.onEmplaceAny.connect(callback);
-	// 	return () => {
-	// 		registry.onEmplaceAny.disconnect(callback);
-	// 	}
-	// }, []);
-	console.log("registry.valid({ entity })", registry.valid({ entity }))
-	console.log(`types: ${types}`)
-	console.log(`types: ${registry.getTypes({ entity })}`)
 	let details;
 	if (entity === nullEntity) {
 		details = <AccordionDetails>
@@ -93,7 +70,7 @@ export default function ({ entity, registry }) {
 			>
 				{
 					Object.keys(registry.typesToConstructors).map(component => {
-						return <AddComponent key={component} entity={entity} type={component} registry={registry} closeMenu={closeMenu} />
+						return <AddComponent key={component} entity={entity} type={component} registry={registry} closeMenu={closeMenu} client={client} />
 					})
 				}
 			</Menu>

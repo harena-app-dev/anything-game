@@ -18,7 +18,7 @@ const style = {
 	pb: 3,
 };
 
-export default function ({ registry, entity, type, closeMenu }) {
+export default function ({ registry, entity, type, closeMenu, client }) {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => {
 		setOpen(true);
@@ -37,7 +37,7 @@ export default function ({ registry, entity, type, closeMenu }) {
 			console.error('error parsing json', json);
 			return;
 		}
-		registry.fetchEmplace({ entity, type, component })
+		client.promiseEmplace({ entity, type, component })
 			.then((comp) => {
 				setOpen(false);
 				closeMenu();
