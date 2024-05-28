@@ -22,12 +22,19 @@ export default function ({ registry, entity, type }) {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => {
 		setOpen(true);
-		console.log(`open: ${open}`);
 	};
 	const handleClose = (e) => {
 		setOpen(false);
 		e.stopPropagation();
-		console.log(`open: ${open}`);
+	};
+	const [json, setJson] = React.useState(JSON.stringify(registry.typesToConstructors[type](), null, 2));
+	const handleEmplace = (e) => {
+		e.stopPropagation();
+		registry.fetchEmplace({ entity, type, component: JSON.parse(json) })
+			.then((comp) => {
+				setOpen(false);
+				console.log(`Emplaced component ${JSON.stringify(comp)}`);
+			});
 	};
 	return (
 		<MenuItem onClick={handleOpen}>
@@ -44,11 +51,12 @@ export default function ({ registry, entity, type }) {
 						<TextField
 							label="JSON"
 							multiline
-							defaultValue={JSON.stringify(registry.typesToConstructors[type](), null, 2)}
+							value={json}
+							onChange={(e) => setJson(e.target.value)}
 						/>
 						<Stack spacing={2} direction="row">
 							<Button onClick={handleClose}>Cancel</Button>
-							<Button onClick={handleClose}>Emplace</Button>
+							<Button onClick={handleEmplace}>Emplace</Button>
 						</Stack>
 					</Stack>
 				</Box>
