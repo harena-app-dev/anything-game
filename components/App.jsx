@@ -24,7 +24,6 @@ export default function App() {
 			registry.promiseSync().then(() => {
 				setContent(<React.Fragment>
 					<RegistryView registry={registry} />
-
 					<Scene registry={registry} />
 				</React.Fragment>);
 			});
