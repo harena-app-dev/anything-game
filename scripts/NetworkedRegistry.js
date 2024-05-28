@@ -27,13 +27,6 @@ export function NetworkedRegistry() {
 				};
 				const fetchName = `fetch${name[0].toUpperCase()}${name.slice(1)}`;
 				registry[fetchName] = (args) => {
-					// return fetch(`http://localhost:3002/${name}`, {
-					// 	method: 'POST',
-					// 	headers: {
-					// 		'Content-Type': 'application/json',
-					// 	},
-					// 	body: JSON.stringify(args),
-					// }).then(response => response.json());
 					return fetchCmd({ name, args });
 				};
 			} else {
@@ -78,6 +71,7 @@ export function NetworkedRegistry() {
 		if (isClient) {
 			registry.promiseSync = () => {
 				return fetchCmd({ name: 'sync' }).then(newRegistry => {
+					console.log(`newRegistry: ${JSON.stringify(newRegistry, null, 2)}`);
 					registry.each({
 						callback: ({ entity }) => {
 							registry.onDestroy.notify({ entity });
@@ -91,24 +85,9 @@ export function NetworkedRegistry() {
 						}
 						registry[key] = value;
 					}
-					// registry.each({
-					// 	callback: ({ entity }) => {
-					// 		registry.onCreate.notify({ entity });
-					// 	}
-					// });
 				});
-				// wsm.addHandler('sync', ({ ws, args }) => {
-				// 	registry.sync(args);
-				// });
-				// registry.cmdSync();
 			};
 		} else {
-			// registry.sync = ({ ws }) => {
-			// 	wsm.send(ws, 'sync', registry);
-			// };
-			// wsm.addHandler('sync', ({ ws, args }) => {
-			// 	wsm.send(ws, 'sync', JSON.stringify(registry));
-			// });
 			em.setHandler({
 				name: 'sync',
 				handler: () => {

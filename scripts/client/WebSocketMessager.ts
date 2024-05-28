@@ -21,7 +21,10 @@ export default class WebSocketMessager {
 			console.log('received message', message);
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
-				handlers.forEach(handler => handler({ws: this.ws, args: message.data}));
+				handlers.forEach(handler => {
+					console.log('calling handler', handler);
+					handler({ws: this.ws, args: message.data})
+				});
 			}
 		}
 	}

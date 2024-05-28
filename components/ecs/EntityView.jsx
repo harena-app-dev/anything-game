@@ -30,9 +30,12 @@ export default function ({ entity, registry }) {
 		setAnchorEl(null);
 	};
 	// const types = registry.getTypes({ entity });
+	// const [types, setTypes] = React.useState(registry.getTypes({ entity }));
 	const [types, setTypes] = React.useState(registry.getTypes({ entity }));
 	// console.log(`types: ${JSON.stringify
+	// console.log(`registry: ${JSON.stringify(registry, null, 2)}`);
 	console.log(`types: ${JSON.stringify(types, null, 2)}`);
+	console.log(`reg types: ${JSON.stringify(registry.getTypes({ entity }), null, 2)}`);
 	React.useEffect(() => {
 		const callback = ({ entity, type, component }) => {
 			setTypes(registry.getTypes({ entity }));
