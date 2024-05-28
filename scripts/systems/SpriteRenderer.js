@@ -1,16 +1,20 @@
 import * as THREE from 'three';
 
+export function isBrowser () {
+	  return typeof window !== 'undefined';
+}
 export default function ({ registry, scene }) {
 	const system = {
 		pathsToTextures: {},
 		pathsToMaterials: {},
 		entitiesToMeshes: {},
 		onLoad: function ({ entity, component }) {
+			console.log("SpriteRenderer.onLoad", { entity, component })
 			const position = registry.getOrEmplace({ type: "Position", entity })
 			const { path } = component
-			const geometry = new THREE.BoxGeometry(1, 1, 1)
 			let texture
 			let material
+			if (isBrowser())
 			if (this.pathsToTextures[path]) {
 				texture = this.pathsToTextures[path]
 				material = this.pathsToMaterials[path]
