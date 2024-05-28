@@ -111,7 +111,6 @@ export function Registry() {
 			return this.getPool({type})[entity];
 		},
 		valid({ entity }) {
-			console.log(`entitySet: ${this.entitySet}`)
 			return this.entitySet.includes(entity);
 		},
 		each({ types, callback }) {

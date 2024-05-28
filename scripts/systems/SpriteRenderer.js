@@ -28,7 +28,7 @@ export default function ({ registry, scene }) {
 			registry.each({
 				types: ["Sprite"], 
 				callback: ({ entity }) => {
-					if (!this.entitiesToMeshes[entity]) {
+					if (this.entitiesToMeshes[entity] === undefined) {
 						this.onLoad({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
 				}
