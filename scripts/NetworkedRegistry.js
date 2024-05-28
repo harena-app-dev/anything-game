@@ -63,9 +63,6 @@ export function NetworkedRegistry() {
 						registry.onCreate.notify({ entity });
 					}
 				});
-				registry.fetchValid({ entity: 0 }).then((result) => {
-					console.log(`fetchHas result: ${result}`);
-				});
 			};
 			wsm.addHandler('sync', ({ ws, args }) => {
 				registry.sync(args);
