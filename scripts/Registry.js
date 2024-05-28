@@ -136,7 +136,21 @@ export function Registry() {
 				}
 			});
 			return result;
-		}
+		},
+		toJson() {
+			const obj = {
+				entitySet: this.entitySet,
+				typesToEntitiesToComponents: this.typesToEntitiesToComponents,
+				entitiesToTypes: this.entitiesToTypes,
+			};
+			return JSON.stringify(obj);
+		},
+		fromJson(json) {
+			const obj = JSON.parse(json);
+			this.entitySet = obj.entitySet;
+			this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
+			this.entitiesToTypes = obj.entitiesToTypes;
+		},
 	};
 	for (let [type, constructor] of Object.entries(Components)) {
 		registry.typesToConstructors[type] = constructor;
