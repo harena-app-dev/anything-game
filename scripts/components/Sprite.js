@@ -1,6 +1,3 @@
-export default function ({ path = "rogue.png" } = {}) {
-	// return arguments[0];
-	return {
-		path
-	};
+export default function (args = { path: "rogue.png" }) {
+	return args;
 }
