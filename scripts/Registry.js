@@ -69,7 +69,7 @@ export function Registry() {
 			return component;
 		},
 		destroy({ entity }) {
-			if (!this.entitySet.includes(entity)) {
+			if (!this.valid(entity)) {
 				console.error(`entity ${entity} does not exist`);
 				return;
 			}
