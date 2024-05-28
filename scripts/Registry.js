@@ -29,9 +29,15 @@ export function Registry() {
 		entitiesToTypes: {},
 		onCreate: Observable(),
 		onDestroy: Observable(),
+		observables: {
+			"create": {
+				
+			},
+			"destroy": {
+			}
+		},
 		unsynced: new Set(['onCreate', 'onDestroy', 'typesToConstructors']),
 		size() {
-			// return Object.keys(this.entitySet).length;
 			return this.entitySet.length;
 		},
 		getTypes({ entity }) {
