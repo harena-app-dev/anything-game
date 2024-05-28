@@ -63,7 +63,7 @@ export function NetworkedRegistry() {
 						registry.onCreate.notify({ entity });
 					}
 				});
-				registry.fetchHas({ entity: 0 }).then((result) => {
+				registry.fetchValid({ entity: 0 }).then((result) => {
 					console.log(`fetchHas result: ${result}`);
 				});
 			};
