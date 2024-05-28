@@ -8,7 +8,7 @@ export default function ({ registry, scene }) {
 		pathsToTextures: {},
 		pathsToMaterials: {},
 		entitiesToMeshes: {},
-		onLoad: function ({ entity, component }) {
+		onEmplace: function ({ entity, component }) {
 			console.log("SpriteRenderer.onLoad", { entity, component })
 			const position = registry.getOrEmplace({ type: "Position", entity })
 			const { path } = component
@@ -36,7 +36,7 @@ export default function ({ registry, scene }) {
 				types: ["Sprite"],
 				callback: ({ entity }) => {
 					if (this.entitiesToMeshes[entity] === undefined) {
-						this.onLoad({ entity, component: registry.get({ type: "Sprite", entity }) })
+						this.onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
 					const position = registry.get({ type: "Position", entity })
 					this.entitiesToMeshes[entity].position.set(position.x, position.y, position.z)
@@ -44,6 +44,6 @@ export default function ({ registry, scene }) {
 			})
 		}
 	}
-	registry.onEmplace["Sprite"].connect(system.onLoad.bind(system))
+	registry.onEmplace["Sprite"].connect(system.onEmplace.bind(system))
 	return system
 }

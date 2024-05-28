@@ -1,6 +1,6 @@
 export const log = {
-	trace(str) {
-		console.log(str)
+	debug(str) {
+		console.debug(str)
 	},
 	info(str) {
 		console.info(str)

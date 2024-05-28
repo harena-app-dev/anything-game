@@ -10,7 +10,7 @@ export const registry = ServerRegistry();
 
 registry.connect({ wsm, isClient: false, em });
 const scene = new THREE.Scene();
-const spriteRenderer = SpriteRenderer({ registry, scene });
+// const spriteRenderer = SpriteRenderer({ registry, scene });
 
 function tick() {
 	spriteRenderer.onRender(); 
