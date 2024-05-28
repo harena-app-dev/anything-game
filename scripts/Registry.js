@@ -15,6 +15,20 @@ export function Observable() {
 		}
 	}
 }
+export function addFunctionObservables({ parent, name }) {
+	// add pre and post observables	
+	const preObservable = Observable();
+	const postObservable = Observable();
+	const f = parent[name];
+	parent[name] = (...args) => {
+		preObservable.notify({ args });
+		const result = f(...args);
+		postObservable.notify({ args, result });
+		return result;
+	};
+	parent[`onPre${name[0].toUpperCase()}${name.slice(1)}`] = preObservable;
+	parent[`onPost${name[0].toUpperCase()}${name.slice(1)}`] = postObservable;
+}
 export function assert(condition, message) {
 	if (!condition) {
 		throw new Error(message);
