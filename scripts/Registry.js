@@ -51,17 +51,6 @@ export function Registry() {
 		getTypes({ entity }) {
 			return this.entitiesToTypes[entity];
 		},
-		getSingleton({ type }) {
-			const entities = this.getPool({type});
-			if (entities === undefined) {
-				console.error(`no entities of type ${type}`);
-			}
-			if (Object.keys(entities).length !== 1) {
-				console.error(`expected exactly one entity of type ${type}`);
-			}
-			const entity = Object.keys(entities)[0];
-			return this.get({ type, entity });
-		},
 		create() {
 			let entity;
 			if (this.destroyedSet.length > 0) {
@@ -72,11 +61,6 @@ export function Registry() {
 			this.entitySet.push(entity);
 			this.entitiesToTypes[entity] = [];
 			this.onCreate.notify({ entity });
-			return entity;
-		},
-		createNotification ({ message, severity }) {
-			const entity = registry.create();
-			registry.emplace({ type: 'Notification', entity, component: { message, severity } });
 			return entity;
 		},
 		emplace({ type, entity, component }) {
