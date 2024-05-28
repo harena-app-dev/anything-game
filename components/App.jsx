@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-import RegistryView from '@/components/ecs/RegistryView';
 // import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
-import ClientRegistry from '@/scripts/ClientRegistry';
+// import ClientRegistry from '@/scripts/ClientRegistry';
+import Registry from '@/scripts/Registry';
+import RegistryView from '@/components/ecs/RegistryView';
+import Client from '@/scripts/systems/Client';
 import Box from '@mui/material/Box';
 import Scene from './Scene';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 export default function App() {
 	const webSocketMessager = useRef();
 	// const [registry, setRegistry] = useState(NetworkedRegistry());
-	const [registry, setRegistry] = useState(ClientRegistry());
+	// const [registry, setRegistry] = useState(ClientRegistry());
+	const [registry, setRegistry] = useState(Registry());
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -30,14 +33,21 @@ export default function App() {
 			setSnackbarSeverity(severity);
 		};
 		registry.onEmplace['Notification'].connect(onNotification);
-		webSocketMessager.current = new WebSocketMessager(function () {
-			registry.connect({ wsm: webSocketMessager.current, isClient: true });
-			registry.promiseSync().then(() => {
-				setContent(<React.Fragment>
-					<RegistryView registry={registry} />
-					<Scene registry={registry} />
-				</React.Fragment>);
-			});
+		const clientSystem = Client({ registry });
+		// webSocketMessager.current = new WebSocketMessager(function () {
+		// 	// registry.connect({ wsm: webSocketMessager.current, isClient: true });
+		// 	registry.promiseSync().then(() => {
+		// 		setContent(<React.Fragment>
+		// 			<RegistryView registry={registry} />
+		// 			<Scene registry={registry} />
+		// 		</React.Fragment>);
+		// 	});
+		// });
+		clientSystem.promiseSync().then(() => {
+			setContent(<React.Fragment>
+				<RegistryView registry={registry} />
+				<Scene registry={registry} />
+			</React.Fragment>);
 		});
 		return () => {
 			registry.onEmplace['Notification'].disconnect(onNotification);

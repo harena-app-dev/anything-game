@@ -1,4 +1,4 @@
-import { Registry } from './Registry.js';
+import Registry from './Registry.js';
 export function fetchCmd({ name, args }) {
 	return fetch(`http://localhost:3002/${name}`, {
 		method: 'POST',

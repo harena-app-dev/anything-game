@@ -1,5 +1,5 @@
-import WebSocketMessager from "../WebSocketMessager";
-import ExpressMessager from "../ExpressMessager";
+import WebSocketMessager from "../server/WebSocketMessager";
+import ExpressMessager from "../server/ExpressMessager";
 export default function ({ registry }) {
 	const system = {
 		wsm: WebSocketMessager({ port: 3001 }),
@@ -11,7 +11,7 @@ export default function ({ registry }) {
 	registry.onEmplaceAny.connect(function ({ entity, component, type }) {
 		system.wsm.sendToAll("emplace", { entity, component, type })
 	})
-	registry.onUpdateAny.connect(function ({ entity, component, type }) {
+	registry.onUpdate.connect(function ({ entity, component, type }) {
 		system.wsm.sendToAll("update", { entity, component, type })
 	})
 	registry.onErase.connect(function ({ entity, type }) {
@@ -24,6 +24,36 @@ export default function ({ registry }) {
 		name: 'toJson',
 		handler: () => {
 			return registry.toJson();
+		},
+	});
+	system.em.setHandler({
+		name: 'create',
+		handler: () => {
+			return registry.create();
+		},
+	});
+	system.em.setHandler({
+		name: 'emplace',
+		handler: ({ entity, component, type }) => {
+			return registry.emplace({ entity, component, type });
+		},
+	});
+	system.em.setHandler({
+		name: 'update',
+		handler: ({ entity, component, type }) => {
+			return registry.update({ entity, component, type });
+		},
+	});
+	system.em.setHandler({
+		name: 'erase',
+		handler: ({ entity, type }) => {
+			return registry.erase({ entity, type });
+		},
+	});
+	system.em.setHandler({
+		name: 'destroy',
+		handler: ({ entity }) => {
+			return registry.destroy({ entity });
 		},
 	});
 	return system

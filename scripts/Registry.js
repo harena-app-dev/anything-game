@@ -35,7 +35,7 @@ export function assert(condition, message) {
 		throw new Error(message);
 	}
 }
-export function Registry() {
+export default function Registry() {
 	const registry = {
 		entitySet: [],
 		destroyedSet: [],
@@ -64,6 +64,9 @@ export function Registry() {
 			return entity;
 		},
 		onEmplaceAny: Observable(),
+		onUpdate: Observable(),
+		onErase: Observable(),
+		onDestroy: Observable(),
 		emplace({ type, entity, component }) {
 			if (this.entitiesToTypes[entity].includes(type)) {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);				
