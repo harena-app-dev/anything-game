@@ -12,24 +12,32 @@ import Entity from '@/scripts/dnd/Entity';
 import EntityView from '@/components/ecs/EntityView';
 import Console from '@/components/Console';
 import Scene from './Scene';
+import { CircularProgress } from '@mui/material';
 export default function App() {
 	const webSocketMessager = useRef();
 	const [registry, setRegistry] = useState(NetworkedRegistry());
+	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }}/>);
 	useEffect(function () {
 		webSocketMessager.current = new WebSocketMessager(function () {
 			registry.connect({ wsm: webSocketMessager.current, isClient: true });
+			registry.promiseSync().then(() => {
+				setContent(<React.Fragment>
+					<RegistryView registry={registry} setViewedEntity={setViewedEntity} />
+					<Box className='col'>
+						<EntityView registry={registry} entity={viewedEntity} />
+						<Console registry={registry} />
+					</Box>
+					<Scene registry={registry} />
+				</React.Fragment>);
+			});
 		});
 		return () => {
 			webSocketMessager.current?.close();
 		};
 	}, []);
 	const [viewedEntity, setViewedEntity] = useState(0);
+
 	return <Box className="row grow">
-		<RegistryView registry={registry} setViewedEntity={setViewedEntity} />
-		<Box className='col'>
-			<EntityView registry={registry} entity={viewedEntity} />
-			<Console registry={registry} />
-		</Box>
-		<Scene registry={registry} />
+		{content}
 	</Box>
 }

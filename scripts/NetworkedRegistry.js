@@ -1,4 +1,16 @@
 import { Registry } from './Registry.js';
+export function fetchCmd({ name, args }) {
+	return fetch(`http://localhost:3002/${name}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(args),
+	}).then(response => {
+		console.log(`fetchCmd ${name} response: ${response}`);
+		return response.json()
+	});
+}
 export function NetworkedRegistry() {
 	const registry = Registry();
 	registry.connect = ({ wsm, isClient, em }) => {
@@ -14,13 +26,14 @@ export function NetworkedRegistry() {
 				};
 				const fetchName = `fetch${name[0].toUpperCase()}${name.slice(1)}`;
 				registry[fetchName] = (args) => {
-					return fetch(`http://localhost:3002/${name}`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(args),
-					}).then(response => response.json());
+					// return fetch(`http://localhost:3002/${name}`, {
+					// 	method: 'POST',
+					// 	headers: {
+					// 		'Content-Type': 'application/json',
+					// 	},
+					// 	body: JSON.stringify(args),
+					// }).then(response => response.json());
+					return fetchCmd({ name, args });
 				};
 			} else {
 				const f = registry[name].bind(registry);
@@ -42,38 +55,47 @@ export function NetworkedRegistry() {
 			});
 		}
 		if (isClient) {
-			registry.cmdSync = () => {
-				wsm.send('sync');
-			};
-			registry.sync = (jsonString) => {
-				const newRegistry = JSON.parse(jsonString);
-				registry.each({
-					callback: ({ entity }) => {
-						registry.onDestroy.notify({ entity });
+			// registry.cmdSync = () => {
+			// 	wsm.send('sync');
+			// };
+			// registry.sync = (jsonString) => {
+			registry.promiseSync = () => {
+				return fetchCmd({ name: 'sync' }).then(jsonString => {
+					const newRegistry = JSON.parse(jsonString);
+					registry.each({
+						callback: ({ entity }) => {
+							registry.onDestroy.notify({ entity });
+						}
+					});
+					for (let [key, value] of Object.entries(newRegistry)) {
+						if (registry.unsynced.has(key)) {
+							continue;
+						}
+						registry[key] = value;
 					}
+					registry.each({
+						callback: ({ entity }) => {
+							registry.onCreate.notify({ entity });
+						}
+					});
 				});
-				for (let [key, value] of Object.entries(newRegistry)) {
-					if (registry.unsynced.has(key)) {
-						continue;
-					}
-					registry[key] = value;
-				}
-				registry.each({
-					callback: ({ entity }) => {
-						registry.onCreate.notify({ entity });
-					}
-				});
+				// wsm.addHandler('sync', ({ ws, args }) => {
+				// 	registry.sync(args);
+				// });
+				// registry.cmdSync();
 			};
-			wsm.addHandler('sync', ({ ws, args }) => {
-				registry.sync(args);
-			});
-			registry.cmdSync();
 		} else {
-			registry.sync = ({ ws }) => {
-				wsm.send(ws, 'sync', registry);
-			};
-			wsm.addHandler('sync', ({ ws, args }) => {
-				wsm.send(ws, 'sync', JSON.stringify(registry));
+			// registry.sync = ({ ws }) => {
+			// 	wsm.send(ws, 'sync', registry);
+			// };
+			// wsm.addHandler('sync', ({ ws, args }) => {
+			// 	wsm.send(ws, 'sync', JSON.stringify(registry));
+			// });
+			em.setHandler({
+				name: 'sync',
+				handler: () => {
+					return JSON.stringify(registry);
+				},
 			});
 		}
 
