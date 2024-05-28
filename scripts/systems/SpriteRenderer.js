@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
-export default function ({ registry }) {
+export default function ({ registry, scene }) {
 	const system = {
 		pathsToTextures: {},
 		pathsToMaterials: {},
-		onEmplace: ({ entity, component }) => {
+		onEmplace: function ({ entity, component }) {
 			const { path } = component
 			const geometry = new THREE.BoxGeometry(1, 1, 1)
 			let texture

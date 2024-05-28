@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import * as THREE from 'three';
+import SpriteRenderer from '@/scripts/systems/SpriteRenderer';
+
 export default function Scene({ registry }) {
 	// if (!navigator.gpu) {
 	// 	throw new Error("WebGPU not supported on this browser.");
 	// } else {
 	// 	console.log("WebGPU supported!");
 	// }
+	const [spriteRenderer, setSpriteRenderer] = useState();
+
 	useEffect(() => {
 		const scene = new THREE.Scene();
-
+		setSpriteRenderer(SpriteRenderer({ registry, scene }));
 		const renderer = new THREE.WebGLRenderer();
 		const sceneElement = document.getElementById("scene");
 		// renderer.setSize( window.innerWidth, window.innerHeight );
