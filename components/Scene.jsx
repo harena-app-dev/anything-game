@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import * as THREE from 'three';
-import SpriteRenderer from '@/scripts/systems/SpriteRenderer';
+import SpriteRenderer from '@/scripts/systems/SpriteRender';
 
 export default function Scene({ registry }) {
 	useEffect(() => {

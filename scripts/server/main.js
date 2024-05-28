@@ -2,7 +2,7 @@
 import WebSocketMessager from "./WebSocketMessager";
 import ServerRegistry from "../ServerRegistry";
 import ExpressMessager from "./ExpressMessager";
-import SpriteRenderer from "../systems/SpriteRenderer";
+import SpriteRenderer from "../systems/SpriteRender";
 import * as THREE from "three";
 export const wsm = WebSocketMessager({ port: 3001 });
 export const em = ExpressMessager({ port: 3002 });
