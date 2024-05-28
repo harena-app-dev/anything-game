@@ -11,7 +11,7 @@ export function fetchCmd({ name, args }) {
 		return response.json()
 	});
 }
-export default function NetworkedRegistry() {
+export default function ServerRegistry() {
 	const registry = Registry();
 
 	registry.connect = ({ wsm, isClient, em }) => {
@@ -19,10 +19,14 @@ export default function NetworkedRegistry() {
 			if (!(value instanceof Function)) {
 				continue;
 			}
-			const f = registry[name].bind(registry);
+			if (name.startsWith('get')) {
+				continue;
+			}
+			const prevFunction = registry[name].bind(registry);
 			registry[name] = (args) => {
+				console.log(`registry.${name}(${JSON.stringify(args, null, 2)})`);
 				wsm.sendToAll(name, args);
-				return f(args);
+				return prevFunction(args);
 			}
 			em.setHandler({
 				name,
@@ -52,7 +56,8 @@ export default function NetworkedRegistry() {
 				},
 			});
 			wsm.addHandler(name, ({ ws, args }) => {
-				f(args);
+				console.log(`wsm.addHandler ${name} ${JSON.stringify(args, null, 2)}`);
+				registry[name](args);
 			});
 		}
 		em.setHandler({

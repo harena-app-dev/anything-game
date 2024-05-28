@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 import RegistryView from '@/components/ecs/RegistryView';
-import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
+// import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
+import ClientRegistry from '@/scripts/ClientRegistry';
 import Box from '@mui/material/Box';
 import Scene from './Scene';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 export default function App() {
 	const webSocketMessager = useRef();
-	const [registry, setRegistry] = useState(NetworkedRegistry());
+	// const [registry, setRegistry] = useState(NetworkedRegistry());
+	const [registry, setRegistry] = useState(ClientRegistry());
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
