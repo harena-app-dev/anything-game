@@ -20,7 +20,7 @@ export function NetworkedRegistry() {
 							'Content-Type': 'application/json',
 						},
 						body: JSON.stringify(args),
-					});
+					}).then(response => response.json());
 				};
 			} else {
 				const f = registry[name].bind(registry);
@@ -28,6 +28,12 @@ export function NetworkedRegistry() {
 					wsm.sendToAll(name, args);
 					return f(args);
 				}
+				em.setHandler({
+					name,
+					handler: (args) => {
+						return registry[name](args);
+					},
+				});
 			}
 			const f = registry[name].bind(registry);
 			wsm.addHandler(name, ({ ws, args }) => {
@@ -41,31 +47,40 @@ export function NetworkedRegistry() {
 			};
 			registry.sync = (jsonString) => {
 				const newRegistry = JSON.parse(jsonString);
-				registry.each({ callback: ({ entity }) => {
-					registry.onDestroy.notify({ entity });
-				}});
+				registry.each({
+					callback: ({ entity }) => {
+						registry.onDestroy.notify({ entity });
+					}
+				});
 				for (let [key, value] of Object.entries(newRegistry)) {
 					if (registry.unsynced.has(key)) {
 						continue;
 					}
 					registry[key] = value;
 				}
-				registry.each({ callback: ({ entity }) => {
-					registry.onCreate.notify({ entity });
-				}});
+				registry.each({
+					callback: ({ entity }) => {
+						registry.onCreate.notify({ entity });
+					}
+				});
+				registry.fetchHas({ entity: 0 }).then((result) => {
+					console.log(`fetchHas result: ${result}`);
+				});
 			};
 			wsm.addHandler('sync', ({ ws, args }) => {
 				registry.sync(args);
 			});
 			registry.cmdSync();
 		} else {
-			registry.sync = ({ws}) => {
+			registry.sync = ({ ws }) => {
 				wsm.send(ws, 'sync', registry);
 			};
 			wsm.addHandler('sync', ({ ws, args }) => {
 				wsm.send(ws, 'sync', JSON.stringify(registry));
 			});
 		}
+
 	}
+
 	return registry;
 }

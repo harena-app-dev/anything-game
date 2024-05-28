@@ -1,30 +1,24 @@
 const express = require('express')
-
-export default function ExpressMessager({port}) {
+const bodyParser = require('body-parser');
+const cors = require('cors');
+export default function ExpressMessager({ port }) {
 	const em = {
 		app: express(),
-		setGetHandler({name, handler}) {
-			em.app.get(name, handler)
+		setHandler({ name, handler }) {
+			em.app.post(`/${name}`, (req, res) => {
+				console.log(`handling ${name}`)
+				const result = handler(req.body)
+				res.send(JSON.stringify(result))
+			})
 		},
-		setPostHandler({name, handler}) {
-			em.app.post(name, handler)
-		},
+
 	}
-	em.app.use(express.json())
-	em.app.use(express.urlencoded({ extended: true }))
-	em.app.get('/', (req, res) => {
-		res.send('Welcome to the homepage!')
-	})
-	em.app.get('/user/:id', (req, res) => {
-		const userId = req.params.id
-		res.send(`User ID: ${userId}`)
-	})
-	em.app.post('/submit', (req, res) => {
-		const { name, email } = req.body
-		res.send(`Name: ${name}, Email: ${email}`)
-	})
+	em.app.use(bodyParser.json());
+	em.app.use(bodyParser.urlencoded({ extended: true }));
+	em.app.use(cors());
+
 	em.app.listen(port, () => {
-		console.log(`Server is running on port ${port}`)
+		console.log(`Express is running on port ${port}`)
 	})
 	return em
 }
