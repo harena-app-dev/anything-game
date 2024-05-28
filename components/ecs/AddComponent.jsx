@@ -30,7 +30,14 @@ export default function ({ registry, entity, type, closeMenu }) {
 	const [json, setJson] = React.useState(JSON.stringify(registry.typesToConstructors[type](), null, 2));
 	const handleEmplace = (e) => {
 		e.stopPropagation();
-		registry.fetchEmplace({ entity, type, component: JSON.parse(json) })
+		let component;
+		try {
+			component = JSON.parse(json);
+		} catch (error) {
+			console.error('error parsing json', json);
+			return;
+		}
+		registry.fetchEmplace({ entity, type, component })
 			.then((comp) => {
 				setOpen(false);
 				closeMenu();

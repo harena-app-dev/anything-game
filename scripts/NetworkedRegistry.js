@@ -66,13 +66,8 @@ export function NetworkedRegistry() {
 			});
 		}
 		if (isClient) {
-			// registry.cmdSync = () => {
-			// 	wsm.send('sync');
-			// };
-			// registry.sync = (jsonString) => {
 			registry.promiseSync = () => {
 				return fetchCmd({ name: 'sync' }).then(newRegistry => {
-					// const newRegistry = JSON.parse(jsonString);
 					registry.each({
 						callback: ({ entity }) => {
 							registry.onDestroy.notify({ entity });
