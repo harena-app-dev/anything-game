@@ -42,15 +42,9 @@ export function Registry() {
 		typesToConstructors: {},
 		entitiesToTypes: {},
 		onCreate: Observable(),
+		onEmplace: {},
 		onDestroy: Observable(),
-		observables: {
-			"create": {
-				
-			},
-			"destroy": {
-			}
-		},
-		unsynced: new Set(['onCreate', 'onDestroy', 'typesToConstructors']),
+		unsynced: new Set(['onCreate', 'onDestroy', 'typesToConstructors', 'onEmplace', 'unsynced']),
 		size() {
 			return this.entitySet.length;
 		},
@@ -85,7 +79,11 @@ export function Registry() {
 				this.typesToEntitiesToComponents[type] = {};
 			}
 			this.typesToEntitiesToComponents[type][entity] = component;
+			if (this.entitiesToTypes[entity].includes(type)) {
+				console.error(`entity ${entity} already has component of type ${type}`);
+			} 
 			this.entitiesToTypes[entity].push(type);
+			this.onEmplace[type].notify({ entity, component });
 			return component;
 		},
 		destroy({ entity }) {
@@ -140,6 +138,7 @@ export function Registry() {
 	};
 	for (let [name, component] of Object.entries(Components)) {
 		registry.typesToConstructors[name] = component;
+		registry.onEmplace[name] = Observable();
 	}
 	return registry;
 }

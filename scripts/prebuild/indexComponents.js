@@ -7,7 +7,8 @@ function indexAllComponents() {
 		if (componentFile[0].toLowerCase() === componentFile[0]) {
 			continue;
 		}
-		indexFileString += `export { ${componentFile.replace('.js', '')} } from './${componentFile}';\n`;
+		indexFileString += `import ${componentFile.replace('.js', '')} from './${componentFile}';\n`;
+		indexFileString += `export { ${componentFile.replace('.js', '')} };\n`;
 	}
 	fs.writeFileSync('scripts/components/index.auto.js', indexFileString)
 }	
