@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import WebSocketMessager from "../scripts/client/WebSocketMessager";
+import WebSocketMessager from "../../scripts/client/WebSocketMessager";
 import NetworkedRegistry from "@/scripts/NetworkedRegistry";
 import Registry, { Entity } from "@/scripts/Registry";
 import Attributes from "@/scripts/dnd/Attributes";

@@ -10,7 +10,14 @@ export default class WebSocketMessager {
 		this.ws = new WebSocket(`ws://${protocol}:${port + 1}`);
 		this.ws.onopen = onopen;
 		this.ws.onmessage = (event) => {
-			const message = JSON.parse(event.data);
+			let message: any;
+			try {
+				message = JSON.parse(event.data);
+			}
+			catch (error) {
+				console.error('error parsing message', event.data);
+				return;
+			}
 			console.log('received message', message);
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {

@@ -71,8 +71,8 @@ export function NetworkedRegistry() {
 			// };
 			// registry.sync = (jsonString) => {
 			registry.promiseSync = () => {
-				return fetchCmd({ name: 'sync' }).then(jsonString => {
-					const newRegistry = JSON.parse(jsonString);
+				return fetchCmd({ name: 'sync' }).then(newRegistry => {
+					// const newRegistry = JSON.parse(jsonString);
 					registry.each({
 						callback: ({ entity }) => {
 							registry.onDestroy.notify({ entity });
@@ -105,7 +105,7 @@ export function NetworkedRegistry() {
 			em.setHandler({
 				name: 'sync',
 				handler: () => {
-					return JSON.stringify(registry);
+					return registry;
 				},
 			});
 		}

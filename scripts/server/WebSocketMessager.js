@@ -25,7 +25,14 @@ export default function WebSocketMessager({port}) {
 		console.log(`${ws.protocol} connected`);
 		ws.on('message', (data) => {
 			console.log(`received message: ${data.toString()}`);
-			const message = JSON.parse(data.toString());
+			let message;
+			try {
+				message = JSON.parse(data.toString());
+			}
+			catch (error) {
+				console.error('error parsing message', event.data);
+				return;
+			}
 			const handlers = wsm.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				handlers.forEach(handler => handler({ws, args: message.data}));

@@ -1,4 +1,4 @@
-import Expandable from "./Expandable";
+import Expandable from "./old/Expandable";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
