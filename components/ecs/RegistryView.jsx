@@ -207,7 +207,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ registry }) {
-	const [viewedEntity, setViewedEntity] = useState(0);
+	const [viewedEntity, setViewedEntity] = useState(-1);
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);
