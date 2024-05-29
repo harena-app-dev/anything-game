@@ -127,10 +127,13 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected, setIsSelecting, registry, selected, client } = props;
+	const { numSelected, setIsSelecting, registry, selected, client, setViewedEntity } = props;
 	const actions = [
 		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
-		{ icon: <AddIcon />, name: 'Create', onClick: () => client.promiseCreate() },
+		{ icon: <AddIcon />, name: 'Create', onClick: () => client.promiseCreate().then((entity) => {
+			setViewedEntity(entity);
+		}),
+	},
 	];
 	return (
 		<Stack direction="column" spacing={0}>
@@ -252,6 +255,7 @@ export default function ({ registry, client }) {
 					registry={registry}
 					selected={selected}
 					client={client}
+					setViewedEntity={setViewedEntity}
 				/>
 				<TableContainer className='col grow'>
 					<Table
