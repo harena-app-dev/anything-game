@@ -6,7 +6,7 @@ import SpriteRenderer from '@/scripts/systems/SpriteRender';
 export default function Scene({ registry }) {
 	useEffect(() => {
 		const scene = new THREE.Scene();
-		const spriteRenderer = new SpriteRenderer({ registry, scene });
+		const spriteRenderer = SpriteRenderer({ registry, scene });
 		const renderer = new THREE.WebGLRenderer();
 		const sceneElement = document.getElementById("scene");
 		renderer.setSize(sceneElement.clientWidth, sceneElement.clientHeight);
@@ -27,6 +27,10 @@ export default function Scene({ registry }) {
 		}
 
 		animate();
+		return () => {
+			sceneElement.removeChild(renderer.domElement);
+			spriteRenderer.deconstruct();
+		};
 	}, []);
 	return (
 		<Box className="col grow" id="scene">

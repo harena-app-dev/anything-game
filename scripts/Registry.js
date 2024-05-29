@@ -8,6 +8,7 @@ export function Observable() {
 		observers: new Set(),
 		connect(callback) {
 			this.observers.add(callback);
+			return this
 		},
 		disconnect(callback) {
 			this.observers.delete(callback);
@@ -116,7 +117,7 @@ export default function Registry() {
 
 		},
 		has({ type, entity }) {
-			return this.getPool({ type }) !== undefined && this.getPool({ type })[entity] !== undefined;
+			return this.getPool({ type })[entity] !== undefined;
 		},
 		getPool({ type }) {
 			if (this.typesToEntitiesToComponents[type] === undefined) {
@@ -153,7 +154,9 @@ export default function Registry() {
 		},
 		replace({ entity, type, component }) {
 			if (!this.has({ type, entity })) {
-				throw new Error(`Entity ${entity} does not have component of type ${type}`);
+				Log.error(`Entity ${entity} does not have component of type ${type}`);
+				return;
+				// throw new Error(`Entity ${entity} does not have component of type ${type}`);
 			}
 			// this.getPool({type})[entity] = component;
 			this.typesToEntitiesToComponents[type][entity] = component;
@@ -181,7 +184,7 @@ export default function Registry() {
 		},
 		fromJson(json) {
 			const obj = JSON.parse(json);
-			Log.debug(`fromJson ${JSON.stringify(obj, null, 2)}`);
+			Log.info(`fromJson ${JSON.stringify(obj, null, 2)}`);
 			this.entitySet = obj.entitySet;
 			this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
 			this.entitiesToTypes = obj.entitiesToTypes;

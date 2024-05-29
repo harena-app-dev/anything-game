@@ -51,7 +51,15 @@ export default function ({ registry, scene }) {
 			})
 		}
 	}
-	registry.onEmplace({type: "Sprite"}).connect(system.onEmplace.bind(system))
-	registry.onErase({type: "Sprite"}).connect(system.onErase.bind(system))
+	const observers = [
+		registry.onEmplace({type: "Sprite"}).connect(system.onEmplace.bind(system)),
+		registry.onErase({type: "Sprite"}).connect(system.onErase.bind(system))
+	]
+	// deconstruct
+	system.deconstruct = () => {
+		for (let observer of observers) {
+			observer.disconnect()
+		}
+	}
 	return system
 }
