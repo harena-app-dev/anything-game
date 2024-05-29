@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.jsx", "scripts/server/main.js", "scripts/server/WebSocketMessager.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.jsx", "scripts/server/main.js", "scripts/server/WebSocketMessager.js", "scripts/systems/MouseManager.js", "scripts/systems/FPCamera.js"],
   "exclude": ["node_modules"]
 }
