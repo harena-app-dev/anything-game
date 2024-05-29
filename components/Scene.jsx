@@ -38,12 +38,10 @@ export default function Scene({ registry, setViewedEntity }) {
 		window.addEventListener('pointermove', onPointerMove);
 
 		function onPointerDown(event) {
-			console.log(`Pointer down: event: ${event}`);
 			const intersects = raycaster.intersectObjects(scene.children);
 			if (intersects.length > 0) {
-				console.log(`intersects[0].object: ${JSON.stringify(intersects[0].object)}`);
-				// const entity = intersects[0].object.userData.entity;
-				// setViewedEntity(entity);
+				const entity = spriteRenderer.getEntityFromThree(intersects[0].object.id);
+				setViewedEntity(entity);
 			}
 		}
 

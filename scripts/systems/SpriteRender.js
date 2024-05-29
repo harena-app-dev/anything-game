@@ -7,7 +7,8 @@ export default function ({ registry, scene }) {
 	const system = {
 		pathsToTextures: {},
 		pathsToMaterials: {},
-		entitiesToMeshes: {},
+		entitiesToThree: {},
+		threeToEntities: {},
 		onEmplace: function ({ entity, component }) {
 			Log.debug("SpriteRenderer.onLoad", { entity, component })
 			const position = registry.getOrEmplace({ type: "Position", entity })
@@ -29,19 +30,31 @@ export default function ({ registry, scene }) {
 			}
 			const sprite = new THREE.Sprite(material);
 			sprite.position.set(position.x, position.y, position.z)
-			this.entitiesToMeshes[entity] = sprite
+			this.entitiesToThree[entity] = sprite.id
+			console.log("SpriteRenderer", { entity })
+			this.threeToEntities[sprite.id] = entity
 			scene.add(sprite)
+		},
+		getEntityFromThree: function (id) {
+
+			console.log("SpriteRenderer.getEntityFromThree", { id, e: this.threeToEntities[id] })
+			return this.threeToEntities[id]
+		},
+		getThreeFromEntity: function (entity) {
+			return this.entitiesToThree[entity]
 		},
 		onErase: function ({ entity }) {
 			Log.debug("SpriteRenderer.onErase", { entity })
-			scene.remove(this.entitiesToMeshes[entity])
-			delete this.entitiesToMeshes[entity]
+			const mesh = this.entitiesToThree[entity]
+			scene.remove(this.entitiesToThree[entity])
+			delete this.entitiesToThree[entity]
+			delete this.threeToEntities[mesh]
 		},
 		onRender() {
 			registry.each({
 				types: ["Sprite"],
 				callback: ({ entity }) => {
-					if (this.entitiesToMeshes[entity] === undefined) {
+					if (this.entitiesToThree[entity] === undefined) {
 						this.onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
 					// const position = registry.get({ type: "Position", entity })

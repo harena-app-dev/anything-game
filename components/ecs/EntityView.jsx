@@ -12,6 +12,7 @@ import AddComponent from "./AddComponent";
 import { nullEntity } from "@/scripts/Registry";
 
 export default function ({ entity, registry, client }) {
+	console.log("EntityView", { entity, registry, client });
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const openMenu = (event) => {

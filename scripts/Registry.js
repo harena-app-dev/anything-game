@@ -149,7 +149,7 @@ export default function Registry() {
 				}
 			}
 			for (let entity of intersection) {
-				callback({ entity });
+				callback({ entity: parseInt(entity) });
 			}
 		},
 		replace({ entity, type, component }) {

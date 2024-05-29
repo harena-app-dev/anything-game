@@ -13,18 +13,12 @@ export default function App() {
 	// const [registry, setRegistry] = useState(NetworkedRegistry());
 	// const [registry, setRegistry] = useState(ClientRegistry());
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
-	console.log("setContent", setContent);
 	const [viewedEntity, setViewedEntity] = useState(nullEntity);
-	console.log("setViewedEntity", setViewedEntity);
 	useEffect(function () {
-		console.log("useEffect setContent", setContent);
-		console.log(" useEffect setViewedEntity", setViewedEntity);
-
+		console.log(`App.useEffect viewedEntity=${viewedEntity}`);
 		const registry = Registry()
 		const clientSystem = Client({ registry });
 		clientSystem.promiseSync().then(() => {
-			console.log("promiseSync setContent", setContent);
-			console.log(" promiseSync setViewedEntity", setViewedEntity);
 			setContent(<React.Fragment>
 				<RegistryView registry={registry} client={clientSystem} viewedEntity={viewedEntity} setViewedEntity={setViewedEntity} />
 				<Scene registry={registry} setViewedEntity={setViewedEntity} />

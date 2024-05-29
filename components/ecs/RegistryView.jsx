@@ -168,7 +168,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function ({ registry, client, viewedEntity, setViewedEntity }) {
-	console.log(" regview setViewedEntity", setViewedEntity);
 
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
@@ -180,7 +179,6 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 	const [selected, setSelected] = React.useState([]);
 	const [isSelecting, setIsSelecting] = React.useState(false);
 	useEffect(function () {
-		console.log("regview useEffect setViewedEntity", setViewedEntity);
 
 		const onCreate = ({ entity }) => {
 			setRows((rows) => {
@@ -212,7 +210,7 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 			registry.onDestroy().disconnect(onDestroy);
 			document.removeEventListener('keydown', onKeydown);
 		};
-	}, [registry]);
+	}, []);
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === 'asc';
 		setOrder(isAsc ? 'desc' : 'asc');
@@ -229,9 +227,7 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 	};
 
 	function handleClick({ event, id }) {
-		console.log(`handleClick setViewedEntity:`, setViewedEntity);
 		if (!isSelecting) {
-			console.log(`setViewedEntity ${id}`);
 			setViewedEntity(id);
 			return;
 		}
