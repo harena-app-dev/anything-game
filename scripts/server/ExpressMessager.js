@@ -8,6 +8,10 @@ export default function ExpressMessager({ port }) {
 			em.app.post(`/${name}`, (req, res) => {
 				console.log(`handling post ${name}`)
 				const result = handler(req.body)
+				if (result === undefined) {
+					res.send(JSON.stringify({}))
+					return
+				}
 				res.send(JSON.stringify(result))
 			})
 		},
