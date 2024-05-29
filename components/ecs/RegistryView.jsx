@@ -166,8 +166,7 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default function ({ registry, client }) {
-	const [viewedEntity, setViewedEntity] = useState(nullEntity);
+export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);

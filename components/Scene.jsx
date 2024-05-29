@@ -7,7 +7,7 @@ import MouseManager from '@/scripts/systems/MouseManager'
 import FPCamera from '@/scripts/systems/FPCamera';
 import KeyboardState from '@/scripts/systems/KeyboardState';
 
-export default function Scene({ registry }) {
+export default function Scene({ registry, setViewedEntity }) {
 	const [content, setContent] = useState(<Alert
 		sx={{ margin: 'auto' }}
 		severity="error">
@@ -37,9 +37,20 @@ export default function Scene({ registry }) {
 
 		window.addEventListener('pointermove', onPointerMove);
 
+		function onPointerDown(event) {
+			console.log(`Pointer down: event: ${event}`);
+			const intersects = raycaster.intersectObjects(scene.children);
+			if (intersects.length > 0) {
+				console.log(`intersects[0].object: ${JSON.stringify(intersects[0].object)}`);
+				// const entity = intersects[0].object.userData.entity;
+				// setViewedEntity(entity);
+			}
+		}
+
+		window.addEventListener('pointerdown', onPointerDown);
+
 		function onRender() {
 			requestAnimationFrame(onRender);
-
 
 			camera.left = -widthHeight.x / zoom;
 			camera.right = widthHeight.x / zoom;

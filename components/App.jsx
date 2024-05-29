@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 // import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
 // import ClientRegistry from '@/scripts/ClientRegistry';
-import Registry from '@/scripts/Registry';
+import Registry, { nullEntity } from '@/scripts/Registry';
 import RegistryView from '@/components/ecs/RegistryView';
 import Client from '@/scripts/systems/Client';
 import Box from '@mui/material/Box';
@@ -16,6 +16,7 @@ export default function App() {
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 	const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+	const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
@@ -29,8 +30,8 @@ export default function App() {
 		const clientSystem = Client({ registry });
 		clientSystem.promiseSync().then(() => {
 			setContent(<React.Fragment>
-				<RegistryView registry={registry} client={clientSystem} />
-				<Scene registry={registry} />
+				<RegistryView registry={registry} client={clientSystem} viewedEntity={viewedEntity} setViewedEntity={setViewedEntity} />
+				<Scene registry={registry} setViewedEntity={setViewedEntity} />
 			</React.Fragment>);
 		});
 		return () => {
