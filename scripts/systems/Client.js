@@ -33,20 +33,17 @@ export default function ({ registry }) {
 				registry.emplace({ entity, component, type });
 			});
 			const updateHandler =
-				// this.wsm.addHandler('update', ({ entity, component, type }) => {
 				this.wsm.addHandler('update', ({ ws, args }) => {
 					const { entity, component, type } = args;
 					Log.debug(`updateHandler ${entity} ${JSON.stringify(component, null, 2)} ${type}`);
 					registry.replace({ entity, component, type });
 				});
 			const eraseHandler =
-				// this.wsm.addHandler('erase', ({ entity, type }) => {
 				this.wsm.addHandler('erase', ({ ws, args }) => {
 					const { entity, type } = args;
 					registry.erase({ entity, type });
 				});
 			const destroyHandler =
-				// this.wsm.addHandler('destroy', ({ entity }) => {
 				this.wsm.addHandler('destroy', ({ ws, args }) => {
 					const { entity } = args;
 					registry.destroy({ entity });
