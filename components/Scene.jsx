@@ -8,11 +8,11 @@ import FPCamera from '@/scripts/systems/FPCamera';
 import KeyboardState from '@/scripts/systems/KeyboardState';
 
 export default function Scene({ registry }) {
-	const [content, setContent] = useState(<Alert 
+	const [content, setContent] = useState(<Alert
 		sx={{ margin: 'auto' }}
 		severity="error">
-			No camera found. Please add a camera to the scene.
-			</Alert>);
+		No camera found. Please add a camera to the scene.
+	</Alert>);
 	useEffect(() => {
 		const scene = new THREE.Scene();
 		const spriteRenderer = SpriteRenderer({ registry, scene });
@@ -26,8 +26,29 @@ export default function Scene({ registry }) {
 		camera.position.z = 5;
 		const keyboardState = new KeyboardState();
 
-		function animate() {
-			requestAnimationFrame(animate);
+		const raycaster = new THREE.Raycaster();
+		const pointer = new THREE.Vector2();
+
+		function onPointerMove(event) {
+
+			// calculate pointer position in normalized device coordinates
+			// (-1 to +1) for both components
+			// console.log(`event.clientX: ${event.clientX} event.clientY: ${event.clientY}`);
+			const offset = sceneElement.getBoundingClientRect();
+			// pointer.x = (event.clientX / widthHeight.x) * 2 - 1;
+			pointer.x = ((event.clientX - offset.left) / widthHeight.x) * 2 - 1;
+			// pointer.y = - (event.clientY / widthHeight.y) * 2 + 1;
+			pointer.y = -((event.clientY - offset.top) / widthHeight.y) * 2 + 1;
+			console.log(`pointer.x: ${pointer.x} pointer.y: ${pointer.y}`);
+
+		}
+
+		window.addEventListener('pointermove', onPointerMove);
+
+		function onRender() {
+			requestAnimationFrame(onRender);
+
+
 			camera.left = -widthHeight.x / zoom;
 			camera.right = widthHeight.x / zoom;
 			camera.top = widthHeight.y / zoom;
@@ -37,16 +58,16 @@ export default function Scene({ registry }) {
 			spriteRenderer.onRender();
 			const cameraSpeed = 10;
 			if (keyboardState.isKeyDown('a')) {
-				camera.position.x -= cameraSpeed/zoom;
+				camera.position.x -= cameraSpeed / zoom;
 			}
 			if (keyboardState.isKeyDown('d')) {
-				camera.position.x += cameraSpeed/zoom;
+				camera.position.x += cameraSpeed / zoom;
 			}
 			if (keyboardState.isKeyDown('w')) {
-				camera.position.y += cameraSpeed/zoom;
+				camera.position.y += cameraSpeed / zoom;
 			}
 			if (keyboardState.isKeyDown('s')) {
-				camera.position.y -= cameraSpeed/zoom;
+				camera.position.y -= cameraSpeed / zoom;
 			}
 			if (keyboardState.isKeyDown(' ')) {
 				zoom -= 1;
@@ -55,8 +76,17 @@ export default function Scene({ registry }) {
 				zoom += 1;
 			}
 
+			// update the picking ray with the camera and pointer position
+			raycaster.setFromCamera(pointer, camera);
+
+			// calculate objects intersecting the picking ray
+			const intersects = raycaster.intersectObjects(scene.children);
+			console.log(`intersects.length: ${intersects.length}`);
+			for (let i = 0; i < THREE.MathUtils.clamp(intersects.length, 0, 1); i++) {
+
+			}
 		}
-		animate();
+		onRender();
 		return () => {
 			sceneElement.removeChild(renderer.domElement);
 			spriteRenderer.deconstruct();
