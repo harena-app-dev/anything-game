@@ -1,4 +1,4 @@
-export const log = {
+export default  {
 	debug(str) {
 		console.debug(str)
 	},

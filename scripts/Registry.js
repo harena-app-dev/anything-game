@@ -1,5 +1,6 @@
 // import fs from 'fs';
 // import path from 'path';
+import Log from './Log';
 import * as Components from './components/index.auto.js';
 export const nullEntity = -1;
 export function Observable() {
@@ -87,14 +88,31 @@ export default function Registry() {
 			}
 			return this.get({ type, entity });
 		},
+		erase({ type, entity }) {
+			if (!this.has({ type, entity })) {
+				throw new Error(`Entity ${entity} does not have component of type ${type}`);
+			}
+			const component = this.get({ type, entity });
+			this.onErase.notify({ entity, type, component });
+			delete this.getPool({type})[entity];
+			const index = this.entitiesToTypes[entity].indexOf(type);
+			this.entitiesToTypes[entity].splice(index, 1);
+		},
 		destroy({ entity }) {
 			if (!this.valid({entity})) {
 				throw new Error(`Entity ${entity} does not exist`);
+			}
+			Log.debug(`this.entitiesToTypes[entity] ${JSON.stringify(this.entitiesToTypes[entity], null, 2)}`);
+			for (let type of this.entitiesToTypes[entity].slice()) {
+				console.log(`destroy ${type} ${entity}`);
+				this.erase({ type, entity });
 			}
 			this.onDestroy.notify({ entity });
 			const index = this.entitySet.indexOf(entity);
 			this.entitySet.splice(index, 1);
 			this.destroyedSet.push(entity);
+			delete this.entitiesToTypes[entity];
+
 		},
 		has({ type, entity }) {
 			return this.getPool({type}) !== undefined && this.getPool({type})[entity] !== undefined;
@@ -146,14 +164,17 @@ export default function Registry() {
 				entitySet: this.entitySet,
 				typesToEntitiesToComponents: this.typesToEntitiesToComponents,
 				entitiesToTypes: this.entitiesToTypes,
+				destroyedSet: this.destroyedSet,
 			};
 			return JSON.stringify(obj);
 		},
 		fromJson(json) {
 			const obj = JSON.parse(json);
+			console.log(`fromJson ${JSON.stringify(obj, null, 2)}`);
 			this.entitySet = obj.entitySet;
 			this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
 			this.entitiesToTypes = obj.entitiesToTypes;
+			this.destroyedSet = obj.destroyedSet;
 		},
 	};
 	for (let [type, constructor] of Object.entries(Components)) {
