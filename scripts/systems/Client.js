@@ -5,7 +5,7 @@ export function fetchCmd({ name, args }) {
 	const address = currentUrl[2].split(':')
 	const port = address.length > 1 ? Number(address[1]) : 80
 	const protocol = currentUrl[0] === 'http:' ? 'http' : 'https'
-	return fetch(`${protocol}://${address[0]}:${port+2}/${name}`, {
+	return fetch(`${protocol}://${address[0]}:${port + 2}/${name}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -23,10 +23,45 @@ export function fetchCmd({ name, args }) {
 export default function ({ registry }) {
 	const system = {
 		wsm: new WebSocketMessager({ port: 3001 }),
+		onJson(json) {
+			registry.fromJson(json);
+			const createHandler = this.wsm.addHandler('create', () => {
+					registry.create();
+				});
+			const emplaceHandler = this.wsm.addHandler('emplace', ({ ws, args }) => {
+				const { entity, component, type } = args;
+				registry.emplace({ entity, component, type });
+			});
+			const updateHandler =
+				// this.wsm.addHandler('update', ({ entity, component, type }) => {
+				this.wsm.addHandler('update', ({ ws, args }) => {
+					const { entity, component, type } = args;
+					Log.debug(`updateHandler ${entity} ${JSON.stringify(component, null, 2)} ${type}`);
+					registry.replace({ entity, component, type });
+				});
+			const eraseHandler =
+				// this.wsm.addHandler('erase', ({ entity, type }) => {
+				this.wsm.addHandler('erase', ({ ws, args }) => {
+					const { entity, type } = args;
+					registry.erase({ entity, type });
+				});
+			const destroyHandler =
+				// this.wsm.addHandler('destroy', ({ entity }) => {
+				this.wsm.addHandler('destroy', ({ ws, args }) => {
+					const { entity } = args;
+					registry.destroy({ entity });
+				});
+			this.deconstruct = () => {
+				this.wsm.removeHandler(createHandler);
+				this.wsm.removeHandler(emplaceHandler);
+				this.wsm.removeHandler(updateHandler);
+				this.wsm.removeHandler(eraseHandler);
+				this.wsm.removeHandler(destroyHandler);
+				this.wsm.close();
+			}
+		},
 		promiseSync() {
-			return fetchCmd({ name: 'toJson' }).then(json => {
-				registry.fromJson(json);
-			})
+			return fetchCmd({ name: 'toJson' }).then(this.onJson.bind(this));
 		},
 		promiseCreate() {
 			return fetchCmd({ name: 'create' })
@@ -43,41 +78,9 @@ export default function ({ registry }) {
 		promiseDestroy({ entity }) {
 			return fetchCmd({ name: 'destroy', args: { entity } })
 		},
+		deconstruct() {
+		}
 	}
-	const createHandler =
-	system.wsm.addHandler('create', () => {
-		registry.create();
-	});
-	const emplaceHandler = system.wsm.addHandler('emplace', ({ ws, args }) => {
-		const { entity, component, type } = args;
-		registry.emplace({ entity, component, type });
-	});
-	const updateHandler =
-	// system.wsm.addHandler('update', ({ entity, component, type }) => {
-	system.wsm.addHandler('update', ({ ws, args }) => {
-		const { entity, component, type } = args;
-		Log.debug(`updateHandler ${entity} ${JSON.stringify(component, null, 2)} ${type}`);
-		registry.replace({ entity, component, type });
-	});
-	const eraseHandler =
-	// system.wsm.addHandler('erase', ({ entity, type }) => {
-	system.wsm.addHandler('erase', ({ ws, args }) => {
-		const { entity, type } = args;
-		registry.erase({ entity, type });
-	});
-	const destroyHandler =
-	// system.wsm.addHandler('destroy', ({ entity }) => {
-	system.wsm.addHandler('destroy', ({ ws, args }) => {
-		const { entity } = args;
-		registry.destroy({ entity });
-	});
-	system.deconstruct = () => {
-		system.wsm.removeHandler(createHandler);
-		system.wsm.removeHandler(emplaceHandler);
-		system.wsm.removeHandler(updateHandler);
-		system.wsm.removeHandler(eraseHandler);
-		system.wsm.removeHandler(destroyHandler);
-		system.wsm.close();
-	}
+
 	return system
 }
