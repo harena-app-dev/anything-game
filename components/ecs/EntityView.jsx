@@ -12,7 +12,6 @@ import AddComponent from "./AddComponent";
 import { nullEntity } from "@/scripts/Registry";
 
 export default function ({ entity, registry, client }) {
-	console.log("EntityView", { entity, registry, client });
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const openMenu = (event) => {
@@ -22,10 +21,6 @@ export default function ({ entity, registry, client }) {
 		setAnchorEl(null);
 	};
 	const types = registry.getTypes({ entity });
-	if (types !== undefined)
-	for (const type of types) {
-		console.log("EntityView", { type, entity, comp: registry.get({ type, entity }) });
-	}
 	let details;
 	if (entity === nullEntity) {
 		details = <AccordionDetails>

@@ -31,13 +31,11 @@ export default function ({ registry, scene }) {
 			const sprite = new THREE.Sprite(material);
 			sprite.position.set(position.x, position.y, position.z)
 			this.entitiesToThree[entity] = sprite.id
-			console.log("SpriteRenderer", { entity })
 			this.threeToEntities[sprite.id] = entity
 			scene.add(sprite)
 		},
 		getEntityFromThree: function (id) {
 
-			console.log("SpriteRenderer.getEntityFromThree", { id, e: this.threeToEntities[id] })
 			return this.threeToEntities[id]
 		},
 		getThreeFromEntity: function (entity) {

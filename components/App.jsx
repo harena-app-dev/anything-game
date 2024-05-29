@@ -15,7 +15,6 @@ export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	useEffect(function () {
-		console.log(`App.useEffect viewedEntity=${viewedEntity}`);
 		const registry = Registry()
 		const clientSystem = Client({ registry });
 		clientSystem.promiseSync().then(() => {
