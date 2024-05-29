@@ -1,9 +1,9 @@
 
-import ServerRegistry from "../ServerRegistry";
+import Registry from "../Registry";
 import SpriteRenderer from "../systems/SpriteRender";
 import Server from "../systems/Server";
 import * as THREE from "three";
-export const registry = ServerRegistry();
+export const registry = Registry();
 
 const serverSystem = Server({ registry });
 const scene = new THREE.Scene();
