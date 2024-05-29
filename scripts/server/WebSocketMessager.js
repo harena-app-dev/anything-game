@@ -24,9 +24,9 @@ export default function WebSocketMessager({port}) {
 		wss: new WebSocketServer({ port}),
 	};
 	wsm.wss.on('connection', (ws) => {
-		console.log(`${ws.protocol} connected`);
+		Log.debug(`${ws.protocol} connected`);
 		ws.on('message', (data) => {
-			console.log(`received message: ${data.toString()}`);
+			Log.debug(`received message: ${data.toString()}`);
 			let message;
 			try {
 				message = JSON.parse(data.toString());
@@ -39,18 +39,18 @@ export default function WebSocketMessager({port}) {
 			if (handlers) {
 				handlers.forEach(handler => handler({ws, args: message.data}));
 			} else {
-				console.log(`No handler for message name: ${message.name}`);
+				Log.debug(`No handler for message name: ${message.name}`);
 			}
 		});
 	});
 	wsm.wss.on('listening', () => {
-		console.log('listening');
+		Log.debug('listening');
 	});
 	wsm.wss.on('close', () => {
-		console.log('close');
+		Log.debug('close');
 	});
 	wsm.wss.on('error', (error) => {
-		console.log('error', error);
+		Log.debug('error', error);
 	});
 	return wsm;
 }

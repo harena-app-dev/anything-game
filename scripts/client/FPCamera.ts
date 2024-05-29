@@ -52,7 +52,7 @@ export default class FPCamera {
       new THREE.Vector3(0, 1, 0),
       this.cameraYaw,
     );
-    // console.log(`forward: ${forward.x}, ${forward.y}, ${forward.z}`);
+    // Log.debug(`forward: ${forward.x}, ${forward.y}, ${forward.z}`);
     const right = new THREE.Vector3(1, 0, 0).applyAxisAngle(
       new THREE.Vector3(0, 1, 0),
       this.cameraYaw,

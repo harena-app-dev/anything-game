@@ -20,7 +20,7 @@ export default function Scene({ registry }) {
 			// registry.each({
 			// 	types: ["Sprite"], 
 			// 	callback: ({ entity }) => {
-			// 		console.log(`Rendering sprite for entity ${entity}`) // eslint-disable-line no-console
+			// 		Log.debug(`Rendering sprite for entity ${entity}`) // eslint-disable-line no-console
 			// 	}
 			// })
 			spriteRenderer.onRender();

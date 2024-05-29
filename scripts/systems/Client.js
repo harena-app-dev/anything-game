@@ -1,4 +1,5 @@
 import WebSocketMessager from "../client/WebSocketMessager";
+import Log from "../Log";
 export function fetchCmd({ name, args }) {
 	return fetch(`http://localhost:3002/${name}`, {
 		method: 'POST',
@@ -7,7 +8,7 @@ export function fetchCmd({ name, args }) {
 		},
 		body: JSON.stringify(args),
 	}).then(response => {
-		console.log(`fetchCmd ${name} response: ${response}`);
+		Log.debug(`fetchCmd ${name} response: ${response}`);
 		return response.json()
 	});
 }
@@ -47,6 +48,7 @@ export default function ({ registry }) {
 	// system.wsm.addHandler('update', ({ entity, component, type }) => {
 	system.wsm.addHandler('update', ({ ws, args }) => {
 		const { entity, component, type } = args;
+		Log.debug(`updateHandler ${entity} ${JSON.stringify(component, null, 2)} ${type}`);
 		registry.replace({ entity, component, type });
 	});
 	const eraseHandler =

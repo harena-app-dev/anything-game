@@ -19,7 +19,7 @@ export default function ({ entity, registry }: { entity: Entity, registry: Netwo
 		const skillAttributes = entityState.skillAttributes;
 		return <div className="col">
 			{Object.keys(skillAttributes).map((key) => {
-				console.log(key);
+				Log.debug(key);
 				return <div className="row" key={key}>
 					<div className="col grow">{key}</div>
 					<div className="col button square-text">+</div>

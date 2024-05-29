@@ -1,4 +1,5 @@
 import 'client-only'
+import Log from '../Log'
 type Handler = (data: any) => void;
 export default class WebSocketMessager {
 	ws: WebSocket;
@@ -18,11 +19,11 @@ export default class WebSocketMessager {
 				console.error('error parsing message', event.data);
 				return;
 			}
-			console.log('received message', message);
+			Log.debug('received message', message);
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				handlers.forEach(handler => {
-					console.log(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
+					Log.debug(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
 					handler({ws: this.ws, args: message.data})
 				});
 			}

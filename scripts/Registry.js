@@ -69,7 +69,7 @@ export default function Registry() {
 		onErase: Observable(),
 		onDestroy: Observable(),
 		emplace({ type, entity, component }) {
-			console.log(`emplace ${type} ${entity} ${component}`);
+			Log.debug(`emplace ${type} ${entity} ${component}`);
 			if (this.entitiesToTypes[entity].includes(type)) {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);				
 			}
@@ -104,7 +104,7 @@ export default function Registry() {
 			}
 			Log.debug(`this.entitiesToTypes[entity] ${JSON.stringify(this.entitiesToTypes[entity], null, 2)}`);
 			for (let type of this.entitiesToTypes[entity].slice()) {
-				console.log(`destroy ${type} ${entity}`);
+				Log.debug(`destroy ${type} ${entity}`);
 				this.erase({ type, entity });
 			}
 			this.onDestroy.notify({ entity });
@@ -157,6 +157,8 @@ export default function Registry() {
 			// this.getPool({type})[entity] = component;
 			this.typesToEntitiesToComponents[type][entity] = component;
 			this.onUpdate.notify({ entity, type, component });
+			const component1 = this.get({ type, entity });
+			Log.debug(`component1 ${JSON.stringify(component1, null, 2)}`);
 		},
 		map({ types, callback }) {
 			const result = [];
@@ -178,7 +180,7 @@ export default function Registry() {
 		},
 		fromJson(json) {
 			const obj = JSON.parse(json);
-			console.log(`fromJson ${JSON.stringify(obj, null, 2)}`);
+			Log.debug(`fromJson ${JSON.stringify(obj, null, 2)}`);
 			this.entitySet = obj.entitySet;
 			this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
 			this.entitiesToTypes = obj.entitiesToTypes;

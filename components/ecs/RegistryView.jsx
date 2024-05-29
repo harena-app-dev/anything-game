@@ -200,7 +200,7 @@ export default function ({ registry, client }) {
 		registry.onCreate.connect(onCreate);
 		const onDestroy = ({ entity }) => {
 			setRows((rows) => {
-				console.log(`setRows destroy ${entity}`);
+				Log.debug(`setRows destroy ${entity}`);
 				return rows.filter((row) => row.id !== entity);
 			});
 			setSelected((selected) => {

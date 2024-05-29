@@ -1,6 +1,6 @@
 export default  {
 	debug(str) {
-		console.debug(str)
+		// console.debug(str)
 	},
 	info(str) {
 		console.info(str)
