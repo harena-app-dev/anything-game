@@ -3,7 +3,7 @@ export default  {
 		// console.debug(str)
 	},
 	info(str) {
-		console.info(str)
+		// console.info(str)
 	},
 	error(str) {
 		console.error(str)
