@@ -180,7 +180,7 @@ export default function ({ registry, client }) {
 				return [...rows, createData(entity, entity)];
 			});
 		};
-		registry.onCreate.connect(onCreate);
+		registry.onCreate().connect(onCreate);
 		const onDestroy = ({ entity }) => {
 			setRows((rows) => {
 				Log.debug(`setRows destroy ${entity}`);
@@ -190,7 +190,7 @@ export default function ({ registry, client }) {
 				return selected.filter((id) => id !== entity);
 			});
 		};
-		registry.onDestroy.connect(onDestroy);
+		registry.onDestroy().connect(onDestroy);
 		const onKeydown = (event) => {
 			if (event.key === 'Escape') {
 				setIsSelecting((prev) => {
@@ -201,8 +201,8 @@ export default function ({ registry, client }) {
 		};
 		document.addEventListener('keydown', onKeydown);
 		return () => {
-			registry.onCreate.disconnect(onCreate);
-			registry.onDestroy.disconnect(onDestroy);
+			registry.onCreate().disconnect(onCreate);
+			registry.onDestroy().disconnect(onDestroy);
 			document.removeEventListener('keydown', onKeydown);
 		};
 	}, [registry]);

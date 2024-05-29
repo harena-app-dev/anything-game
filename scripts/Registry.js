@@ -61,7 +61,7 @@ export default function Registry() {
 			}
 			this.entitySet.push(entity);
 			this.entitiesToTypes[entity] = [];
-			this.onCreate.notify({ entity });
+			this.onCreate().notify({ entity });
 			return entity;
 		},
 		onEmplaceAny: Observable(),
@@ -71,15 +71,15 @@ export default function Registry() {
 		emplace({ type, entity, component }) {
 			Log.debug(`emplace ${type} ${entity} ${component}`);
 			if (this.entitiesToTypes[entity].includes(type)) {
-				throw new Error(`Entity ${entity} already has component of type ${type}`);				
+				throw new Error(`Entity ${entity} already has component of type ${type}`);
 			}
 			if (component === undefined) {
 				component = this.typesToConstructors[type]();
 			}
-			this.getPool({type})[entity] = component;
+			this.getPool({ type })[entity] = component;
 			this.entitiesToTypes[entity].push(type);
-			this.onEmplace[type].notify({ entity, component });
-			this.onEmplaceAny.notify({ entity, type, component });
+			this.onEmplace({type}).notify({ entity, component })
+			this.onEmplace().notify({ entity, type, component });
 			return component;
 		},
 		getOrEmplace({ type, entity, component }) {
@@ -93,13 +93,14 @@ export default function Registry() {
 				throw new Error(`Entity ${entity} does not have component of type ${type}`);
 			}
 			const component = this.get({ type, entity });
-			this.onErase.notify({ entity, type, component });
-			delete this.getPool({type})[entity];
+			this.onErase().notify({ entity, type, component });
+			this.onErase({type}).notify({ entity, component });
+			delete this.getPool({ type })[entity];
 			const index = this.entitiesToTypes[entity].indexOf(type);
 			this.entitiesToTypes[entity].splice(index, 1);
 		},
 		destroy({ entity }) {
-			if (!this.valid({entity})) {
+			if (!this.valid({ entity })) {
 				throw new Error(`Entity ${entity} does not exist`);
 			}
 			Log.debug(`this.entitiesToTypes[entity] ${JSON.stringify(this.entitiesToTypes[entity], null, 2)}`);
@@ -107,7 +108,7 @@ export default function Registry() {
 				Log.debug(`destroy ${type} ${entity}`);
 				this.erase({ type, entity });
 			}
-			this.onDestroy.notify({ entity });
+			this.onDestroy().notify({ entity });
 			const index = this.entitySet.indexOf(entity);
 			this.entitySet.splice(index, 1);
 			this.destroyedSet.push(entity);
@@ -115,7 +116,7 @@ export default function Registry() {
 
 		},
 		has({ type, entity }) {
-			return this.getPool({type}) !== undefined && this.getPool({type})[entity] !== undefined;
+			return this.getPool({ type }) !== undefined && this.getPool({ type })[entity] !== undefined;
 		},
 		getPool({ type }) {
 			if (this.typesToEntitiesToComponents[type] === undefined) {
@@ -124,7 +125,7 @@ export default function Registry() {
 			return this.typesToEntitiesToComponents[type];
 		},
 		get({ type, entity }) {
-			return this.getPool({type})[entity];
+			return this.getPool({ type })[entity];
 		},
 		valid({ entity }) {
 			return this.entitySet.includes(entity);
@@ -136,7 +137,7 @@ export default function Registry() {
 				}
 				return;
 			}
-			const entitySets = types.map(type => this.getPool({type}));
+			const entitySets = types.map(type => this.getPool({ type }));
 			const intersection = Object.keys(entitySets[0]);
 			for (let i = 1; i < entitySets.length; i++) {
 				const entitySet = entitySets[i];
@@ -156,7 +157,7 @@ export default function Registry() {
 			}
 			// this.getPool({type})[entity] = component;
 			this.typesToEntitiesToComponents[type][entity] = component;
-			this.onUpdate.notify({ entity, type, component });
+			this.onUpdate().notify({ entity, type, component });
 			const component1 = this.get({ type, entity });
 			Log.debug(`component1 ${JSON.stringify(component1, null, 2)}`);
 		},
@@ -186,10 +187,43 @@ export default function Registry() {
 			this.entitiesToTypes = obj.entitiesToTypes;
 			this.destroyedSet = obj.destroyedSet;
 		},
+		observables: {
+			onCreate: Observable(),
+			onDestroy: Observable(),
+			onEmplace: Observable(),
+			onUpdate: Observable(),
+			onErase: Observable(),
+		},
 	};
+	registry.onCreate = function () {
+		return registry.observables["onCreate"];
+	}
+	registry.onEmplace = function ({ type } = {}) {
+		if (type === undefined){ 
+			return registry.observables["onEmplace"];
+		}
+		return registry.observables[`onEmplace${type}`];
+	}
+	registry.onUpdate = function ({ type } = {}) {
+		if (type === undefined){ 
+			return registry.observables["onUpdate"];
+		}
+		return registry.observables[`onUpdate${type}`];
+	}
+	registry.onErase = function ({ type } = {}) {
+		if (type === undefined){ 
+			return registry.observables["onErase"];
+		}
+		return registry.observables[`onErase${type}`];
+	}
+	registry.onDestroy = function () {
+		return registry.observables["onDestroy"];
+	}
 	for (let [type, constructor] of Object.entries(Components)) {
 		registry.typesToConstructors[type] = constructor;
-		registry.onEmplace[type] = Observable();
+		registry.observables[`onEmplace${type}`] = Observable();
+		registry.observables[`onUpdate${type}`] = Observable();
+		registry.observables[`onErase${type}`] = Observable();
 	}
 	return registry;
 }

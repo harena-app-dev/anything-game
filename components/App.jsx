@@ -25,14 +25,7 @@ export default function App() {
 	};
 
 	useEffect(function () {
-		function onNotification({ entity, component }) {
-			const { message, severity } = component;
-			setIsSnackbarOpen(true);
-			setSnackbarMessage(message);
-			setSnackbarSeverity(severity);
-		};
 		const registry = Registry()
-		registry.onEmplace['Notification'].connect(onNotification);
 		const clientSystem = Client({ registry });
 		clientSystem.promiseSync().then(() => {
 			setContent(<React.Fragment>
@@ -41,7 +34,6 @@ export default function App() {
 			</React.Fragment>);
 		});
 		return () => {
-			registry.onEmplace['Notification'].disconnect(onNotification);
 			webSocketMessager.current?.close();
 			clientSystem.deconstruct();
 		};
@@ -49,21 +41,5 @@ export default function App() {
 
 	return <Box className="row grow">
 		{content}
-		<Snackbar
-			open={isSnackbarOpen}
-			autoHideDuration={6000}
-			onClose={handleClose}
-		>
-			<Alert
-				onClose={handleClose}
-				severity={snackbarSeverity}
-				variant="filled"
-				sx={{ width: '100%' }}
-			>
-				<pre>
-					{snackbarMessage}
-				</pre>
-			</Alert>
-		</Snackbar>
 	</Box>
 }

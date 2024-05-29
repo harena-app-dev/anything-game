@@ -31,6 +31,11 @@ export default function ({ registry, scene }) {
 			this.entitiesToMeshes[entity] = sprite
 			scene.add(sprite)
 		},
+		onErase: function ({ entity }) {
+			Log.debug("SpriteRenderer.onErase", { entity })
+			scene.remove(this.entitiesToMeshes[entity])
+			delete this.entitiesToMeshes[entity]
+		},
 		onRender() {
 			registry.each({
 				types: ["Sprite"],
@@ -45,6 +50,8 @@ export default function ({ registry, scene }) {
 			})
 		}
 	}
-	registry.onEmplace["Sprite"].connect(system.onEmplace.bind(system))
+	// registry.onEmplace["Sprite"].connect(system.onEmplace.bind(system))
+	registry.onEmplace({type: "Sprite"}).connect(system.onEmplace.bind(system))
+	registry.onErase({type: "Sprite"}).connect(system.onErase.bind(system))
 	return system
 }
