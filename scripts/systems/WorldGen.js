@@ -7,7 +7,7 @@ export default function ({ registry }) {
 		for (let y = -5; y < 5; y++) {
 			const entity = registry.create()
 			registry.emplace({ type: "Position", entity, component: { x, y, z: 0 } })
-			registry.emplace({ type: "Sprite", entity, component: { path: "rogue.png" } })
+			registry.emplace({ type: "Sprite", entity, component: { path: "dirt.png" } })
 		}
 	}
 	return system
