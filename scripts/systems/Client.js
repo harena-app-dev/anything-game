@@ -47,7 +47,7 @@ export default function ({ registry }) {
 	// system.wsm.addHandler('update', ({ entity, component, type }) => {
 	system.wsm.addHandler('update', ({ ws, args }) => {
 		const { entity, component, type } = args;
-		registry.update({ entity, component, type });
+		registry.replace({ entity, component, type });
 	});
 	const eraseHandler =
 	// system.wsm.addHandler('erase', ({ entity, type }) => {

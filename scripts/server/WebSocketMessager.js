@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws';
+import Log from '../Log.js';
 export default function WebSocketMessager({port}) {
 	const wsm = {
 		addHandler(name, handler) {
@@ -14,7 +15,7 @@ export default function WebSocketMessager({port}) {
 			ws.send(JSON.stringify({ name, data }));
 		},
 		sendToAll(name, data) {
-			console.log(`sendToAll ${name} ${JSON.stringify(data)}`);
+			Log.debug(`sendToAll ${name} ${JSON.stringify(data)}`);
 			this.wss.clients.forEach(ws => {
 				this.send(ws, name, data);
 			});

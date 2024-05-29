@@ -39,6 +39,9 @@ export default function ({ registry, scene }) {
 						this.onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
 					const position = registry.get({ type: "Position", entity })
+					position.x += 0.001
+					registry.replace({ type: "Position", entity, component: position })
+					console.log(`position.x: ${position.x}`)
 					this.entitiesToMeshes[entity].position.set(position.x, position.y, position.z)
 				}
 			})

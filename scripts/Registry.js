@@ -150,6 +150,14 @@ export default function Registry() {
 				callback({ entity });
 			}
 		},
+		replace({ entity, type, component }) {
+			if (!this.has({ type, entity })) {
+				throw new Error(`Entity ${entity} does not have component of type ${type}`);
+			}
+			// this.getPool({type})[entity] = component;
+			this.typesToEntitiesToComponents[type][entity] = component;
+			this.onUpdate.notify({ entity, type, component });
+		},
 		map({ types, callback }) {
 			const result = [];
 			this.each({
