@@ -22,6 +22,10 @@ export default function ({ entity, registry, client }) {
 		setAnchorEl(null);
 	};
 	const types = registry.getTypes({ entity });
+	if (types !== undefined)
+	for (const type of types) {
+		console.log("EntityView", { type, entity, comp: registry.get({ type, entity }) });
+	}
 	let details;
 	if (entity === nullEntity) {
 		details = <AccordionDetails>

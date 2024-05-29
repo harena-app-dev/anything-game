@@ -40,6 +40,17 @@ export default function Scene({ registry, setViewedEntity }) {
 		function onPointerDown(event) {
 			const intersects = raycaster.intersectObjects(scene.children);
 			if (intersects.length > 0) {
+				console.log("Intersects", intersects.length);
+				for (let i = 0; i < intersects.length; i++) {
+					
+					const entity = spriteRenderer.getEntityFromThree(intersects[i].object.id); 
+					console.log("Intersect", { 
+						i, 
+						entity, 
+						sprite: registry.get({ type: 'Sprite', entity })
+					});
+				}
+				// const entity = spriteRenderer.getEntityFromThree(intersects[0].object.id);
 				const entity = spriteRenderer.getEntityFromThree(intersects[0].object.id);
 				setViewedEntity(entity);
 			}

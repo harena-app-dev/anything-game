@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
 export default function ({ entity, registry, type }) {
-	const [jsonState, setJsonState] = useState(JSON.stringify(registry.get({ type, entity }), null, 2)); 
+	// const [jsonState, setJsonState] = useState(JSON.stringify(registry.get({ type, entity }), null, 2)); 
 	return <Accordion>
 		<AccordionSummary
 			expandIcon={<ExpandMoreIcon />}
@@ -27,7 +27,7 @@ export default function ({ entity, registry, type }) {
 			<TextField
 				label="JSON"
 				multiline
-				value={jsonState}
+				value={JSON.stringify(registry.get({ type, entity }), null, 2)}
 				disabled
 			/>
 		</AccordionDetails>
