@@ -6,7 +6,7 @@ export default function ({ registry }) {
 		for (let y = -5; y < 5; y++) {
 			const entity = registry.create()
 			registry.emplace({ type: "Position", entity, component: { x, y, z: 0 } })
-			registry.emplace({ type: "Sprite", entity, component: { path: "dirt.png" } })
+			registry.emplace({ type: "Sprite", entity, component: { path: "grass1.png" } })
 			const rng = Math.random()
 			if (rng < 0.1) {
 				const tree = registry.create()
