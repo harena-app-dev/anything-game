@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-
+import * as THREE from 'three';	
+import Log from '../Log';
 export function isBrowser () {
 	  return typeof window !== 'undefined';
 }
@@ -9,7 +9,7 @@ export default function ({ registry, scene }) {
 		pathsToMaterials: {},
 		entitiesToMeshes: {},
 		onEmplace: function ({ entity, component }) {
-			console.log("SpriteRenderer.onLoad", { entity, component })
+			Log.debug("SpriteRenderer.onLoad", { entity, component })
 			const position = registry.getOrEmplace({ type: "Position", entity })
 			const { path } = component
 			let texture
