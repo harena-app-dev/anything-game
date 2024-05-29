@@ -130,10 +130,11 @@ function EnhancedTableToolbar(props) {
 	const { numSelected, setIsSelecting, registry, selected, client, setViewedEntity } = props;
 	const actions = [
 		{ icon: <RuleIcon />, name: 'Select', onClick: () => setIsSelecting(prev => !prev) },
-		{ icon: <AddIcon />, name: 'Create', onClick: () => client.promiseCreate().then((entity) => {
-			setViewedEntity(entity);
-		}),
-	},
+		{
+			icon: <AddIcon />, name: 'Create', onClick: () => client.promiseCreate().then((entity) => {
+				setViewedEntity(entity);
+			}),
+		},
 	];
 	return (
 		<Stack direction="column" spacing={0}>
@@ -167,6 +168,8 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function ({ registry, client, viewedEntity, setViewedEntity }) {
+	console.log(" regview setViewedEntity", setViewedEntity);
+
 	const [rows, setRows] = React.useState(registry.map({
 		callback: ({ entity }) => {
 			return createData(entity, entity);
@@ -177,6 +180,8 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 	const [selected, setSelected] = React.useState([]);
 	const [isSelecting, setIsSelecting] = React.useState(false);
 	useEffect(function () {
+		console.log("regview useEffect setViewedEntity", setViewedEntity);
+
 		const onCreate = ({ entity }) => {
 			setRows((rows) => {
 				return [...rows, createData(entity, entity)];
@@ -223,8 +228,10 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 		setSelected([]);
 	};
 
-	const handleClick = ({ event, id, setViewedEntity }) => {
+	function handleClick({ event, id }) {
+		console.log(`handleClick setViewedEntity:`, setViewedEntity);
 		if (!isSelecting) {
+			console.log(`setViewedEntity ${id}`);
 			setViewedEntity(id);
 			return;
 		}
@@ -277,7 +284,7 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 								return (
 									<TableRow
 										hover
-										onClick={(event) => handleClick({ event, id: row.id, setViewedEntity })}
+										onClick={(event) => handleClick({ event, id: row.id })}
 										tabIndex={-1}
 										key={row.id}
 										selected={isItemSelected}
@@ -287,7 +294,7 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 											isSelecting &&
 											<TableCell sx={{
 												m: "auto"
-												}} padding={'checkbox'}>
+											}} padding={'checkbox'}>
 												<Checkbox
 													checked={isItemSelected}
 													inputProps={{
@@ -296,9 +303,10 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 												/>
 											</TableCell>
 										}
-										<TableCell sx={{ 
+										<TableCell sx={{
 											m: "auto",
-											height: 64 }}>
+											height: 64
+										}}>
 											{row.id}
 										</TableCell>
 									</TableRow>

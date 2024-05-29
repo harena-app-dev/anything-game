@@ -13,22 +13,18 @@ export default function App() {
 	// const [registry, setRegistry] = useState(NetworkedRegistry());
 	// const [registry, setRegistry] = useState(ClientRegistry());
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
-	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-	const [snackbarMessage, setSnackbarMessage] = useState('');
-	const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+	console.log("setContent", setContent);
 	const [viewedEntity, setViewedEntity] = useState(nullEntity);
-	const handleClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-
-		setIsSnackbarOpen(false);
-	};
-
+	console.log("setViewedEntity", setViewedEntity);
 	useEffect(function () {
+		console.log("useEffect setContent", setContent);
+		console.log(" useEffect setViewedEntity", setViewedEntity);
+
 		const registry = Registry()
 		const clientSystem = Client({ registry });
 		clientSystem.promiseSync().then(() => {
+			console.log("promiseSync setContent", setContent);
+			console.log(" promiseSync setViewedEntity", setViewedEntity);
 			setContent(<React.Fragment>
 				<RegistryView registry={registry} client={clientSystem} viewedEntity={viewedEntity} setViewedEntity={setViewedEntity} />
 				<Scene registry={registry} setViewedEntity={setViewedEntity} />
@@ -38,7 +34,7 @@ export default function App() {
 			webSocketMessager.current?.close();
 			clientSystem.deconstruct();
 		};
-	}, []);
+	}, [viewedEntity]);
 
 	return <Box className="row grow">
 		{content}
