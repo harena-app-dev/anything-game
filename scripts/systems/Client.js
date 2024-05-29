@@ -1,18 +1,11 @@
 import WebSocketMessager from "../client/WebSocketMessager";
 import Log from "../Log";
 export function fetchCmd({ name, args }) {
-	// return fetch(`http://localhost:3002/${name}`, {
 	const currentUrl = window.location.href.split('/')
 	const address = currentUrl[2].split(':')
 	const port = address.length > 1 ? Number(address[1]) : 80
 	const protocol = currentUrl[0] === 'http:' ? 'http' : 'https'
-
-	console.log(`currentUrl: ${currentUrl}`);
-	console.log(`${protocol}://${address[0]}:${port+2}/${name}`);
-	// const port = currentUrl.includes('localhost') ? 3002 : 80;
-	// return fetch(`http://localhost:3002/${name}`, {
 	return fetch(`${protocol}://${address[0]}:${port+2}/${name}`, {
-	// return fetch(`${currentUrl}${name}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
