@@ -50,7 +50,6 @@ export default function ({ registry, scene }) {
 			})
 		}
 	}
-	// registry.onEmplace["Sprite"].connect(system.onEmplace.bind(system))
 	registry.onEmplace({type: "Sprite"}).connect(system.onEmplace.bind(system))
 	registry.onErase({type: "Sprite"}).connect(system.onErase.bind(system))
 	return system
