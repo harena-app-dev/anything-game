@@ -30,17 +30,9 @@ export default function Scene({ registry }) {
 		const pointer = new THREE.Vector2();
 
 		function onPointerMove(event) {
-
-			// calculate pointer position in normalized device coordinates
-			// (-1 to +1) for both components
-			// console.log(`event.clientX: ${event.clientX} event.clientY: ${event.clientY}`);
 			const offset = sceneElement.getBoundingClientRect();
-			// pointer.x = (event.clientX / widthHeight.x) * 2 - 1;
 			pointer.x = ((event.clientX - offset.left) / widthHeight.x) * 2 - 1;
-			// pointer.y = - (event.clientY / widthHeight.y) * 2 + 1;
 			pointer.y = -((event.clientY - offset.top) / widthHeight.y) * 2 + 1;
-			console.log(`pointer.x: ${pointer.x} pointer.y: ${pointer.y}`);
-
 		}
 
 		window.addEventListener('pointermove', onPointerMove);
@@ -76,14 +68,9 @@ export default function Scene({ registry }) {
 				zoom += 1;
 			}
 
-			// update the picking ray with the camera and pointer position
 			raycaster.setFromCamera(pointer, camera);
-
-			// calculate objects intersecting the picking ray
 			const intersects = raycaster.intersectObjects(scene.children);
-			console.log(`intersects.length: ${intersects.length}`);
 			for (let i = 0; i < THREE.MathUtils.clamp(intersects.length, 0, 1); i++) {
-
 			}
 		}
 		onRender();
