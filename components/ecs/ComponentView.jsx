@@ -14,7 +14,6 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
 export default function ({ entity, registry, type }) {
-	// const [jsonState, setJsonState] = useState(JSON.stringify(registry.get({ type, entity }), null, 2));
 	const [expanded, setExpanded] = useState(true); 
 	return <Accordion expanded={expanded}>
 		<AccordionSummary
