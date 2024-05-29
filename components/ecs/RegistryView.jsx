@@ -1,47 +1,30 @@
 import { useEffect, useState } from "react";
 import EntityView from "@/components/ecs/EntityView";
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Skeleton from '@mui/material/Skeleton';
 import RuleIcon from '@mui/icons-material/Rule';
-import Container from '@mui/material/Container';
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import { MenuItem, Stack } from "@mui/material";
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import BasicMenu from "../BasicMenu";
-import { More, MoreHoriz, MoreHorizRounded } from "@mui/icons-material";
+import { MoreHorizRounded } from "@mui/icons-material";
 import Console from "../Console";
 import { nullEntity } from "@/scripts/Registry";
+import Log from "@/scripts/Log";
 
 function createData(id) {
 	return {
