@@ -44,9 +44,9 @@ export default function ({ registry, scene }) {
 					if (this.entitiesToMeshes[entity] === undefined) {
 						this.onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}
-					const position = registry.get({ type: "Position", entity })
-					registry.replace({ type: "Position", entity, component: position })
-					this.entitiesToMeshes[entity].position.set(position.x, position.y, position.z)
+					// const position = registry.get({ type: "Position", entity })
+					// registry.replace({ type: "Position", entity, component: position })
+					// this.entitiesToMeshes[entity].position.set(position.x, position.y, position.z)
 				}
 			})
 		}
