@@ -5,7 +5,7 @@ import SpriteRenderer from '@/scripts/SpriteRender';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 
-export default function Scene({ registry, systems }) {
+export default function Scene({registry, systems}) {
 	useEffect(() => {
 		Log.info(`Scene.useEffect`);
 		const renderer = systems.get('Renderer')

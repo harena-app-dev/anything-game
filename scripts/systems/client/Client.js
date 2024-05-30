@@ -18,7 +18,7 @@ export function fetchCmd({ name, args }) {
 		return response.json()
 	});
 }
-export default function ({ registry }) {
+export default function (registry) {
 	Log.debug(`Client`);
 	const system = {
 		wsm: new WebSocketMessager({ port: 3001 }),

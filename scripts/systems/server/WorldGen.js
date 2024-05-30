@@ -1,5 +1,5 @@
 import Log from '../../Log';
-export default function ({ registry }) {
+export default function (registry) {
 	const system = {
 	}
 	for (let x = -5; x < 5; x++) {

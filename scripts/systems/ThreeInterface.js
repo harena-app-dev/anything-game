@@ -1,5 +1,5 @@
 import * as three from 'three'
-export default function ({ registry }) {
+export default function (registry) {
 	this._scene = new three.Scene() 
 	this._entitiesToThree = {}
 	this._threeToEntities = {}

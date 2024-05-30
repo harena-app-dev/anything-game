@@ -1,7 +1,7 @@
 import Log from '../Log';
 import * as THREE from 'three';
 import { nullEntity } from '../Registry';
-export default function ({ registry, scene }) {
+export default function (registry, systems) {
 	const system = {
 	}
 	registry.onEmplace({type: 'Parent', callback: (entity) => {

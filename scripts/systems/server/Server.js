@@ -1,6 +1,6 @@
 import WebSocketMessager from "../../server/WebSocketMessager";
 import ExpressMessager from "../../server/ExpressMessager";
-export default function ({ registry }) {
+export default function (registry) {
 	const system = {
 		wsm: WebSocketMessager({ port: 3001 }),
 		em: ExpressMessager({ port: 3002 }),

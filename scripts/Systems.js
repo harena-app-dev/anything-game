@@ -14,10 +14,7 @@ export default function ({
 				return;
 			}
 			Log.debug(`get-constructing system ${name}`);
-			this._systems[name] = new constructor({
-				registry: this._registry,
-				systems: this
-			});
+			this._systems[name] = new constructor(registry, this);
 		}
 		return this._systems[name];
 	}
@@ -26,10 +23,7 @@ export default function ({
 			continue;
 		}
 		Log.debug(`constructing system ${name}`);
-		this._systems[name] = new constructor({
-			registry,
-			systems: this
-		});
+		this._systems[name] = new constructor(registry, this);
 		Log.debug(`end constructing ${name}`);
 	}
 	this.tick = function () {
@@ -41,7 +35,8 @@ export default function ({
 				// registry: this._registry,
 				// systemGraph: this,
 			// });
-			system.tick(this._registry, this);
+			// system.tick(this._registry, this);
+			system.tick();
 		}
 	}
 
@@ -50,9 +45,7 @@ export default function ({
 			if (system.destructor === undefined) {
 				continue;
 			}
-			system.destructor({
-				registry: this._registry,
-			});
+			system.destructor();
 		}
 	}
 	Log.debug(`Systems end`);

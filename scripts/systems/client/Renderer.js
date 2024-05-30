@@ -1,6 +1,6 @@
 import Log from '../../Log.js';
 import * as THREE from 'three';
-export default function () {
+export default function (registry, systems) {
 	this._renderer = new THREE.WebGLRenderer();
 	this.setSceneElement = function(sceneElement) {
 		this._renderer.setSize(sceneElement.clientWidth, sceneElement.clientHeight);
@@ -9,7 +9,7 @@ export default function () {
 		let zoom = 100;
 		const camera = new THREE.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
 		camera.position.z = 5;
-		this.tick = function (registry, systems) {
+		this.tick = function () {
 			const scene = systems.get('ThreeInterface').getScene();
 			this._renderer.render(scene, camera);
 		}
