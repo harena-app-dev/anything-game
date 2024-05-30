@@ -26,5 +26,4 @@ export default function KeyboardState() {
 		window.removeEventListener('keyup', onKeyUp);
 	}
 	Log.debug(`KeyboardState end`);
-	return this;
 }

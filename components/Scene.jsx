@@ -3,15 +3,20 @@ import Box from '@mui/material/Box';
 import * as THREE from 'three';
 import SpriteRenderer from '@/scripts/SpriteRender';
 import { Alert } from '@mui/material';
+import Log from '@/scripts/Log';
 
-
-export default function Scene({ registry, setViewedEntity }) {
+export default function Scene({ registry, systems }) {
 	const [content, setContent] = useState(<Alert
 		sx={{ margin: 'auto' }}
 		severity="error">
 		No camera found. Please add a camera to the scene.
 	</Alert>);
 	useEffect(() => {
+		Log.info(`Object.keys(systems): ${Object.keys(systems)}`);
+		Log.info("systems.get", systems.get);
+		const renderer = systems.get('Renderer')
+		renderer.setSceneElement(document.getElementById("scene"));
+		renderer.startRender();
 		// const scene = new THREE.Scene();
 		// const spriteRenderer = SpriteRenderer({ registry, scene });
 		// const renderer = new THREE.WebGLRenderer();

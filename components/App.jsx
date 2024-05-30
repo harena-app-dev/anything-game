@@ -24,8 +24,7 @@ export default function App() {
 		// clientSystem.promiseSync().then(() => {
 		systems.get("Client").promiseSync().then(() => {
 			setContent(<React.Fragment>
-				{/* <RegistryView registry={registry} client={clientSystem} viewedEntity={viewedEntity} setViewedEntity={setViewedEntity} /> */}
-				<Scene registry={registry} />
+				<Scene registry={registry} systems={systems} />
 			</React.Fragment>);
 		});
 		return () => {
