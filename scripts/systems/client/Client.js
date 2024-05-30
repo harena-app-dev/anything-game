@@ -1,8 +1,10 @@
 import WebSocketMessager from "../../client/WebSocketMessager";
 import Log from "../../Log";
-import {offsetPortOfCurrentUrl} from "../../Utils";
+import { offsetPortOfCurrentUrl } from "../../Utils";
 
-export function fetchCmd({ name, args }) {
+// export function fetchCmd({ name, args }) {
+export function fetchCmd(name, ...args) {
+	Log.info(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
 	return fetch(`${offsetPortOfCurrentUrl(2)}/${name}`, {
 		method: 'POST',
 		headers: {
@@ -25,26 +27,20 @@ export default function (registry) {
 		onJson(json) {
 			registry.fromJson(json);
 			const createHandler = this.wsm.addHandler('create', () => {
-					registry.create();
-				});
-			const emplaceHandler = this.wsm.addHandler('emplace', ({ ws, args }) => {
-				const { entity, component, type } = args;
-				registry.emplace({ entity, component, type });
+				registry.create();
 			});
-			const updateHandler =
-				this.wsm.addHandler('update', ({ ws, args }) => {
-					const { entity, component, type } = args;
-					Log.debug(`updateHandler ${entity} ${JSON.stringify(component, null, 2)} ${type}`);
-					registry.replace({ entity, component, type });
+			const emplaceHandler = this.wsm.addHandler('emplace', (ws, type, entity, component) => {
+				registry.emplace(type, entity, component);
+			});
+			const updateHandler = this.wsm.addHandler('update', (ws, type, entity, component) => {
+					registry.replace(type, entity, component);
 				});
-			const eraseHandler =
-				this.wsm.addHandler('erase', ({ ws, args }) => {
-					const { entity, type } = args;
-					registry.erase({ entity, type });
-				});
+			// const eraseHandler = this.wsm.addHandler('erase', (ws, type, entity) => {
+			// 	const { entity, type } = args;
+			// 	registry.erase(type, entity);
+			// });
 			const destroyHandler =
-				this.wsm.addHandler('destroy', ({ ws, args }) => {
-					const { entity } = args;
+				this.wsm.addHandler('destroy', (ws, entity) => {
 					registry.destroy(entity);
 				});
 			this.destructor = () => {
@@ -57,19 +53,24 @@ export default function (registry) {
 			}
 		},
 		promiseSync() {
-			return fetchCmd({ name: 'toJson' }).then(this.onJson.bind(this));
+			// return fetchCmd({ name: 'toJson' }).then(this.onJson.bind(this));
+			return fetchCmd('toJson').then(this.onJson.bind(this));
 		},
 		promiseCreate() {
-			return fetchCmd({ name: 'create' })
+			// return fetchCmd({ name: 'create' })
+			return fetchCmd('create')
 		},
-		promiseEmplace({ entity, component, type }) {
-			return fetchCmd({ name: 'emplace', args: { entity, component, type } })
+		promiseEmplace(type, entity, component) {
+			// return fetchCmd({ name: 'emplace', args: { entity, component, type } })
+			return fetchCmd('emplace', type, entity, component)
 		},
-		promiseUpdate({ entity, component, type }) {
-			return fetchCmd({ name: 'update', args: { entity, component, type } })
+		promiseUpdate(type, entity, component) {
+			// return fetchCmd({ name: 'update', args: { entity, component, type } })
+			return fetchCmd('update', type, entity, component)
 		},
-		promiseErase({ entity, type }) {
-			return fetchCmd({ name: 'erase', args: { entity, type } })
+		promiseErase(type, entity) {
+			// return fetchCmd({ name: 'erase', args: { entity, type } })
+			return fetchCmd('erase', type, entity)
 		},
 		promiseDestroy(entity) {
 			return fetchCmd({ name: 'destroy', args: { entity } })

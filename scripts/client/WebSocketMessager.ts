@@ -1,7 +1,7 @@
 import 'client-only'
 import Log from '../Log'
 import { offsetPortOfCurrentUrl } from '../Utils';
-type Handler = (data: any) => void;
+type Handler = any;
 export default class WebSocketMessager {
 	ws: WebSocket;
 	messageNamesToHandlers: Map<string, Set<Handler>> = new Map();
@@ -23,8 +23,13 @@ export default class WebSocketMessager {
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				handlers.forEach(handler => {
-					Log.debug(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
-					handler({ws: this.ws, args: message.data})
+					Log.info(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
+					// handler({ws: this.ws, args: message.data})
+					if (message.data instanceof Array) {
+						handler(this.ws, ...message.data);
+						return;
+					}
+					handler(this.ws, message.data);
 				});
 			}
 		}

@@ -6,19 +6,27 @@ export default function (registry) {
 		em: ExpressMessager({ port: 3002 }),
 	}
 	registry.onCreate().connect(function (entity) {
-		system.wsm.sendToAll("create", { entity })
+		// system.wsm.sendToAll("create", { entity })
+		system.wsm.sendToAll("create", [entity])
 	})
-	registry.onEmplace().connect(function ({ entity, component, type }) {
-		system.wsm.sendToAll("emplace", { entity, component, type })
+	// registry.onEmplace().connect(function ({ entity, component, type }) {
+	registry.onEmplace().connect(function (type, entity, component) {
+		// system.wsm.sendToAll("emplace", { entity, component, type })
+		system.wsm.sendToAll("emplace", [type, entity, component])
 	})
-	registry.onUpdate().connect(function ({ entity, component, type }) {
-		system.wsm.sendToAll("update", { entity, component, type })
+	// registry.onUpdate().connect(function ({ entity, component, type }) {
+	registry.onUpdate().connect(function (type, entity, component) {
+		// system.wsm.sendToAll("update", { entity, component, type })
+		system.wsm.sendToAll("update", [type, entity, component])
 	})
-	registry.onErase().connect(function ({ entity, type }) {
-		system.wsm.sendToAll("erase", { entity, type })
+	// registry.onErase().connect(function ({ entity, type }) {
+	registry.onErase().connect(function (type, entity, component) {
+		// system.wsm.sendToAll("erase", { entity, type })
+		system.wsm.sendToAll("erase", [type, entity, component])
 	})
 	registry.onDestroy().connect(function (entity) {
-		system.wsm.sendToAll("destroy", { entity })
+		// system.wsm.sendToAll("destroy", { entity })
+		system.wsm.sendToAll("destroy", [entity])
 	})
 	system.em.setHandler({
 		name: 'toJson',
@@ -34,20 +42,20 @@ export default function (registry) {
 	});
 	system.em.setHandler({
 		name: 'emplace',
-		handler: ({ entity, component, type }) => {
-			return registry.emplace({ entity, component, type });
+		handler: (...args) => {
+			return registry.emplace(...args);
 		},
 	});
 	system.em.setHandler({
 		name: 'update',
-		handler: ({ entity, component, type }) => {
-			return registry.update({ entity, component, type });
+		handler: (...args) => {
+			return registry.update(...args);
 		},
 	});
 	system.em.setHandler({
 		name: 'erase',
-		handler: ({ entity, type }) => {
-			return registry.erase({ entity, type });
+		handler: (...args) => {
+			return registry.erase(...args);
 		},
 	});
 	system.em.setHandler({
