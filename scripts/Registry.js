@@ -5,7 +5,7 @@ import View from './View';
 import * as Components from './components/index.auto.js';
 export const nullEntity = -1;
 import Observable from './Observable';
-import { arrayRemove } from './Util';
+import { arrayRemove } from './Utils';
 export function assert(condition, message) {
 	if (!condition) {
 		throw new Error(message);

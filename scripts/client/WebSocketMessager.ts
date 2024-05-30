@@ -1,14 +1,22 @@
 import 'client-only'
 import Log from '../Log'
+import { offsetPortOfCurrentUrl } from '../Utils';
 type Handler = (data: any) => void;
 export default class WebSocketMessager {
 	ws: WebSocket;
 	messageNamesToHandlers: Map<string, Set<Handler>> = new Map();
 	constructor(onopen: () => void) {
 		const currentAddress = window.location.href.split('/')[2];
+		Log.info('currentAddress', currentAddress);
 		const protocol = currentAddress.split(':')[0];
+		Log.info('protocol', protocol);
 		const port = parseInt(currentAddress.split(':')[1]);
-		this.ws = new WebSocket(`ws://${protocol}:${port + 1}`);
+		Log.info('port', port);
+		Log.info(`connecting to ws://${protocol}:${port + 1}`);
+		// this.ws = new WebSocket(`ws://${protocol}:${port + 1}`);
+		const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
+		Log.info('wsUrl', wsUrl);
+		this.ws = new WebSocket(wsUrl);
 		this.ws.onopen = onopen;
 		this.ws.onmessage = (event) => {
 			let message: any;

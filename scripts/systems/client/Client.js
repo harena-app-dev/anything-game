@@ -1,11 +1,9 @@
 import WebSocketMessager from "../../client/WebSocketMessager";
 import Log from "../../Log";
+import {offsetPortOfCurrentUrl} from "../../Utils";
+
 export function fetchCmd({ name, args }) {
-	const currentUrl = window.location.href.split('/')
-	const address = currentUrl[2].split(':')
-	const port = address.length > 1 ? Number(address[1]) : 80
-	const protocol = currentUrl[0] === 'http:' ? 'http' : 'https'
-	return fetch(`${protocol}://${address[0]}:${port + 2}/${name}`, {
+	return fetch(`${offsetPortOfCurrentUrl(2)}/${name}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
