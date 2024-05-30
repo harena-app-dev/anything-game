@@ -3,10 +3,7 @@ import Box from '@mui/material/Box';
 import * as THREE from 'three';
 import SpriteRenderer from '@/scripts/SpriteRender';
 import { Alert } from '@mui/material';
-import MouseManager from '@/scripts/systems/MouseManager'
-import FPCamera from '@/scripts/systems/FPCamera';
-import KeyboardState from '@/scripts/systems/KeyboardState';
-import Raycaster from '@/scripts/systems/Raycaster';
+
 
 export default function Scene({ registry, setViewedEntity }) {
 	const [content, setContent] = useState(<Alert
@@ -25,8 +22,8 @@ export default function Scene({ registry, setViewedEntity }) {
 		let zoom = 100;
 		const camera = new THREE.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
 		camera.position.z = 5;
-		const keyboardState = new KeyboardState();
-		const raycaster = Raycaster({ registry, sceneElement, spriteRenderer, scene });
+		// const keyboardState = new KeyboardState();
+		// const raycaster = Raycaster({ registry, sceneElement, spriteRenderer, scene });
 
 		// const raycaster = new THREE.Raycaster();
 		// const pointer = new THREE.Vector2();

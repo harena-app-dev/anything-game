@@ -9,11 +9,6 @@ const systems = new Systems({
 	constructors: { ...commonSystems, ...serverSystems },
 	registry,
 });
-// const serverSystem = Server({ registry });
-// const worldGenSystem = WorldGen({ registry });
-// const scene = new THREE.Scene();
-// const spriteRenderer = SpriteRenderer({ registry, scene });
-
 function tick() {
 	systems.tick();
 }

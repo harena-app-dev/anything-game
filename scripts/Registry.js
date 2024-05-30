@@ -1,6 +1,7 @@
 // import fs from 'fs';
 // import path from 'path';
 import Log from './Log';
+import View from './View';
 import * as Components from './components/index.auto.js';
 export const nullEntity = -1;
 import Observable from './Observable';
@@ -98,47 +99,18 @@ export default function Registry() {
 		valid(entity) {
 			return this.entitySet.includes(entity);
 		},
-		each({ types, callback }) {
-			if (types === undefined) {
-				for (let entity of this.entitySet) {
-					callback(entity);
-				}
-				return;
-			}
-			const entitySets = types.map(type => this.getPool(type));
-			const intersection = Object.keys(entitySets[0]);
-			for (let i = 1; i < entitySets.length; i++) {
-				const entitySet = entitySets[i];
-				for (let entity of intersection) {
-					if (entitySet[entity] === undefined) {
-						delete intersection[entity];
-					}
-				}
-			}
-			for (let entity of intersection) {
-				callback({ entity: parseInt(entity) });
-			}
-		},
 		replace(type, entity, component) {
 			if (!this.has(type, entity)) {
 				Log.error(`Entity ${entity} does not have component of type ${type}`);
 				return;
-				// throw new Error(`Entity ${entity} does not have component of type ${type}`);
 			}
-			// this.getPool(type)[entity] = component;
-			this.typesToEntitiesToComponents[type][entity] = component;
+			this.getPool(type)[entity] = component;
 			this.onUpdate().notify(type, entity, component);
 			const component1 = this.get(type, entity);
 			Log.debug(`component1 ${JSON.stringify(component1, null, 2)}`);
 		},
-		map({ types, callback }) {
-			const result = [];
-			this.each({
-				types, callback: (entity) => {
-					result.push(callback(entity));
-				}
-			});
-			return result;
+		view(...types) {
+			return new View(this, ...types);
 		},
 		toJson() {
 			const obj = {
@@ -164,34 +136,12 @@ export default function Registry() {
 			onUpdate: Observable(),
 			onErase: Observable(),
 		},
-		view(...types) {
-			const v = {
-				entitySet: [],
-				types: types,
-				size: function () {
-					return this.entitySet.length;
-				},
-				each: function (callback) {
-					for (let entity of this.entitySet) {
-						callback(entity, ...types.map(type => registry.get(type, entity)));
-					}
-				},
-			};
-			if (types === undefined) {
-				v.entitySet = this.entitySet;
-				return;
-			}
-			const pools = types.map(type => this.getPool(type));
-			v.entitySet = Object.keys(pools[0]);
-			for (let i = 1; i < pools.length; i++) {
-				const pool = pools[i];
-				for (let entity of v.entitySet) {
-					if (pool[entity] === undefined) {
-						arrayRemove(v.entitySet, entity);
-					}
-				}
-			}
-			return v;
+		
+		each(callback) {
+			this.view().each(callback);
+		},
+		map(callback) {
+			return this.view().map(callback);
 		}
 	};
 	registry.onCreate = function () {
@@ -199,21 +149,21 @@ export default function Registry() {
 	}
 	// registry.onEmplace = function ({ type } = {}) {
 	registry.onEmplace = function (type) {
-		if (type === undefined){ 
+		if (type === undefined) {
 			return registry.observables["onEmplace"];
 		}
 		return registry.observables[`onEmplace${type}`];
 	}
 	// registry.onUpdate = function ({ type } = {}) {
 	registry.onUpdate = function (type) {
-		if (type === undefined){ 
+		if (type === undefined) {
 			return registry.observables["onUpdate"];
 		}
 		return registry.observables[`onUpdate${type}`];
 	}
 	// registry.onErase = function ({ type } = {}) {
 	registry.onErase = function (type) {
-		if (type === undefined){ 
+		if (type === undefined) {
 			return registry.observables["onErase"];
 		}
 		return registry.observables[`onErase${type}`];
