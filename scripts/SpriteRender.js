@@ -9,7 +9,7 @@ export default function ({ registry, scene }) {
 		pathsToMaterials: {},
 		entitiesToThree: {},
 		threeToEntities: {},
-		onEmplace: function ({ entity, component }) {
+		onEmplace: function (entity, component) {
 			Log.debug("SpriteRenderer.onLoad", { entity, component })
 			const position = registry.getOrEmplace({ type: "Position", entity })
 			const { path } = component

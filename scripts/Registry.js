@@ -13,8 +13,8 @@ export function Observable() {
 		disconnect(callback) {
 			this.observers.delete(callback);
 		},
-		notify(args) {
-			this.observers.forEach(callback => callback(args));
+		notify(...args) {
+			this.observers.forEach(callback => callback(...args));
 		}
 	}
 }
@@ -44,13 +44,10 @@ export default function Registry() {
 		typesToEntitiesToComponents: {},
 		typesToConstructors: {},
 		entitiesToTypes: {},
-		onCreate: Observable(),
-		onEmplace: {},
-		onDestroy: Observable(),
 		size() {
 			return this.entitySet.length;
 		},
-		getTypes({ entity }) {
+		getTypes(entity) {
 			return this.entitiesToTypes[entity];
 		},
 		create() {
@@ -62,41 +59,38 @@ export default function Registry() {
 			}
 			this.entitySet.push(entity);
 			this.entitiesToTypes[entity] = [];
-			this.onCreate().notify({ entity });
+			this.onCreate().notify(entity);
 			return entity;
 		},
-		onEmplaceAny: Observable(),
-		onUpdate: Observable(),
-		onErase: Observable(),
-		onDestroy: Observable(),
-		emplace({ type, entity, component }) {
-			Log.debug(`emplace ${type} ${entity} ${component}`);
+		emplace(type, entity, component) {
+			// Log.debug(`emplace ${type} ${entity} ${component}`);
+			Log.debug(`emplace`, type, entity, component);
 			if (this.entitiesToTypes[entity].includes(type)) {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);
 			}
 			if (component === undefined) {
 				component = this.typesToConstructors[type]();
 			}
-			this.getPool({ type })[entity] = component;
+			this.getPool(type)[entity] = component;
 			this.entitiesToTypes[entity].push(type);
-			this.onEmplace({type}).notify({ entity, component })
-			this.onEmplace().notify({ entity, type, component });
+			this.onEmplace(type).notify(entity, component)
+			this.onEmplace().notify(type, entity, component);
 			return component;
 		},
-		getOrEmplace({ type, entity, component }) {
-			if (!this.has({ type, entity })) {
-				this.emplace({ type, entity, component });
+		getOrEmplace(type, entity, component) {
+			if (!this.has(type, entity)) {
+				this.emplace(type, entity, component);
 			}
-			return this.get({ type, entity });
+			return this.get(type, entity);
 		},
-		erase({ type, entity }) {
-			if (!this.has({ type, entity })) {
+		erase(type, entity) {
+			if (!this.has(type, entity)) {
 				throw new Error(`Entity ${entity} does not have component of type ${type}`);
 			}
-			const component = this.get({ type, entity });
-			this.onErase().notify({ entity, type, component });
-			this.onErase({type}).notify({ entity, component });
-			delete this.getPool({ type })[entity];
+			const component = this.get(type, entity);
+			this.onErase().notify(type, entity, component);
+			this.onErase(type).notify(entity, component);
+			delete this.getPool(type)[entity];
 			const index = this.entitiesToTypes[entity].indexOf(type);
 			this.entitiesToTypes[entity].splice(index, 1);
 		},
@@ -107,26 +101,26 @@ export default function Registry() {
 			Log.debug(`this.entitiesToTypes[entity] ${JSON.stringify(this.entitiesToTypes[entity], null, 2)}`);
 			for (let type of this.entitiesToTypes[entity].slice()) {
 				Log.debug(`destroy ${type} ${entity}`);
-				this.erase({ type, entity });
+				this.erase(type, entity);
 			}
-			this.onDestroy().notify({ entity });
+			this.onDestroy().notify(entity);
 			const index = this.entitySet.indexOf(entity);
 			this.entitySet.splice(index, 1);
 			this.destroyedSet.push(entity);
 			delete this.entitiesToTypes[entity];
 
 		},
-		has({ type, entity }) {
-			return this.getPool({ type })[entity] !== undefined;
+		has(type, entity) {
+			return this.getPool(type)[entity] !== undefined;
 		},
-		getPool({ type }) {
+		getPool(type) {
 			if (this.typesToEntitiesToComponents[type] === undefined) {
 				this.typesToEntitiesToComponents[type] = {};
 			}
 			return this.typesToEntitiesToComponents[type];
 		},
-		get({ type, entity }) {
-			return this.getPool({ type })[entity];
+		get(type, entity) {
+			return this.getPool(type)[entity];
 		},
 		valid({ entity }) {
 			return this.entitySet.includes(entity);
@@ -138,7 +132,7 @@ export default function Registry() {
 				}
 				return;
 			}
-			const entitySets = types.map(type => this.getPool({ type }));
+			const entitySets = types.map(type => this.getPool(type));
 			const intersection = Object.keys(entitySets[0]);
 			for (let i = 1; i < entitySets.length; i++) {
 				const entitySet = entitySets[i];
@@ -152,16 +146,16 @@ export default function Registry() {
 				callback({ entity: parseInt(entity) });
 			}
 		},
-		replace({ entity, type, component }) {
-			if (!this.has({ type, entity })) {
+		replace(type, entity, component) {
+			if (!this.has(type, entity)) {
 				Log.error(`Entity ${entity} does not have component of type ${type}`);
 				return;
 				// throw new Error(`Entity ${entity} does not have component of type ${type}`);
 			}
-			// this.getPool({type})[entity] = component;
+			// this.getPool(type)[entity] = component;
 			this.typesToEntitiesToComponents[type][entity] = component;
-			this.onUpdate().notify({ entity, type, component });
-			const component1 = this.get({ type, entity });
+			this.onUpdate().notify(type, entity, component);
+			const component1 = this.get(type, entity);
 			Log.debug(`component1 ${JSON.stringify(component1, null, 2)}`);
 		},
 		map({ types, callback }) {
@@ -201,19 +195,22 @@ export default function Registry() {
 	registry.onCreate = function () {
 		return registry.observables["onCreate"];
 	}
-	registry.onEmplace = function ({ type } = {}) {
+	// registry.onEmplace = function ({ type } = {}) {
+	registry.onEmplace = function (type) {
 		if (type === undefined){ 
 			return registry.observables["onEmplace"];
 		}
 		return registry.observables[`onEmplace${type}`];
 	}
-	registry.onUpdate = function ({ type } = {}) {
+	// registry.onUpdate = function ({ type } = {}) {
+	registry.onUpdate = function (type) {
 		if (type === undefined){ 
 			return registry.observables["onUpdate"];
 		}
 		return registry.observables[`onUpdate${type}`];
 	}
-	registry.onErase = function ({ type } = {}) {
+	// registry.onErase = function ({ type } = {}) {
+	registry.onErase = function (type) {
 		if (type === undefined){ 
 			return registry.observables["onErase"];
 		}

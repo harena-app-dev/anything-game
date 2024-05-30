@@ -5,13 +5,13 @@ export default function ({ registry }) {
 	for (let x = -5; x < 5; x++) {
 		for (let y = -5; y < 5; y++) {
 			const entity = registry.create()
-			registry.emplace({ type: "Position", entity, component: { x, y, z: 0 } })
-			registry.emplace({ type: "Sprite", entity, component: { path: "grass1.png" } })
+			registry.emplace("Position", entity, { x, y, z: 0 })
+			registry.emplace("Sprite", entity, { path: "grass1.png" })
 			const rng = Math.random()
 			if (rng < 0.1) {
 				const tree = registry.create()
-				registry.emplace({ type: "Position", entity: tree, component: { x, y, z: 0.01 } })
-				registry.emplace({ type: "Sprite", entity: tree, component: { path: "tree.png" } })
+				registry.emplace("Position", tree, { x, y, z: 0.01 })
+				registry.emplace("Sprite", tree, { path: "tree.png" })
 			}
 		}
 	}

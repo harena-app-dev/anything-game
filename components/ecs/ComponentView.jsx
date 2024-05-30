@@ -27,7 +27,7 @@ export default function ({ entity, registry, type }) {
 			<TextField
 				label="JSON"
 				multiline
-				value={JSON.stringify(registry.get({ type, entity }), null, 2)}
+				value={JSON.stringify(registry.get(type, entity), null, 2)}
 				disabled
 			/>
 		</AccordionDetails>

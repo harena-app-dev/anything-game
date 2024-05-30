@@ -37,7 +37,7 @@ export default function ({ registry, entity, type, closeMenu, client }) {
 			console.error('error parsing json', json);
 			return;
 		}
-		client.promiseEmplace({ entity, type, component })
+		client.promiseEmplace(type, entity, component)
 			.then((comp) => {
 				setOpen(false);
 				closeMenu();

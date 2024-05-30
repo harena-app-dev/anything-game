@@ -20,7 +20,7 @@ export default function ({ entity, registry, client }) {
 	const closeMenu = () => {
 		setAnchorEl(null);
 	};
-	const types = registry.getTypes({ entity });
+	const types = registry.getTypes(entity);
 	let details;
 	if (entity === nullEntity) {
 		details = <AccordionDetails>
