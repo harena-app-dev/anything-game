@@ -81,9 +81,7 @@ export default function ({ registry, systems }) {
 	this._pathsToMaterials = {}
 	this._entitiesToThree = {}
 	this._threeToEntities = {}
-	// this._onEmplace = function (entity, component) {
 	this._onEmplace = function (entity, spriteComponent) {
-		// const position = registry.getOrEmplace({ type: "Position", entity })
 		const position = registry.getOrEmplace("Position", entity)
 		const { path } = spriteComponent
 		let texture
@@ -102,6 +100,7 @@ export default function ({ registry, systems }) {
 				this._pathsToMaterials[path] = material
 			}
 		const sprite = new THREE.Sprite(material);
+		Log.info(`SpriteRenderer new sprite`, { entity, spriteComponent, sprite })
 		sprite.position.set(position.x, position.y, position.z)
 		this._entitiesToThree[entity] = sprite.id
 		this._threeToEntities[sprite.id] = entity
@@ -117,9 +116,9 @@ export default function ({ registry, systems }) {
 		delete this._threeToEntities[mesh]
 	}
 	this.tick = function() {
+		Log.info(`SpriteRenderer.tick`)
 		registry.view("Sprite").each((entity) => {
 			if (this._entitiesToThree[entity] === undefined) {
-				// this._onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 				Log.debug("SpriteRenderer.tick", { entity })
 				this._onEmplace(entity, registry.get("Sprite", entity))
 			}

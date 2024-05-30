@@ -16,7 +16,11 @@ export default function Scene({ registry, systems }) {
 		Log.info("systems.get", systems.get);
 		const renderer = systems.get('Renderer')
 		renderer.setSceneElement(document.getElementById("scene"));
-		renderer.startRender();
+		function loop() {
+			systems.tick();
+			requestAnimationFrame(loop);
+		}
+		loop();
 		// const scene = new THREE.Scene();
 		// const spriteRenderer = SpriteRenderer({ registry, scene });
 		// const renderer = new THREE.WebGLRenderer();

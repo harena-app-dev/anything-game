@@ -9,10 +9,7 @@ export default function () {
 		let zoom = 100;
 		const camera = new THREE.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
 		camera.position.z = 5;
-		this.startRender = function () {
-			Log.info(`Renderer.startRender`);
-			requestAnimationFrame(this.startRender.bind(this));
-		}
+
 		this.destructor = function () {
 			sceneElement.removeChild(this._renderer.domElement);
 		}
