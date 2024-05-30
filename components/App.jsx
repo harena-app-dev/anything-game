@@ -9,10 +9,7 @@ import { CircularProgress } from '@mui/material';
 import Log from '@/scripts/Log';
 export default function App() {
 	const webSocketMessager = useRef();
-	// const [registry, setRegistry] = useState(NetworkedRegistry());
-	// const [registry, setRegistry] = useState(ClientRegistry());
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
-	// const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	useEffect(function () {
 		Log.debug(`App.useEffect`);
 		const registry = Registry()
@@ -20,8 +17,6 @@ export default function App() {
 			constructors: { ...commonSystems, ...clientSystems },
 			registry,
 		});
-		// const clientSystem = Client({ registry });
-		// clientSystem.promiseSync().then(() => {
 		systems.get("Client").promiseSync().then(() => {
 			setContent(<React.Fragment>
 				<Scene registry={registry} systems={systems} />
