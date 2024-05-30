@@ -31,6 +31,8 @@ export default class WebSocketMessager {
 					}
 					handler(this.ws, message.data);
 				});
+			} else {
+				Log.warn(`no handler for message "${message.name}"`);
 			}
 		}
 	}

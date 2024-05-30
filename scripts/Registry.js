@@ -34,7 +34,18 @@ export default function Registry() {
 			this.entitySet.push(entity);
 			this.entitiesToTypes[entity] = [];
 			this.onCreate().notify(entity);
+			Log.info(`create ${entity}`);
 			return entity;
+		},
+		update(type, entity, component)  {
+			if (!this.valid(entity)) {
+				entity = this.create();
+			}
+			if (!this.has(type, entity)) {
+				this.emplace(type, entity, component);
+			} else {
+				this.replace(type, entity, component);
+			}
 		},
 		emplace(type, entity, component) {
 			// Log.debug(`emplace ${type} ${entity} ${component}`);

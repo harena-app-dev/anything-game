@@ -26,23 +26,15 @@ export default function (registry) {
 		wsm: new WebSocketMessager({ port: 3001 }),
 		onJson(json) {
 			registry.fromJson(json);
-			const createHandler = this.wsm.addHandler('create', () => {
-				registry.create();
-			});
-			const emplaceHandler = this.wsm.addHandler('emplace', (ws, type, entity, component) => {
-				registry.emplace(type, entity, component);
-			});
 			const updateHandler = this.wsm.addHandler('update', (ws, type, entity, component) => {
-					registry.replace(type, entity, component);
-				});
-			// const eraseHandler = this.wsm.addHandler('erase', (ws, type, entity) => {
-			// 	const { entity, type } = args;
-			// 	registry.erase(type, entity);
-			// });
-			const destroyHandler =
-				this.wsm.addHandler('destroy', (ws, entity) => {
-					registry.destroy(entity);
-				});
+				registry.update(type, entity, component);
+			});
+			const eraseHandler = this.wsm.addHandler('erase', (ws, type, entity, component) => {
+				registry.erase(type, entity, component);
+			});
+			const destroyHandler = this.wsm.addHandler('destroy', (ws, entity) => {
+				registry.destroy(entity);
+			});
 			this.destructor = () => {
 				this.wsm.removeHandler(createHandler);
 				this.wsm.removeHandler(emplaceHandler);
