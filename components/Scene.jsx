@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import * as THREE from 'three';
-import SpriteRenderer from '@/scripts/systems/SpriteRender';
+import SpriteRenderer from '@/scripts/SpriteRender';
 import { Alert } from '@mui/material';
 import MouseManager from '@/scripts/systems/MouseManager'
 import FPCamera from '@/scripts/systems/FPCamera';

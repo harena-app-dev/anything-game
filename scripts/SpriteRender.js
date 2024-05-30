@@ -1,5 +1,5 @@
 import * as THREE from 'three';	
-import Log from '../Log';
+import Log from './Log';
 export function isBrowser () {
 	  return typeof window !== 'undefined';
 }
