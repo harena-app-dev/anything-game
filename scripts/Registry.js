@@ -37,16 +37,7 @@ export default function Registry() {
 			Log.info(`create ${entity}`);
 			return entity;
 		},
-		update(type, entity, component)  {
-			if (!this.valid(entity)) {
-				entity = this.create();
-			}
-			if (!this.has(type, entity)) {
-				this.emplace(type, entity, component);
-			} else {
-				this.replace(type, entity, component);
-			}
-		},
+
 		emplace(type, entity, component) {
 			// Log.debug(`emplace ${type} ${entity} ${component}`);
 			Log.info(`emplace`, type, entity, component);
@@ -67,6 +58,13 @@ export default function Registry() {
 				this.emplace(type, entity, component);
 			}
 			return this.get(type, entity);
+		},
+		emplaceOrReplace(type, entity, component) {
+			if (!this.has(type, entity)) {
+				this.emplace(type, entity, component);
+			} else {
+				this.replace(type, entity, component);
+			}
 		},
 		erase(type, entity) {
 			if (!this.has(type, entity)) {
@@ -147,7 +145,7 @@ export default function Registry() {
 			onUpdate: Observable(),
 			onErase: Observable(),
 		},
-		
+
 		each(callback) {
 			this.view().each(callback);
 		},

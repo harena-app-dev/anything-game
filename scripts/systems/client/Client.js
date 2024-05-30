@@ -27,7 +27,10 @@ export default function (registry) {
 		onJson(json) {
 			registry.fromJson(json);
 			const updateHandler = this.wsm.addHandler('update', (ws, type, entity, component) => {
-				registry.update(type, entity, component);
+				if (!registry.valid(entity)) {
+					entity = registry.create();
+				}
+				registry.emplaceOrReplace(type, entity, component);
 			});
 			const eraseHandler = this.wsm.addHandler('erase', (ws, type, entity, component) => {
 				registry.erase(type, entity, component);
