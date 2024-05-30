@@ -7,11 +7,11 @@ import * as THREE from "three";
 export const registry = Registry();
 
 const serverSystem = Server({ registry });
-const worldGenSystem = WorldGen({ registry });
-const scene = new THREE.Scene();
-const spriteRenderer = SpriteRenderer({ registry, scene });
+// const worldGenSystem = WorldGen({ registry });
+// const scene = new THREE.Scene();
+// const spriteRenderer = SpriteRenderer({ registry, scene });
 
 function tick() {
-	spriteRenderer.onRender(); 
+	// spriteRenderer.onRender(); 
 }
 setInterval(tick, 1000 / 60);

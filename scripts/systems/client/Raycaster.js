@@ -1,6 +1,6 @@
-import Log from '../Log';
+import Log from '../../Log';
 import * as THREE from 'three';
-import { nullEntity } from '../Registry';
+import { nullEntity } from '../../Registry';
 export default function ({ registry, sceneElement, spriteRenderer, scene }) {
 	const system = {
 		raycaster: new THREE.Raycaster(),

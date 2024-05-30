@@ -1,7 +1,6 @@
 import fs from 'fs';
-import path from 'path';
-function indexAllComponents() {
-	const componentFiles = fs.readdirSync("scripts/components")
+function index(path) {
+	const componentFiles = fs.readdirSync(`${path}`)
 	let indexFileString = '';
 	for (let componentFile of componentFiles) {
 		if (componentFile[0].toLowerCase() === componentFile[0]) {
@@ -10,6 +9,8 @@ function indexAllComponents() {
 		indexFileString += `import ${componentFile.replace('.js', '')} from './${componentFile}';\n`;
 		indexFileString += `export { ${componentFile.replace('.js', '')} };\n`;
 	}
-	fs.writeFileSync('scripts/components/index.auto.js', indexFileString)
+	fs.writeFileSync(`${path}/index.auto.js`, indexFileString)
 }	
-indexAllComponents();
+index('scripts/components');
+index('scripts/systems');
+index('scripts/systems/client');
