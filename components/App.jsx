@@ -14,7 +14,7 @@ export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	// const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	useEffect(function () {
-		Log.info(`App.useEffect`);
+		Log.debug(`App.useEffect`);
 		const registry = Registry()
 		const systems = new Systems({
 			constructors: { ...commonSystems, ...clientSystems },

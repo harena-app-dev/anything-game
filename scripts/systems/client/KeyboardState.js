@@ -1,14 +1,14 @@
 import Log from '../../Log.js';
 export default function KeyboardState() {
 	this._keys = {};
-	Log.info(`KeyboardState`);
+	Log.debug(`KeyboardState`);
 	const onKeyDown = (e) => {
-		Log.info(`keydown ${e.key}`);
+		Log.debug(`keydown ${e.key}`);
 		this._keys[e.key.toLowerCase()] = true;
 	}
 	window.addEventListener('keydown', onKeyDown);
 	const onKeyUp = (e) => {
-		Log.info(`keyup ${e.key}`);
+		Log.debug(`keyup ${e.key}`);
 		this._keys[e.key.toLowerCase()] = false;
 	}
 	window.addEventListener('keyup', onKeyUp);
@@ -21,10 +21,10 @@ export default function KeyboardState() {
 		return state ? 1 : 0;
 	}
 	this.destructor = function() {
-		Log.info(`KeyboardState.destructor`);
+		Log.debug(`KeyboardState.destructor`);
 		window.removeEventListener('keydown', onKeyDown);
 		window.removeEventListener('keyup', onKeyUp);
 	}
-	Log.info(`KeyboardState end`);
+	Log.debug(`KeyboardState end`);
 	return this;
 }

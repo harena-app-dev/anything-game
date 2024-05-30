@@ -123,7 +123,7 @@ export default function Registry() {
 		},
 		fromJson(json) {
 			const obj = JSON.parse(json);
-			Log.info(`fromJson ${JSON.stringify(obj, null, 2)}`);
+			Log.debug(`fromJson ${JSON.stringify(obj, null, 2)}`);
 			this.entitySet = obj.entitySet;
 			this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
 			this.entitiesToTypes = obj.entitiesToTypes;
