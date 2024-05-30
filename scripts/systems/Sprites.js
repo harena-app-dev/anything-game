@@ -129,7 +129,7 @@ export default function ({ registry, systems }) {
 		registry.onEmplace("Sprite").connect(this._onEmplace.bind(this)),
 		registry.onErase("Sprite").connect(this._onErase.bind(this)),
 	]
-	this.deconstructor = function() {
+	this.destructor = function() {
 		for (let observer of observers) {
 			observer.disconnect()
 		}

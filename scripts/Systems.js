@@ -1,7 +1,9 @@
+import Log from './Log.js';
 export default function ({
 	constructors,
 	registry,
 }) {
+	Log.info(`Systems`);
 	this._systems = {};
 	this._registry = registry;
 	this.get = function (name) {
@@ -11,6 +13,7 @@ export default function ({
 				Log.error(`system ${name} not found`);
 				return;
 			}
+			console.log(`get constructing ${name}`);
 			this._systems[name] = new constructor({
 				registry: this._registry,
 				systems: this
@@ -22,16 +25,12 @@ export default function ({
 		if (this._systems[name] !== undefined) {
 			continue;
 		}
+		Log.info(`constructing ${name}`);
 		this._systems[name] = new constructor({
 			registry,
 			systems: this
 		});
-	}
-	for (let [name, system] of Object.entries(this._systems)) {
-		system.constructor({
-			registry: this._registry,
-			systems: this
-		});
+		Log.info(`end constructing ${name}`);
 	}
 	this.tick = function () {
 		for (let [name, system] of Object.entries(this._systems)) {
@@ -45,15 +44,16 @@ export default function ({
 		}
 	}
 
-	this.deconstructor = function () {
+	this.destructor = function () {
 		for (let [name, system] of Object.entries(this._systems)) {
-			if (system.deconstructor === undefined) {
+			if (system.destructor === undefined) {
 				continue;
 			}
-			system.deconstructor({
+			system.destructor({
 				registry: this._registry,
 			});
 		}
 	}
+	Log.info(`Systems end`);
 	return this;
 }

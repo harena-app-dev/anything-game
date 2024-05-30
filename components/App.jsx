@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import WebSocketMessager from '@/scripts/client/WebSocketMessager';
-// import { NetworkedRegistry as NetworkedRegistry } from '@/scripts/NetworkedRegistry';
-// import ClientRegistry from '@/scripts/ClientRegistry';
-import Registry, { nullEntity } from '@/scripts/Registry';
-import RegistryView from '@/components/ecs/RegistryView';
-import Client from '@/scripts/systems/client/Client';
+import Registry from '@/scripts/Registry';
 import Box from '@mui/material/Box';
 import Scene from './Scene';
 import * as commonSystems from '@/scripts/systems/index.auto.js';
 import * as clientSystems from '@/scripts/systems/client/index.auto.js';
 import Systems from '@/scripts/Systems';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import Log from '@/scripts/Log';
 export default function App() {
 	const webSocketMessager = useRef();
 	// const [registry, setRegistry] = useState(NetworkedRegistry());
@@ -18,6 +14,7 @@ export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	// const [viewedEntity, setViewedEntity] = useState(nullEntity);
 	useEffect(function () {
+		Log.info(`App.useEffect`);
 		const registry = Registry()
 		const systems = new Systems({
 			constructors: { ...commonSystems, ...clientSystems },
@@ -32,10 +29,10 @@ export default function App() {
 			</React.Fragment>);
 		});
 		return () => {
-			webSocketMessager.current?.close();
-			// clientSystem.deconstruct();
+			webSocketMessager.current?.close()
+			systems.destructor()
 		};
-	});
+	}, []);
 
 	return <Box className="row grow">
 		{content}
