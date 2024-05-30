@@ -1,17 +1,20 @@
 
 import Registry from "../Registry";
-import SpriteRenderer from "../systems/SpriteRender";
-import Server from "../systems/Server";
-import WorldGen from "../systems/WorldGen";
+import * as commonSystems from "../systems/index.auto.js";
+import * as serverSystems from "../systems/server/index.auto.js";
 import * as THREE from "three";
+import Systems from "../Systems";
 export const registry = Registry();
-
-const serverSystem = Server({ registry });
+const systems = new Systems({
+	constructors: { ...commonSystems, ...serverSystems },
+	registry,
+});
+// const serverSystem = Server({ registry });
 // const worldGenSystem = WorldGen({ registry });
 // const scene = new THREE.Scene();
 // const spriteRenderer = SpriteRenderer({ registry, scene });
 
 function tick() {
-	// spriteRenderer.onRender(); 
+	systems.tick();
 }
 setInterval(tick, 1000 / 60);

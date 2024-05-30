@@ -1,11 +1,11 @@
 export default  {
-	debug(str) {
-		// console.debug(str)
+	debug(...args) {
+		// console.debug(...args)
 	},
-	info(str) {
-		// console.info(str)
+	info(...args) {
+		// console.info(...args)
 	},
-	error(str) {
-		console.error(str)
+	error(...args) {
+		console.error(...args)
 	}
 }

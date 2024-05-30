@@ -1,5 +1,5 @@
-import WebSocketMessager from "../client/WebSocketMessager";
-import Log from "../Log";
+import WebSocketMessager from "../../client/WebSocketMessager";
+import Log from "../../Log";
 export function fetchCmd({ name, args }) {
 	const currentUrl = window.location.href.split('/')
 	const address = currentUrl[2].split(':')

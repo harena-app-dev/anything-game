@@ -14,3 +14,4 @@ function index(path) {
 index('scripts/components');
 index('scripts/systems');
 index('scripts/systems/client');
+index('scripts/systems/server');

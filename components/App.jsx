@@ -4,7 +4,7 @@ import WebSocketMessager from '@/scripts/client/WebSocketMessager';
 // import ClientRegistry from '@/scripts/ClientRegistry';
 import Registry, { nullEntity } from '@/scripts/Registry';
 import RegistryView from '@/components/ecs/RegistryView';
-import Client from '@/scripts/systems/Client';
+import Client from '@/scripts/systems/client/Client';
 import Box from '@mui/material/Box';
 import Scene from './Scene';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';

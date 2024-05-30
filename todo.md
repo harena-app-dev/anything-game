@@ -1,12 +1,51 @@
-[ ] system registry
-	how: preprocess all systems and store them in a registry; call them at specific times: init, update, render, shutdown
-	effect: easier to add new features
-[ ] entity save/load api
-	how: clone an entity into a separate "saved" entity, which can is not simulated
-	effect: can now design and reuse entities programmatically
-[ ] entity save/load ui
-	how: just filter entities for saved entities
-	effect: can now see saved entities in the editor
+[ ] System Registry
+	[ ] pre-index system source directories
+	[ ] iterate over systems and store them in a dictionary
+	[ ] call them at specific times: init, update, render, shutdown
+[ ] View
+	[ ] store the current .each's intersection set in the view object
+	[ ] move the current .each to the view object
+[ ] View Excludes
+	[ ] View
+	[ ] add a "excludes" field to the .view function
+	[ ] for each entity in the intersection set, check if it has any of the excluded components
+	[ ] if it does, remove it from the intersection set
+[ ] Movement 
+	[ ] Movement component: speed, direction
+	[ ] each Movement; integrate speed and direction onto Position
+[ ] Mass
+	[ ] Mass component: mass
+[ ] Inventory
+	[ ] Mass
+	[ ] Inventory component: items, spaceCapacity
+	[ ] Item component: inventory
+	[ ] onReplace Mass: update spaceCapacity
+	[ ] onReplace Inventory: update spaceCapacity
+[ ] Text-command-based control
+	[ ] /observe
+		get a summary of the current state of the game
+	[ ] /moveTo target
+		move the player to the target's position
+	[ ] /transfer source destination
+		transfer an item from the source to the destination
+	[ ] /say message
+		say a message
+	[ ] /use item target
+		use an item on a target
+
+[ ] combat system
+[ ] animation system
+[ ] entity save/load 
+	[ ] copy the entity
+		[ ] create a new entity
+		[ ] copy the components
+	[ ] add a Disabled component the 
+[ ] UI: filter entities by component
+	[ ] filter entities button
+	[ ] on click, open modal
+	[ ] in modal, show a button for each component
+	[ ] on click, fetchView of entities with that component
+	[ ] replace the entities list with fetched entities
 [ ] add a button to erase components in ComponentView
 	[ ] on click, fetchErase
 	effect: can now erase components from entities
@@ -16,19 +55,6 @@
 	[ ] add a button to save the changes
 	[ ] add a button to cancel the changes
 	effect: can now replace components from entities
-[ ] movement system
-	effect: can move the character
-[ ] character control system
-	effect: can control the character
-[ ] animation system
-	effect: wow characters look alive
-[ ] combat system
-	effect: can fight
-[ ] inventory system
-	effect: can store items
-[ ] dialogue system
-	effect: can talk to people
-
 
 
 [ ] quest system

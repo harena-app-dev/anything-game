@@ -1,4 +1,4 @@
-import Log from '../Log';
+import Log from '../../Log';
 export default function ({ registry }) {
 	const system = {
 	}
