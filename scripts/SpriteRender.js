@@ -68,8 +68,8 @@ export default function ({ registry, scene }) {
 		registry.onEmplace("Sprite").connect(system.onEmplace.bind(system)),
 		registry.onErase("Sprite").connect(system.onErase.bind(system))
 	]
-	// deconstruct
-	system.deconstruct = () => {
+	// destructor
+	system.destructor = () => {
 		for (let observer of observers) {
 			observer.disconnect()
 		}

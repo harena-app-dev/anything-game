@@ -66,8 +66,8 @@ export function isBrowser() {
 // 		registry.onEmplace({type: "Sprite"}).connect(system.onEmplace.bind(system)),
 // 		registry.onErase({type: "Sprite"}).connect(system.onErase.bind(system))
 // 	]
-// 	// deconstruct
-// 	system.deconstruct = () => {
+// 	// destructor
+// 	system.destructor = () => {
 // 		for (let observer of observers) {
 // 			observer.disconnect()
 // 		}

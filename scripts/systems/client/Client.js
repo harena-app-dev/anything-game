@@ -47,7 +47,7 @@ export default function ({ registry }) {
 					const { entity } = args;
 					registry.destroy(entity);
 				});
-			this.deconstruct = () => {
+			this.destructor = () => {
 				this.wsm.removeHandler(createHandler);
 				this.wsm.removeHandler(emplaceHandler);
 				this.wsm.removeHandler(updateHandler);
@@ -74,7 +74,7 @@ export default function ({ registry }) {
 		promiseDestroy(entity) {
 			return fetchCmd({ name: 'destroy', args: { entity } })
 		},
-		deconstruct() {
+		destructor() {
 		}
 	}
 
