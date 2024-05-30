@@ -37,10 +37,11 @@ export default function ({
 			if (system.tick === undefined) {
 				continue;
 			}
-			system.tick({
-				registry: this._registry,
-				systemGraph: this,
-			});
+			// system.tick({
+				// registry: this._registry,
+				// systemGraph: this,
+			// });
+			system.tick(this._registry, this);
 		}
 	}
 
