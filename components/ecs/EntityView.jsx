@@ -28,7 +28,7 @@ export default function ({ entity, registry, client }) {
 				Select an entity to view its components.
 			</Alert>
 		</AccordionDetails>
-	} else if (!registry.valid({ entity })) {
+	} else if (!registry.valid(entity)) {
 
 		<AccordionDetails>
 			<Alert severity="error">

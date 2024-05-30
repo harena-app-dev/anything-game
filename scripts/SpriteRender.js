@@ -41,7 +41,7 @@ export default function ({ registry, scene }) {
 		getThreeFromEntity: function (entity) {
 			return this.entitiesToThree[entity]
 		},
-		onErase: function ({ entity }) {
+		onErase: function (entity) {
 			Log.debug("SpriteRenderer.onErase", { entity })
 			const mesh = this.entitiesToThree[entity]
 			scene.remove(this.entitiesToThree[entity])
@@ -51,7 +51,7 @@ export default function ({ registry, scene }) {
 		onRender() {
 			registry.each({
 				types: ["Sprite"],
-				callback: ({ entity }) => {
+				callback: (entity) => {
 					if (this.entitiesToThree[entity] === undefined) {
 						this.onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 					}

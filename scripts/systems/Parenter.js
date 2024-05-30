@@ -4,7 +4,7 @@ import { nullEntity } from '../Registry';
 export default function ({ registry, scene }) {
 	const system = {
 	}
-	registry.onEmplace({type: 'Parent', callback: ({ entity }) => {
+	registry.onEmplace({type: 'Parent', callback: (entity) => {
 		const parent = registry.get({ entity, type: 'Parent' });
 		if (parent.entity === nullEntity) {
 			return;

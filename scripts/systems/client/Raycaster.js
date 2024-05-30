@@ -10,7 +10,7 @@ export default function ({ registry, sceneElement, spriteRenderer, scene }) {
 		}
 	}
 	registry.onEmplace({
-		type: 'Selection', callback: ({ entity }) => {
+		type: 'Selection', callback: (entity) => {
 			const sprite = registry.emplace({ entity, type: 'Sprite', component: { path: 'selectionSquare.png' } });
 			const selection = registry.get(entity, 'Selection');
 			const parent = registry.emplace({ entity, type: 'Parent', component: { entity: selection.entity } });
@@ -31,9 +31,9 @@ export default function ({ registry, sceneElement, spriteRenderer, scene }) {
 			registry.emplace({ type: 'Selection', entity: selectionEntity, component: { entity } });
 		} else {
 			registry.each({
-				types: ['Selection'], callback: ({ entity }) => {
+				types: ['Selection'], callback: (entity) => {
 					console.log('destroying selection entity', entity);
-					registry.destroy({ entity });
+					registry.destroy(entity);
 				}
 			});
 		}

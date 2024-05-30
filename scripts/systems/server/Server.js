@@ -5,7 +5,7 @@ export default function ({ registry }) {
 		wsm: WebSocketMessager({ port: 3001 }),
 		em: ExpressMessager({ port: 3002 }),
 	}
-	registry.onCreate().connect(function ({ entity }) {
+	registry.onCreate().connect(function (entity) {
 		system.wsm.sendToAll("create", { entity })
 	})
 	registry.onEmplace().connect(function ({ entity, component, type }) {
@@ -17,7 +17,7 @@ export default function ({ registry }) {
 	registry.onErase().connect(function ({ entity, type }) {
 		system.wsm.sendToAll("erase", { entity, type })
 	})
-	registry.onDestroy().connect(function ({ entity }) {
+	registry.onDestroy().connect(function (entity) {
 		system.wsm.sendToAll("destroy", { entity })
 	})
 	system.em.setHandler({
@@ -52,8 +52,8 @@ export default function ({ registry }) {
 	});
 	system.em.setHandler({
 		name: 'destroy',
-		handler: ({ entity }) => {
-			return registry.destroy({ entity });
+		handler: (entity) => {
+			return registry.destroy(entity);
 		},
 	});
 	return system

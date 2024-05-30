@@ -3,35 +3,8 @@
 import Log from './Log';
 import * as Components from './components/index.auto.js';
 export const nullEntity = -1;
-export function Observable() {
-	return {
-		observers: new Set(),
-		connect(callback) {
-			this.observers.add(callback);
-			return this
-		},
-		disconnect(callback) {
-			this.observers.delete(callback);
-		},
-		notify(...args) {
-			this.observers.forEach(callback => callback(...args));
-		}
-	}
-}
-export function addFunctionObservables({ parent, name }) {
-	// add pre and post observables	
-	const preObservable = Observable();
-	const postObservable = Observable();
-	const f = parent[name];
-	parent[name] = (...args) => {
-		preObservable.notify({ args });
-		const result = f(...args);
-		postObservable.notify({ args, result });
-		return result;
-	};
-	parent[`onPre${name[0].toUpperCase()}${name.slice(1)}`] = preObservable;
-	parent[`onPost${name[0].toUpperCase()}${name.slice(1)}`] = postObservable;
-}
+import Observable from './Observable';
+import { arrayRemove } from './Util';
 export function assert(condition, message) {
 	if (!condition) {
 		throw new Error(message);
@@ -94,8 +67,8 @@ export default function Registry() {
 			const index = this.entitiesToTypes[entity].indexOf(type);
 			this.entitiesToTypes[entity].splice(index, 1);
 		},
-		destroy({ entity }) {
-			if (!this.valid({ entity })) {
+		destroy(entity) {
+			if (!this.valid(entity)) {
 				throw new Error(`Entity ${entity} does not exist`);
 			}
 			Log.debug(`this.entitiesToTypes[entity] ${JSON.stringify(this.entitiesToTypes[entity], null, 2)}`);
@@ -122,13 +95,13 @@ export default function Registry() {
 		get(type, entity) {
 			return this.getPool(type)[entity];
 		},
-		valid({ entity }) {
+		valid(entity) {
 			return this.entitySet.includes(entity);
 		},
 		each({ types, callback }) {
 			if (types === undefined) {
 				for (let entity of this.entitySet) {
-					callback({ entity });
+					callback(entity);
 				}
 				return;
 			}
@@ -161,8 +134,8 @@ export default function Registry() {
 		map({ types, callback }) {
 			const result = [];
 			this.each({
-				types, callback: ({ entity }) => {
-					result.push(callback({ entity }));
+				types, callback: (entity) => {
+					result.push(callback(entity));
 				}
 			});
 			return result;
@@ -191,6 +164,35 @@ export default function Registry() {
 			onUpdate: Observable(),
 			onErase: Observable(),
 		},
+		view(...types) {
+			const v = {
+				entitySet: [],
+				types: types,
+				size: function () {
+					return this.entitySet.length;
+				},
+				each: function (callback) {
+					for (let entity of this.entitySet) {
+						callback(entity, ...types.map(type => registry.get(type, entity)));
+					}
+				},
+			};
+			if (types === undefined) {
+				v.entitySet = this.entitySet;
+				return;
+			}
+			const pools = types.map(type => this.getPool(type));
+			v.entitySet = Object.keys(pools[0]);
+			for (let i = 1; i < pools.length; i++) {
+				const pool = pools[i];
+				for (let entity of v.entitySet) {
+					if (pool[entity] === undefined) {
+						arrayRemove(v.entitySet, entity);
+					}
+				}
+			}
+			return v;
+		}
 	};
 	registry.onCreate = function () {
 		return registry.observables["onCreate"];

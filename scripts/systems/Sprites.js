@@ -41,7 +41,7 @@ export function isBrowser() {
 // 		getThreeFromEntity: function (entity) {
 // 			return this._entitiesToThree[entity]
 // 		},
-// 		onErase: function ({ entity }) {
+// 		onErase: function (entity) {
 // 			Log.debug("SpriteRenderer.onErase", { entity })
 // 			const mesh = this._entitiesToThree[entity]
 // 			scene.remove(this._entitiesToThree[entity])
@@ -51,7 +51,7 @@ export function isBrowser() {
 // 		onRender() {
 // 			registry.each({
 // 				types: ["Sprite"],
-// 				callback: ({ entity }) => {
+// 				callback: (entity) => {
 // 					if (this._entitiesToThree[entity] === undefined) {
 // 						this.onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
 // 					}
@@ -110,16 +110,17 @@ export default function ({ registry, systems }) {
 	this.getEntityFromThreeId = function (id) {
 		return this._threeToEntities[id]
 	}
-	this._onErase = function({ entity }) {
+	this._onErase = function(entity) {
 		const mesh = this._entitiesToThree[entity]
 		scene.remove(this._entitiesToThree[entity])
 		delete this._entitiesToThree[entity]
 		delete this._threeToEntities[mesh]
 	}
 	this.tick = function() {
-		registry.view("Sprite").each(({ entity }) => {
+		registry.view("Sprite").each((entity) => {
 			if (this._entitiesToThree[entity] === undefined) {
 				// this._onEmplace({ entity, component: registry.get({ type: "Sprite", entity }) })
+				Log.debug("SpriteRenderer.tick", { entity })
 				this._onEmplace(entity, registry.get("Sprite", entity))
 			}
 		})

@@ -170,7 +170,7 @@ EnhancedTableToolbar.propTypes = {
 export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 
 	const [rows, setRows] = React.useState(registry.map({
-		callback: ({ entity }) => {
+		callback: (entity) => {
 			return createData(entity, entity);
 		}
 	}));
@@ -180,13 +180,13 @@ export default function ({ registry, client, viewedEntity, setViewedEntity }) {
 	const [isSelecting, setIsSelecting] = React.useState(false);
 	useEffect(function () {
 
-		const onCreate = ({ entity }) => {
+		const onCreate = (entity) => {
 			setRows((rows) => {
 				return [...rows, createData(entity, entity)];
 			});
 		};
 		registry.onCreate().connect(onCreate);
-		const onDestroy = ({ entity }) => {
+		const onDestroy = (entity) => {
 			setRows((rows) => {
 				Log.debug(`setRows destroy ${entity}`);
 				return rows.filter((row) => row.id !== entity);
