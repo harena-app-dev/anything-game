@@ -12,8 +12,8 @@ export default function Scene({ registry, systems }) {
 		No camera found. Please add a camera to the scene.
 	</Alert>);
 	useEffect(() => {
-		Log.info(`Object.keys(systems): ${Object.keys(systems)}`);
-		Log.info("systems.get", systems.get);
+		Log.debug(`Object.keys(systems): ${Object.keys(systems)}`);
+		Log.debug("systems.get", systems.get);
 		const renderer = systems.get('Renderer')
 		renderer.setSceneElement(document.getElementById("scene"));
 		function loop() {

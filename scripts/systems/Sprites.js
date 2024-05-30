@@ -100,7 +100,7 @@ export default function ({ registry, systems }) {
 				this._pathsToMaterials[path] = material
 			}
 		const sprite = new THREE.Sprite(material);
-		Log.info(`SpriteRenderer new sprite`, { entity, spriteComponent, sprite })
+		Log.debug(`SpriteRenderer new sprite`, { entity, spriteComponent, sprite })
 		sprite.position.set(position.x, position.y, position.z)
 		this._entitiesToThree[entity] = sprite.id
 		this._threeToEntities[sprite.id] = entity
@@ -116,7 +116,7 @@ export default function ({ registry, systems }) {
 		delete this._threeToEntities[mesh]
 	}
 	this.tick = function() {
-		Log.info(`SpriteRenderer.tick`)
+		Log.debug(`SpriteRenderer.tick`)
 		registry.view("Sprite").each((entity) => {
 			if (this._entitiesToThree[entity] === undefined) {
 				Log.debug("SpriteRenderer.tick", { entity })

@@ -10,7 +10,6 @@ export default function () {
 		const camera = new THREE.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
 		camera.position.z = 5;
 		this.tick = function (registry, systems) {
-			Log.info(`Renderer.startRender`);
 			const scene = systems.get('ThreeInterface').getScene();
 			this._renderer.render(scene, camera);
 		}

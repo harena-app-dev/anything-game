@@ -13,7 +13,7 @@ export default function ({
 				Log.error(`system ${name} not found`);
 				return;
 			}
-			Log.info(`get-constructing system ${name}`);
+			Log.debug(`get-constructing system ${name}`);
 			this._systems[name] = new constructor({
 				registry: this._registry,
 				systems: this
@@ -25,7 +25,7 @@ export default function ({
 		if (this._systems[name] !== undefined) {
 			continue;
 		}
-		Log.info(`constructing system ${name}`);
+		Log.debug(`constructing system ${name}`);
 		this._systems[name] = new constructor({
 			registry,
 			systems: this
