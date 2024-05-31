@@ -118,6 +118,9 @@ export default function Registry() {
 			const component1 = this.get(type, entity);
 			Log.debug(`component1 ${JSON.stringify(component1, null, 2)}`);
 		},
+		getEntities() {
+			return this.entitySet.slice();
+		},
 		view(...types) {
 			return new View(this, ...types);
 		},
@@ -152,6 +155,7 @@ export default function Registry() {
 		},
 
 		each(callback) {
+			Log.debug(`each ${this.entitySet.length}`);
 			this.view().each(callback);
 		},
 		map(callback) {

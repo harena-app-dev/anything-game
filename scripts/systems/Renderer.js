@@ -21,6 +21,7 @@ export default function (registry, systems) {
 		}
 	}
 	this.add = function (entity, threeObject) {
+		Log.debug(`Renderer.add:`, entity, threeObject);
 		this._scene.add(threeObject);
 		this._entitiesToThree[entity] = threeObject;
 		this._threeToEntities[threeObject.id] = entity;

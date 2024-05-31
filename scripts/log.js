@@ -4,8 +4,7 @@ export default  {
 		// console.trace()
 	},
 	info(...args) {
-		// console.info(...args)
-		// console.trace()
+		console.info(...args)
 	},
 	warn(...args) {
 		console.warn(...args)

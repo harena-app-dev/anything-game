@@ -20,7 +20,7 @@ export default function (registry, ...types) {
 		return result;
 	}
 	if (types.length === 0) {
-		this._entities = this._entities;
+		this._entities = registry.getEntities();
 		return this;
 	}
 	const pools = types.map(type => registry.getPool(type));

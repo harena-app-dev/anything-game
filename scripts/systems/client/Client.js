@@ -33,6 +33,7 @@ export default function (registry) {
 			// registry.fromJson(json);
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
+			Log.debug(`tempRegistry`, tempRegistry.size());
 			const update = this.wsm.addHandler('update', (ws, type, entity, component) => {
 				if (this._s2c[entity] === undefined) {
 					this._s2c[entity] = registry.create();
@@ -40,8 +41,10 @@ export default function (registry) {
 				registry.emplaceOrReplace(type, this._s2c[entity], component);
 			});
 			tempRegistry.each((entity) => {
+				Log.debug(`onJson each entity ${entity}`);
 				const types = tempRegistry.getTypes(entity);
 				types.forEach((type) => {
+					Log.debug(`onJson each entity type ${type}`);
 					const component = tempRegistry.get(type, entity);
 					update(null, type, entity, component);
 				})
