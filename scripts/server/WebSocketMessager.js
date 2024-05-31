@@ -20,10 +20,19 @@ export default function WebSocketMessager({port}) {
 				this.send(ws, name, data);
 			});
 		},
+		addConnectionHandler(handler) {
+			this.connectionHandlers.add(handler);
+		},
+		removeConnectionHandler(handler) {
+			this.connectionHandlers.delete(handler);
+		},
 		messageNamesToHandlers: new Map(),
+		connectionHandlers: new Set(),
 		wss: new WebSocketServer({ port}),
 	};
 	wsm.wss.on('connection', (ws) => {
+		const connectionHandlers = wsm.connectionHandlers;
+		connectionHandlers.forEach(handler => handler(ws));
 		Log.debug(`${ws.protocol} connected`);
 		ws.on('message', (data) => {
 			Log.debug(`received message: ${data.toString()}`);
