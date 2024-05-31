@@ -25,7 +25,7 @@ export default function (registry, systems) {
 		}
 		const geometry = new THREE.BoxGeometry(1, 1, 1)
 		// const threeObject = new THREE.Mesh(geometry, material)
-		const threeObject = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ map: texture }))
+		const threeObject = new THREE.Mesh(geometry, material)
 		// Log.info(`Renderer.add:`, entity, threeObject);
 		systems.get("Renderer").add(entity, threeObject)
 	}
