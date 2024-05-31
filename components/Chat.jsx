@@ -36,7 +36,8 @@ export default function ({ registry, systems, ...props }) {
 					<Typography key={i} component="pre">
 						{message}</Typography>
 				))}
-				<TextField label="Send a message" variant="outlined" onKeyDown={(e) => {
+				<TextField placeholder="/help"
+				variant="outlined" onKeyDown={(e) => {
 					if (e.key === 'Enter') {
 						sendChatMessage(e);
 					}
