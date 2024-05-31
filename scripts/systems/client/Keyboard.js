@@ -1,5 +1,5 @@
 import Log from '../../Log.js';
-export default function KeyboardState() {
+export default function () {
 	this._keys = {};
 	Log.debug(`KeyboardState`);
 	const onKeyDown = (e) => {
