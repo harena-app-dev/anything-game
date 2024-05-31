@@ -6,7 +6,7 @@ export default function (registry, systems) {
 	}
 	const client = systems.get('Client');
 	client.promiseCreate().then((entity) => {
-		Log.info('promiseCreate', entity);
+		Log.debug('promiseCreate', entity);
 		// client.promiseEmplace({ entity, type: 'Spawner' });
 		client.promiseEmplace("Sprite", entity, { path: "rogue.png" });
 	});

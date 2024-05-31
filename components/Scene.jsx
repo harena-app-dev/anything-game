@@ -7,7 +7,7 @@ import Log from '@/scripts/Log';
 
 export default function Scene({registry, systems}) {
 	useEffect(() => {
-		Log.info(`Scene.useEffect`);
+		Log.debug(`Scene.useEffect`);
 		const renderer = systems.get('Renderer')
 		renderer.setSceneElement(document.getElementById("scene"));
 		function loop() {

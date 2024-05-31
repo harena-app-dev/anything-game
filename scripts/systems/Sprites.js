@@ -34,7 +34,7 @@ export default function (registry, systems) {
 		this._entitiesToThree[entity] = sprite.id
 		this._threeToEntities[sprite.id] = entity
 		// scene.add(sprite)
-		systems.get("Renderer").addToScene(entity, sprite)
+		systems.get("Renderer").add(entity, sprite)
 	}
 	this.getEntityFromThreeId = function (id) {
 		return this._threeToEntities[id]
@@ -46,7 +46,6 @@ export default function (registry, systems) {
 		delete this._threeToEntities[mesh]
 	}
 	this.tick = function() {
-		Log.debug(`SpriteRenderer.tick`)
 		registry.view("Sprite").each((entity) => {
 			if (this._entitiesToThree[entity] === undefined) {
 				Log.debug("SpriteRenderer.tick", { entity })

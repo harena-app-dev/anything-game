@@ -23,7 +23,7 @@ export default class WebSocketMessager {
 			const handlers = this.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				handlers.forEach(handler => {
-					Log.info(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
+					Log.debug(`calling handler for message ${message.name}, data: ${JSON.stringify(message.data)}`);
 					// handler({ws: this.ws, args: message.data})
 					if (message.data instanceof Array) {
 						handler(this.ws, ...message.data);

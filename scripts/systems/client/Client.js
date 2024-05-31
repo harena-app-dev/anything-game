@@ -5,9 +5,9 @@ import Registry from "../../Registry";
 
 // export function fetchCmd({ name, args }) {
 export function fetchCmd(name, ...args) {
-	Log.info(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
+	Log.debug(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
 	const fetchUrl = `${offsetPortOfCurrentUrl(2)}/${name}`;
-	Log.info(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
+	Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
 	return fetch(fetchUrl, {
 		method: 'POST',
 		headers: {
@@ -29,7 +29,7 @@ export default function (registry) {
 		_s2c: {},
 		wsm: new WebSocketMessager({ port: 3001 }),
 		onJson(json) {
-			Log.info(`onJson ${json}`, JSON.stringify(json, null, 2));
+			Log.debug(`onJson ${json}`, JSON.stringify(json, null, 2));
 			// registry.fromJson(json);
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
@@ -62,7 +62,7 @@ export default function (registry) {
 			}
 		},
 		promiseSync() {
-			Log.info(`promiseSync`);
+			Log.debug(`promiseSync`);
 			return fetchCmd('toJson').then(this.onJson.bind(this));
 		},
 		promiseCreate() {
