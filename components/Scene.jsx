@@ -20,7 +20,7 @@ export default function Scene({ registry, systems }) {
 	});
 	return (
 		<Box className="col grow" id="scene">
-			<Chat sx={{ position: 'absolute', left: 0, bottom: 0, zIndex: 1, padding: 2,
+			<Chat sx={{ position: 'absolute', left: 0, bottom: 0, zIndex: 1, padding: 0,
 				backgroundColor: 'rgba(0,0,0,0.5)'
 			}} 
 			registry={registry} 
