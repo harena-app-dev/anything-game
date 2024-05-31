@@ -1,3 +1,5 @@
+import Block from './Block.js';
+export { Block };
 import Camera from './Camera.js';
 export { Camera };
 import ExternalProxy from './ExternalProxy.js';

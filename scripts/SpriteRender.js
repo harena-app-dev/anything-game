@@ -20,7 +20,7 @@ export default function ({ registry, scene }) {
 				texture = this.pathsToTextures[path]
 				material = this.pathsToMaterials[path]
 			} else {
-				texture = new THREE.TextureLoader().load(`sprites/${path}`)
+				texture = new THREE.TextureLoader().load(`textures/${path}`)
 				texture.colorSpace = THREE.SRGBColorSpace
 				texture.magFilter = THREE.NearestFilter
 				texture.minFilter = THREE.NearestFilter
