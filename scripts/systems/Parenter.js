@@ -2,8 +2,6 @@ import Log from '../Log';
 import * as THREE from 'three';
 import { nullEntity } from '../Registry';
 export default function (registry, systems) {
-	const system = {
-	}
 	registry.onEmplace({type: 'Parent', callback: (entity) => {
 		const parent = registry.get({ entity, type: 'Parent' });
 		if (parent.entity === nullEntity) {
@@ -15,5 +13,4 @@ export default function (registry, systems) {
 		const parentProxy = scene.getObjectById(parentExternalProxy.threeId);
 		parentProxy.add(proxy);
 	}});
-	return system
 }
