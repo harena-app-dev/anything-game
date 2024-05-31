@@ -6,6 +6,7 @@ export function isBrowser() {
 export default function (registry, systems) {
 	this._pathsToTextures = {}
 	this._pathsToMaterials = {}
+	const renderer = systems.get("Renderer")
 	this._onEmplace = function (entity, block) {
 		let texture
 		let material
@@ -24,20 +25,13 @@ export default function (registry, systems) {
 			}
 		}
 		const geometry = new THREE.BoxGeometry(1, 1, 1)
-		// const threeObject = new THREE.Mesh(geometry, material)
 		const threeObject = new THREE.Mesh(geometry, material)
-		// Log.info(`Renderer.add:`, entity, threeObject);
-		systems.get("Renderer").add(entity, threeObject)
+		renderer.add(entity, threeObject)
 	}
 	this._onErase = function(entity) {
 		scene.remove(this._entitiesToThree[entity])
 	}
 	this.tick = function() {
-		// registry.view("Block").each((entity) => {
-		// 	if (this._entitiesToThree[entity] === undefined) {
-		// 		this._onEmplace(entity, registry.get("Block", entity))
-		// 	}
-		// })
 	}
 	const observers = [
 		registry.onEmplace("Block").connect(this._onEmplace.bind(this)),

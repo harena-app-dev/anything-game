@@ -6,6 +6,8 @@ export default function (registry, systems) {
 	this._scene.add(light);
 	this._entitiesToThree = {}
 	this._threeToEntities = {}
+	this._pathsToTextures = {}
+	this._pathsToMaterials = {}
 	this.setSceneElement = function (sceneElement) {
 		this._renderer = new three.WebGLRenderer();
 		this._renderer.setSize(sceneElement.clientWidth, sceneElement.clientHeight);
