@@ -15,7 +15,9 @@ export default function Scene({registry, systems}) {
 			requestAnimationFrame(loop);
 		}
 		loop();
-		return () => { };
+		return () => { 
+			renderer.onSceneElementResize();
+		};
 	});
 	return (
 		<Box className="col grow" id="scene">

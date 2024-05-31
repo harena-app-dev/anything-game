@@ -5,9 +5,9 @@ import Registry from "../../Registry";
 
 // export function fetchCmd({ name, args }) {
 export function fetchCmd(name, ...args) {
-	Log.debug(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
+	Log.info(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
 	const fetchUrl = `${offsetPortOfCurrentUrl(2)}/${name}`;
-	Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
+	Log.info(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
 	return fetch(fetchUrl, {
 		method: 'POST',
 		headers: {
@@ -19,21 +19,21 @@ export function fetchCmd(name, ...args) {
 			Log.error(`fetchCmd ${name} response not ok: ${response}`);
 			return {};
 		}
-		Log.debug(`fetchCmd ${name} response: ${response}`);
+		Log.info(`fetchCmd ${name} response: ${response}`);
 		return response.json()
 	});
 }
 export default function (registry) {
-	Log.debug(`Client`);
+	Log.info(`Client`);
 	const system = {
 		_s2c: {},
 		wsm: new WebSocketMessager({ port: 3001 }),
 		onJson(json) {
-			Log.debug(`onJson ${json}`, JSON.stringify(json, null, 2));
+			Log.info(`onJson ${json}`, JSON.stringify(json, null, 2));
 			// registry.fromJson(json);
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
-			Log.debug(`tempRegistry`, tempRegistry.size());
+			Log.info(`tempRegistry`, tempRegistry.size());
 			const update = this.wsm.addHandler('update', (ws, type, entity, component) => {
 				if (this._s2c[entity] === undefined) {
 					this._s2c[entity] = registry.create();
@@ -41,10 +41,10 @@ export default function (registry) {
 				registry.emplaceOrReplace(type, this._s2c[entity], component);
 			});
 			tempRegistry.each((entity) => {
-				Log.debug(`onJson each entity ${entity}`);
+				Log.info(`onJson each entity ${entity}`);
 				const types = tempRegistry.getTypes(entity);
 				types.forEach((type) => {
-					Log.debug(`onJson each entity type ${type}`);
+					Log.info(`onJson each entity type ${type}`);
 					const component = tempRegistry.get(type, entity);
 					update(null, type, entity, component);
 				})
@@ -65,7 +65,7 @@ export default function (registry) {
 			}
 		},
 		promiseSync() {
-			Log.debug(`promiseSync`);
+			Log.info(`promiseSync`);
 			return fetchCmd('toJson').then(this.onJson.bind(this));
 		},
 		promiseCreate() {
