@@ -16,9 +16,9 @@ export default function (registry, systems) {
 		let zoom = 100;
 		// const camera = new three.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
 		const camera = new three.PerspectiveCamera(75, widthHeight.x / widthHeight.y, 0.1, 1000);
-		camera.position.z = 10;
+		camera.position.y = 10;
 		// tilt the camera towards x
-		camera.rotation.x = 0.1;
+		camera.rotation.x = -1.5;
 		this.tick = function () {
 			Log.debug(`Renderer.tick`);
 			this._renderer.render(this._scene, camera);
@@ -28,7 +28,11 @@ export default function (registry, systems) {
 		}
 	}
 	this.onUpdatePosition = function (entity, position) {
+		Log.info(`Renderer.onUpdatePosition`, entity, position);
 		const threeObject = this._entitiesToThree[entity];
+		if (threeObject === undefined) {
+			return;
+		}
 		threeObject.position.x = position.x;
 		threeObject.position.y = position.y;
 		threeObject.position.z = position.z;

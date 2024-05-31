@@ -39,7 +39,6 @@ export default function Registry() {
 		},
 
 		emplace(type, entity, component) {
-			// Log.debug(`emplace ${type} ${entity} ${component}`);
 			Log.debug(`emplace`, type, entity, component);
 			if (this.entitiesToTypes[entity].includes(type)) {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);
