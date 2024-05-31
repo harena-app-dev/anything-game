@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Minecraft at Home',
-  description: '????????????',
+  description: 'some random game',
 }
 
 export default function Home() {

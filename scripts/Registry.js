@@ -44,6 +44,9 @@ export default function Registry() {
 				throw new Error(`Entity ${entity} already has component of type ${type}`);
 			}
 			if (component === undefined) {
+				if (!(this.typesToConstructors[type] instanceof Function)) {
+					component = structuredClone(this.typesToConstructors[type]);
+				}
 				component = this.typesToConstructors[type]();
 			}
 			this.getPool(type)[entity] = component;

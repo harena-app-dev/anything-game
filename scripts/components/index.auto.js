@@ -4,6 +4,8 @@ import Camera from './Camera.js';
 export { Camera };
 import Message from './Message.js';
 export { Message };
+import MoveGoal from './MoveGoal.js';
+export { MoveGoal };
 import Parent from './Parent.js';
 export { Parent };
 import Position from './Position.js';
