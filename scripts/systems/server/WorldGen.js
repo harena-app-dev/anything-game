@@ -1,7 +1,5 @@
 import Log from '../../Log';
 export default function (registry) {
-	const system = {
-	}
 	for (let x = -5; x < 5; x++) {
 		for (let y = -5; y < 5; y++) {
 			const entity = registry.create()
@@ -15,5 +13,4 @@ export default function (registry) {
 			}
 		}
 	}
-	return system
 }
