@@ -1,11 +1,14 @@
 import WebSocketMessager from "../../client/WebSocketMessager";
 import Log from "../../Log";
 import { offsetPortOfCurrentUrl } from "../../Utils";
+import Registry from "../../Registry";
 
 // export function fetchCmd({ name, args }) {
 export function fetchCmd(name, ...args) {
 	Log.info(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
-	return fetch(`${offsetPortOfCurrentUrl(2)}/${name}`, {
+	const fetchUrl = `${offsetPortOfCurrentUrl(2)}/${name}`;
+	Log.info(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
+	return fetch(fetchUrl, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -23,42 +26,44 @@ export function fetchCmd(name, ...args) {
 export default function (registry) {
 	Log.debug(`Client`);
 	const system = {
-		_serverEntitiesToEntities: {},
+		_s2c: {},
 		wsm: new WebSocketMessager({ port: 3001 }),
 		onJson(json) {
+			Log.info(`onJson ${json}`, JSON.stringify(json, null, 2));
 			// registry.fromJson(json);
-			const obj = JSON.parse(json);
-			
-			const updateHandler = this.wsm.addHandler('update', (ws, type, entity, component) => {
-				// if (!registry.valid(entity)) {
-				if (this._serverEntitiesToEntities[entity] === undefined) {
-					// entity = registry.create();
-					this._serverEntitiesToEntities[entity] = registry.create();
+			const tempRegistry = new Registry();
+			tempRegistry.fromJson(json);
+			const update = this.wsm.addHandler('update', (ws, type, entity, component) => {
+				if (this._s2c[entity] === undefined) {
+					this._s2c[entity] = registry.create();
 				}
-				// registry.emplaceOrReplace(type, entity, component);
-				registry.emplaceOrReplace(type, this._serverEntitiesToEntities[entity], component);
+				registry.emplaceOrReplace(type, this._s2c[entity], component);
 			});
+			tempRegistry.each((entity) => {
+				const types = tempRegistry.getTypes(entity);
+				types.forEach((type) => {
+					const component = tempRegistry.get(type, entity);
+					update(null, type, entity, component);
+				})
+			})
 			const eraseHandler = this.wsm.addHandler('erase', (ws, type, entity, component) => {
-				// registry.erase(type, entity, component);
-				registry.erase(type, this._serverEntitiesToEntities[entity], component);
+				registry.erase(type, this._s2c[entity], component);
 			});
 			const destroyHandler = this.wsm.addHandler('destroy', (ws, entity) => {
-				// registry.destroy(entity);
-				registry.destroy(this._serverEntitiesToEntities[entity]);
+				registry.destroy(this._s2c[entity]);
 			});
 			this.destructor = () => {
 				this.wsm.removeHandler(createHandler);
 				this.wsm.removeHandler(emplaceHandler);
-				this.wsm.removeHandler(updateHandler);
+				this.wsm.removeHandler(update);
 				this.wsm.removeHandler(eraseHandler);
 				this.wsm.removeHandler(destroyHandler);
 				this.wsm.close();
 			}
 		},
 		promiseSync() {
-			// return fetchCmd({ name: 'toJson' }).then(this.onJson.bind(this));
-			// return fetchCmd('toJson').then(this.onJson.bind(this));
-			return fetchCmd('toJson').then(
+			Log.info(`promiseSync`);
+			return fetchCmd('toJson').then(this.onJson.bind(this));
 		},
 		promiseCreate() {
 			// return fetchCmd({ name: 'create' })

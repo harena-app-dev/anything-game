@@ -33,7 +33,8 @@ export default function (registry, systems) {
 		sprite.position.set(position.x, position.y, position.z)
 		this._entitiesToThree[entity] = sprite.id
 		this._threeToEntities[sprite.id] = entity
-		scene.add(sprite)
+		// scene.add(sprite)
+		systems.get("Renderer").addToScene(entity, sprite)
 	}
 	this.getEntityFromThreeId = function (id) {
 		return this._threeToEntities[id]

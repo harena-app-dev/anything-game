@@ -131,12 +131,17 @@ export default function Registry() {
 			return JSON.stringify(obj);
 		},
 		fromJson(json) {
-			const obj = JSON.parse(json);
-			Log.debug(`fromJson ${JSON.stringify(obj, null, 2)}`);
-			this.entitySet = obj.entitySet;
-			this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
-			this.entitiesToTypes = obj.entitiesToTypes;
-			this.destroyedSet = obj.destroyedSet;
+			try {
+				const obj = JSON.parse(json);
+				Log.debug(`fromJson ${JSON.stringify(obj, null, 2)}`);
+				this.entitySet = obj.entitySet;
+				this.typesToEntitiesToComponents = obj.typesToEntitiesToComponents;
+				this.entitiesToTypes = obj.entitiesToTypes;
+				this.destroyedSet = obj.destroyedSet;
+			}
+			catch (e) {
+				Log.error(e, `fromJson ${json}`);
+			}
 		},
 		observables: {
 			onCreate: Observable(),
