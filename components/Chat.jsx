@@ -31,7 +31,7 @@ export default function ({ registry, systems, ...props }) {
 	}, []);
 	return (
 		<Box {...props}>
-			<Stack spacing={2}>
+			<Stack spacing={0}>
 				{messages.map((message, i) => (
 					<Typography key={i} component="pre">
 						{message}</Typography>

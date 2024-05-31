@@ -1,4 +1,4 @@
-import { nullEntity } from '@/scripts/Registry.js';
+import { nullEntity } from '@/scripts/Core.js';
 import Log from '../../Log.js';
 export default function (registry, systems) {
 	this._playerEntity = nullEntity;

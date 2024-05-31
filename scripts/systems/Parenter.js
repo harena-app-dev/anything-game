@@ -1,6 +1,6 @@
 import Log from '../Log';
 import * as THREE from 'three';
-import { nullEntity } from '../Registry';
+import { nullEntity } from '../Core';
 export default function (registry, systems) {
 	registry.onEmplace({type: 'Parent', callback: (entity) => {
 		const parent = registry.get({ entity, type: 'Parent' });

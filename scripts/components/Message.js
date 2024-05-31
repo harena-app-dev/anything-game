@@ -1,4 +1,4 @@
-import { nullEntity } from '../Registry';
+import { nullEntity } from '../Core';
 // export default function (args = { value: "" }) {
 	// return args;
 // }
