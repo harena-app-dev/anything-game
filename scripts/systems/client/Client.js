@@ -23,20 +23,28 @@ export function fetchCmd(name, ...args) {
 export default function (registry) {
 	Log.debug(`Client`);
 	const system = {
+		_serverEntitiesToEntities: {},
 		wsm: new WebSocketMessager({ port: 3001 }),
 		onJson(json) {
-			registry.fromJson(json);
+			// registry.fromJson(json);
+			const obj = JSON.parse(json);
+			
 			const updateHandler = this.wsm.addHandler('update', (ws, type, entity, component) => {
-				if (!registry.valid(entity)) {
-					entity = registry.create();
+				// if (!registry.valid(entity)) {
+				if (this._serverEntitiesToEntities[entity] === undefined) {
+					// entity = registry.create();
+					this._serverEntitiesToEntities[entity] = registry.create();
 				}
-				registry.emplaceOrReplace(type, entity, component);
+				// registry.emplaceOrReplace(type, entity, component);
+				registry.emplaceOrReplace(type, this._serverEntitiesToEntities[entity], component);
 			});
 			const eraseHandler = this.wsm.addHandler('erase', (ws, type, entity, component) => {
-				registry.erase(type, entity, component);
+				// registry.erase(type, entity, component);
+				registry.erase(type, this._serverEntitiesToEntities[entity], component);
 			});
 			const destroyHandler = this.wsm.addHandler('destroy', (ws, entity) => {
-				registry.destroy(entity);
+				// registry.destroy(entity);
+				registry.destroy(this._serverEntitiesToEntities[entity]);
 			});
 			this.destructor = () => {
 				this.wsm.removeHandler(createHandler);
@@ -49,7 +57,8 @@ export default function (registry) {
 		},
 		promiseSync() {
 			// return fetchCmd({ name: 'toJson' }).then(this.onJson.bind(this));
-			return fetchCmd('toJson').then(this.onJson.bind(this));
+			// return fetchCmd('toJson').then(this.onJson.bind(this));
+			return fetchCmd('toJson').then(
 		},
 		promiseCreate() {
 			// return fetchCmd({ name: 'create' })

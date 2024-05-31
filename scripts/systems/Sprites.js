@@ -4,8 +4,8 @@ export function isBrowser() {
 	return typeof window !== 'undefined';
 }
 export default function (registry, systems) {
-	const threeInterface = systems.get('ThreeInterface');
-	const scene = threeInterface.getScene();
+	// const threeInterface = systems.get('ThreeInterface');
+	// const scene = threeInterface.getScene();
 	this._pathsToTextures = {}
 	this._pathsToMaterials = {}
 	this._entitiesToThree = {}

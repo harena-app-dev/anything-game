@@ -6,6 +6,8 @@ import Parent from './Parent.js';
 export { Parent };
 import Position from './Position.js';
 export { Position };
+import Scale from './Scale.js';
+export { Scale };
 import Selection from './Selection.js';
 export { Selection };
 import Simulation from './Simulation.js';

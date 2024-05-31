@@ -1,4 +1,4 @@
-import Log from '../../Log.js';
+import Log from '../Log.js';
 import * as THREE from 'three';
 export default function (registry, systems) {
 	this._scene = new three.Scene() 
@@ -18,5 +18,10 @@ export default function (registry, systems) {
 		this.destructor = function () {
 			sceneElement.removeChild(this._renderer.domElement);
 		}
+	}
+	this.addToScene = function (entity, threeObject) {
+		this._scene.add(threeObject);
+		this._entitiesToThree[entity] = threeObject;
+		this._threeToEntities[threeObject.id] = entity;
 	}
 }
