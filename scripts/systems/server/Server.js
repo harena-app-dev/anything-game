@@ -1,10 +1,13 @@
 import WebSocketMessager from "../../server/WebSocketMessager";
 import ExpressMessager from "../../server/ExpressMessager";
-export default function (registry) {
+import Log from "../../Log";
+export default function (registry, systems) {
 	const system = {
 		wsm: WebSocketMessager({ port: 3001 }),
 		em: ExpressMessager({ port: 3002 }),
 	}
+	system.wsm.addConnectionHandler(function (ws) {
+	})
 	registry.onEmplace().connect(function (type, entity, component) {
 		system.wsm.sendToAll("update", [type, entity, component])
 	})
