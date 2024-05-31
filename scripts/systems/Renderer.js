@@ -20,16 +20,28 @@ export default function (registry, systems) {
 			sceneElement.removeChild(this._renderer.domElement);
 		}
 	}
+	this.onUpdatePosition = function (entity, position) {
+		const threeObject = this._entitiesToThree[entity];
+		threeObject.position.x = position.x;
+		threeObject.position.y = position.y;
+		threeObject.position.z = position.z;
+	}
+	registry.onUpdate("Position").connect(this.onUpdatePosition.bind(this));
+	this.onUpdateScale = function (entity, scale) {
+		const threeObject = this._entitiesToThree[entity];
+		threeObject.scale.x = scale.x;
+		threeObject.scale.y = scale.y;
+		threeObject.scale.z = scale.z;
+	}
+	registry.onUpdate("Scale").connect(this.onUpdateScale.bind(this));
 	this.add = function (entity, threeObject) {
 		Log.debug(`Renderer.add:`, entity, threeObject);
 		this._scene.add(threeObject);
 		this._entitiesToThree[entity] = threeObject;
 		this._threeToEntities[threeObject.id] = entity;
+		this.onUpdatePosition(entity, registry.getOrEmplace("Position", entity));
+		this.onUpdateScale(entity, registry.getOrEmplace("Scale", entity));
+		registry.getOrEmplace("Position", entity);
+		registry.getOrEmplace("Scale", entity);
 	}
-	registry.onUpdate("Position").connect((entity, position) => {
-		const threeObject = this._entitiesToThree[entity];
-		threeObject.position.x = position.x;
-		threeObject.position.y = position.y;
-		threeObject.position.z = position.z;
-	});
 }

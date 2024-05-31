@@ -9,7 +9,9 @@ export default function (registry) {
 			const rng = Math.random()
 			if (rng < 0.1) {
 				const tree = registry.create()
+				const treeScale = 1.5;
 				registry.emplace("Position", tree, { x, y, z: 0.01 })
+				registry.emplace("Scale", tree, { x: treeScale, y: treeScale, z: 1 })
 				registry.emplace("Sprite", tree, { path: "tree.png" })
 			}
 		}
