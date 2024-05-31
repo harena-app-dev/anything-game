@@ -28,7 +28,7 @@ export default function (registry, systems) {
 		}
 	}
 	this.onUpdatePosition = function (entity, position) {
-		Log.info(`Renderer.onUpdatePosition`, entity, position);
+		Log.debug(`Renderer.onUpdatePosition`, entity, position);
 		const threeObject = this._entitiesToThree[entity];
 		if (threeObject === undefined) {
 			return;

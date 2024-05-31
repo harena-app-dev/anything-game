@@ -3,7 +3,6 @@ import Log from '../../Log.js';
 export default function (registry, systems) {
 	this._playerEntity = nullEntity;
 	this.tick = function () {
-		Log.info('Player.tick', this._playerEntity);
 		if (!registry.valid(this._playerEntity)) {
 			return;
 		}
@@ -14,7 +13,6 @@ export default function (registry, systems) {
 		position.x += x * 0.1;
 		position.z += z * 0.1;
 		registry.replace('Position', this._playerEntity, position);
-		Log.info('player', position);
 
 	}
 	const client = systems.get('Client');
