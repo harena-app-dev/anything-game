@@ -3,7 +3,7 @@ export default function ({
 	constructors,
 	registry,
 }) {
-	Log.debug(`Systems constructor`);
+	Log.info(`Systems constructor`);
 	this._systems = {};
 	this._registry = registry;
 	this.get = function (name) {
@@ -27,21 +27,18 @@ export default function ({
 		Log.debug(`end constructing ${name}`);
 	}
 	this.tick = function () {
+		// Log.info(`Systems.tick`);
 		for (let [name, system] of Object.entries(this._systems)) {
 			if (system.tick === undefined) {
 				continue;
 			}
-			// system.tick({
-				// registry: this._registry,
-				// systemGraph: this,
-			// });
-			// system.tick(this._registry, this);
 			system.tick();
 		}
+		// Log.info(`Systems.tick end`);
 	}
 
 	this.destructor = function () {
-		Log.debug(`Systems destructor`);
+		Log.info(`Systems destructor`);
 		for (let [name, system] of Object.entries(this._systems)) {
 			if (system.destructor === undefined) {
 				continue;
