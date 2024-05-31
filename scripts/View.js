@@ -14,8 +14,8 @@ export default function (registry, ...types) {
 	}
 	this.map = function (callback) {
 		const result = [];
-		this.each((entity) => {
-			result.push(callback(entity));
+		this.each((...args) => {
+			result.push(callback(...args));
 		});
 		return result;
 	}
