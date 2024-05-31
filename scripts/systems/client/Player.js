@@ -20,8 +20,11 @@ export default function (registry, systems) {
 	}
 	const client = systems.get('Client');
 	client.promiseCreate().then((entity) => {
-		Log.debug('promiseCreate', entity);
+		Log.info('promiseCreate', entity);
+
 		// client.promiseEmplace({ entity, type: 'Spawner' });
-		client.promiseEmplace("Sprite", entity, { path: "rogue.png" });
+		client.promiseEmplace("Sprite", entity, { path: "rogue.png" }).then(() => {
+			this._playerEntity = entity;
+		})
 	});
 }

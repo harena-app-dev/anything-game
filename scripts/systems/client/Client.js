@@ -38,6 +38,7 @@ export default function (registry) {
 			const update = this.wsm.addHandler('update', (ws, type, serverEntity, component) => {
 				if (this._s2c[serverEntity] === undefined) {
 					this._s2c[serverEntity] = registry.create();
+					this._c2s[this._s2c[serverEntity]] = serverEntity;
 				}
 				registry.emplaceOrReplace(type, this._s2c[serverEntity], component);
 			});
@@ -73,24 +74,25 @@ export default function (registry) {
 			return fetchCmd('create').then((serverEntity) => {
 				if (this._s2c[serverEntity] === undefined) {
 					this._s2c[serverEntity] = registry.create();
+					this._c2s[this._s2c[serverEntity]] = serverEntity;
 				}
 				return this._s2c[serverEntity];
 			})
 		},
 		promiseEmplace(type, entity, component) {
-			const serverEntity = this._s2c[entity];
+			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseEmplace serverEntity undefined ${entity}`);
 				return;
 			}
 			return fetchCmd('emplace', type, serverEntity, component).then((serverComponent) => {
-				return registry.emplace(type, entity, serverComponent);
+				return registry.emplaceOrReplace(type, entity, serverComponent);
 			})
 		},
 		promiseUpdate(type, entity, component) {
 			// return fetchCmd({ name: 'update', args: { entity, component, type } })
 			// return fetchCmd('update', type, entity, component)
-			const serverEntity = this._s2c[entity];
+			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseUpdate serverEntity undefined ${entity}`);
 				return;
@@ -102,7 +104,7 @@ export default function (registry) {
 		promiseErase(type, entity) {
 			// return fetchCmd({ name: 'erase', args: { entity, type } })
 			// return fetchCmd('erase', type, entity)
-			const serverEntity = this._s2c[entity];
+			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseErase serverEntity undefined ${entity}`);
 				return;
@@ -113,7 +115,7 @@ export default function (registry) {
 		},
 		promiseDestroy(entity) {
 			// return fetchCmd('destroy', entity).
-			const serverEntity = this._s2c[entity];
+			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseDestroy serverEntity undefined ${entity}`);
 				return;
