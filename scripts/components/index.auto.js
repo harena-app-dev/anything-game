@@ -2,8 +2,6 @@ import Block from './Block.js';
 export { Block };
 import Camera from './Camera.js';
 export { Camera };
-import ExternalProxy from './ExternalProxy.js';
-export { ExternalProxy };
 import Message from './Message.js';
 export { Message };
 import Parent from './Parent.js';
