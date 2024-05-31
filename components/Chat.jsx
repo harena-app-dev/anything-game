@@ -2,7 +2,6 @@ import React, { use, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
-import { sys } from 'typescript';
 
 export default function ({ registry, systems, ...props }) {
 	function sendChatMessage(e) {
@@ -33,7 +32,6 @@ export default function ({ registry, systems, ...props }) {
 	return (
 		<Box {...props}>
 			<Stack spacing={2}>
-				{/* <Typography variant="h6">You have joined the game!</Typography> */}
 				{messages.map((message, i) => (
 					<Typography key={i}>{message}</Typography>
 				))}
