@@ -1,10 +1,12 @@
 import Log from '../Log.js';
 import * as three from 'three';
 export default function (registry, systems) {
-	this._scene = new three.Scene() 
+	this._scene = new three.Scene()
+	const light = new three.AmbientLight(0x404040); // soft white light
+	this._scene.add(light);
 	this._entitiesToThree = {}
 	this._threeToEntities = {}
-	this.setSceneElement = function(sceneElement) {
+	this.setSceneElement = function (sceneElement) {
 		this._renderer = new three.WebGLRenderer();
 		this._renderer.setSize(sceneElement.clientWidth, sceneElement.clientHeight);
 		sceneElement.appendChild(this._renderer.domElement);
@@ -19,7 +21,7 @@ export default function (registry, systems) {
 			Log.debug(`Renderer.tick`);
 			this._renderer.render(this._scene, camera);
 		}
-		this.onSceneElementResize = function() {
+		this.onSceneElementResize = function () {
 			sceneElement.removeChild(this._renderer.domElement);
 		}
 	}
