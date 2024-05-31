@@ -10,8 +10,11 @@ export default function (registry, systems) {
 		sceneElement.appendChild(this._renderer.domElement);
 		const widthHeight = new three.Vector2(sceneElement.clientWidth, sceneElement.clientHeight);
 		let zoom = 100;
-		const camera = new three.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
-		camera.position.z = 5;
+		// const camera = new three.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
+		const camera = new three.PerspectiveCamera(75, widthHeight.x / widthHeight.y, 0.1, 1000);
+		camera.position.z = 10;
+		// tilt the camera towards x
+		camera.rotation.x = 0.1;
 		this.tick = function () {
 			Log.debug(`Renderer.tick`);
 			this._renderer.render(this._scene, camera);
