@@ -10,9 +10,9 @@ export default function ({ registry, systems, ...props }) {
 		// create a new message entity
 		client.promiseCreate().then((entity) => {
 			client.promiseEmplace("Message", entity, { value })
-			.then((message) => {
-				Log.info(`Chat.sendChatMessage`, message);
-			});
+				.then((message) => {
+					Log.info(`Chat.sendChatMessage`, message);
+				});
 		});
 		e.target.value = '';
 	}
@@ -33,7 +33,8 @@ export default function ({ registry, systems, ...props }) {
 		<Box {...props}>
 			<Stack spacing={2}>
 				{messages.map((message, i) => (
-					<Typography key={i}>{message}</Typography>
+					<Typography key={i}><pre>
+						{message}</pre></Typography>
 				))}
 				<TextField label="Send a message" variant="outlined" onKeyDown={(e) => {
 					if (e.key === 'Enter') {
