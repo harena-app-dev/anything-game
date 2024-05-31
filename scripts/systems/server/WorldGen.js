@@ -1,7 +1,8 @@
 import Log from '../../Log';
 export default function (registry) {
-	for (let x = -5; x < 5; x++) {
-		for (let y = -5; y < 5; y++) {
+	const radius = 20
+	for (let x = -radius; x < radius; x++) {
+		for (let y = -radius; y < radius; y++) {
 			const entity = registry.create()
 			registry.emplace("Position", entity, { x, y, z: 0 })
 			registry.emplace("Sprite", entity, { path: "grass1.png" })
