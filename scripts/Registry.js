@@ -115,6 +115,7 @@ export default function Registry() {
 			}
 			this.getPool(type)[entity] = component;
 			this.onUpdate().notify(type, entity, component);
+			this.onUpdate(type).notify(entity, component);
 			const component1 = this.get(type, entity);
 			Log.debug(`component1 ${JSON.stringify(component1, null, 2)}`);
 		},

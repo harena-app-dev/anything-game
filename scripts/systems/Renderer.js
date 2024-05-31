@@ -26,4 +26,10 @@ export default function (registry, systems) {
 		this._entitiesToThree[entity] = threeObject;
 		this._threeToEntities[threeObject.id] = entity;
 	}
+	registry.onUpdate("Position").connect((entity, position) => {
+		const threeObject = this._entitiesToThree[entity];
+		threeObject.position.x = position.x;
+		threeObject.position.y = position.y;
+		threeObject.position.z = position.z;
+	});
 }
