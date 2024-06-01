@@ -1,7 +1,4 @@
-import WebSocketMessager from "../../WebSocketMessager";
-import Log from "../../Log";
-import http from 'http';
-import { WebSocketServer } from 'ws';
+
 export default function (registry, systems) {
 	const usernames = {};
 	const wsToAccounts = {};
@@ -9,41 +6,7 @@ export default function (registry, systems) {
 	registry.view('Account').each((entity, account) => {
 		usernames[account.username] = entity;
 	});
-	const server = http.createServer();
-	const wss = new WebSocketServer({ server });
-	const wsm = WebSocketMessager(server);
-	wsm.setWsw({
-		wss,
-		forEachConnection(f) {
-			wss.clients.forEach(f);
-		},
-		onConnection(f) {
-			wss.on('connection', (ws) => {
-				f({
-					ws,
-					onMessage(f) {
-						ws.on('message', f);
-					},
-					send(data) {
-						ws.send(data);
-					}
-				})
-			});
-		},
-		onListening(f) {
-			wss.on('listening', f);
-		},
-		onMessage(f) {
-			wss.on('message', f);
-		},
-		onClose(f) {
-			wss.on('close', f);
-		},
-		onError(f) {
-			wss.on('error', f);
-		}
-	})
-	server.listen(3001, function () {});
+	const wsm = systems.get('Wsm').getWsm();
 	registry.onEmplace().connect(function (...args) {
 		wsm.sendToAll('update', ...args);
 	})

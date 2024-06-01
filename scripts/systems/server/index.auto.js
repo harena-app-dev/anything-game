@@ -6,3 +6,5 @@ import Test from './Test.js';
 export { Test };
 import WorldGen from './WorldGen.js';
 export { WorldGen };
+import Wsm from './Wsm.js';
+export { Wsm };
