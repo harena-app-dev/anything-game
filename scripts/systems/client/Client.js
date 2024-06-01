@@ -124,6 +124,11 @@ export default function (registry) {
 				return registry.destroy(entity);
 			})
 		},
+		promiseLogin(username, password) {
+			return fetchCmd('login', username, password).then((json) => {
+				this.onJson(json);
+			})
+		},
 		destructor() {
 		}
 	}

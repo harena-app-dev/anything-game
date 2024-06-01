@@ -1,14 +1,13 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { GoogleLogin } from '@react-oauth/google';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 
 const style = {
 	position: 'absolute',
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	width: '80%',
 	bgcolor: 'background.paper',
 	border: '2px solid #000',
 	boxShadow: 24,
@@ -16,14 +15,13 @@ const style = {
 	px: 4,
 	pb: 3,
 };
-export default function ({ }) {
+export default function ({ registry, systems }) {
 	const [open, setOpen] = React.useState(true);
-	const responseMessage = (response) => {
-		console.log(response);
+	function login() {
+		const username = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
 	};
-	const errorMessage = (error) => {
-		console.log(error);
-	};
+
 	return (
 		<Modal
 			open={open}
@@ -31,7 +29,15 @@ export default function ({ }) {
 			aria-describedby="child-modal-description"
 		>
 			<Box sx={{ ...style }}>
-				{/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
+				<Stack spacing={2}>
+					<Typography id="child-modal-title" variant="h6" component="h2">
+							Login
+					</Typography>
+					<TextField label="Username" variant="filled" id="username" />
+					<TextField label="Password" variant="filled" id="password" />
+					<Button variant="contained">Login</Button>
+					<Button variant="contained">Create Account</Button>
+				</Stack>
 			</Box>
 		</Modal>
 	);

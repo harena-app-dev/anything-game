@@ -8,7 +8,6 @@ import Systems from '@/scripts/Systems';
 import { CircularProgress } from '@mui/material';
 import Log from '@/scripts/Log';
 import Login from './Login';
-import { GoogleOAuthProvider } from "@react-oauth/google"
 
 export default function App() {
 	const webSocketMessager = useRef();
@@ -32,11 +31,7 @@ export default function App() {
 	}, []);
 
 	return <Box className="row grow">
-				{/* <script src="https://apis.google.com/js/platform.js" async defer></script> */}
-		{/* <meta name="google-signin-client_id" content="530966030442-u75706pitjlsivadq327gbl35q7gtn7t.apps.googleusercontent.com" /> */}
-		<GoogleOAuthProvider clientId='530966030442-u75706pitjlsivadq327gbl35q7gtn7t.apps.googleusercontent.com'>
-			<Login />
-			{content}
-		</GoogleOAuthProvider>
+		<Login />
+		{content}
 	</Box>
 }
