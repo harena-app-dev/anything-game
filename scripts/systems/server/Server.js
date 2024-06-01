@@ -34,11 +34,12 @@ export default function (registry, systems) {
 				if (usernames[username] !== undefined) {
 					return { message: 'Username already exists' }
 				}
-				const entity = registry.create();
+				const accountEntity = registry.create();
 				const playerEntity = registry.create();
 				registry.emplace('Sprite', playerEntity, { path: 'rogue.png' });
-				registry.emplace('Account', entity, { username, password, playerEntity });
-				usernames[username] = entity;
+				registry.emplace('Account', accountEntity, { username, password, playerEntity });
+				registry.emplace('AccountOwner', playerEntity, { accountEntity });
+				usernames[username] = accountEntity;
 				return { entity: playerEntity, message: 'Account created' }
 			}
 			const entity = usernames[username];

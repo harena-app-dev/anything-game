@@ -37,7 +37,7 @@ export default function WebSocketMessager(wsw) {
 		const connectionHandlers = wsm.connectionHandlers;
 		connectionHandlers.forEach(handler => handler(ws));
 		ws.onMessage((str) => {
-			Log.info(`received message: ${str}`);
+			Log.debug(`received message: ${str}`);
 			let message;
 			try {
 				Log.debug('data', str);
@@ -52,7 +52,7 @@ export default function WebSocketMessager(wsw) {
 				if (!(message.data instanceof Array)) {
 					message.data = [message.data];
 				}
-				Log.info('message', message);
+				Log.debug('message', message);
 				handlers.forEach(handler => handler(ws, ...message.data));
 			} else {
 				Log.debug(`No handler for message name: ${message.name}`);
