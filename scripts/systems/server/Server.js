@@ -2,8 +2,6 @@ import WebSocketMessager from "../../WebSocketMessager";
 import Log from "../../Log";
 import http from 'http';
 import { WebSocketServer } from 'ws';
-
-
 export default function (registry, systems) {
 	const usernames = {};
 	const wsToAccounts = {};
@@ -45,8 +43,7 @@ export default function (registry, systems) {
 			wss.on('error', f);
 		}
 	})
-	server.listen(3001, function () {
-	});
+	server.listen(3001, function () {});
 	registry.onEmplace().connect(function (...args) {
 		wsm.sendToAll('update', ...args);
 	})
