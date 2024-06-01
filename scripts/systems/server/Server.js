@@ -1,4 +1,4 @@
-import WebSocketMessager from "../../server/WebSocketMessager";
+import WebSocketMessager from "../../WebSocketMessager";
 import ExpressMessager from "../../server/ExpressMessager";
 import Log from "../../Log";
 import http from 'http';
