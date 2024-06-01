@@ -11,15 +11,16 @@ export default function WebSocketMessager(wsw) {
 		removeHandler(name, handler) {
 			this.messageNamesToHandlers.get(name)?.delete(handler);
 		},
-		send(ws, name, data) {
+		send(ws, name, ...data) {
 			// Log.debug('send', ws, name, data);
+			// ws.send(JSON.stringify({ name, data }));
 			ws.send(JSON.stringify({ name, data }));
 		},
-		sendToAll(name, data) {
+		sendToAll(name, ...data) {
 			Log.debug(`sendToAll ${name} ${JSON.stringify(data)}`);
 			// this.wss.clients.forEach(ws => {
 			wsw.forEachConnection(ws => {
-				this.send(ws, name, data);
+				this.send(ws, name, ...data);
 			});
 		},
 		addConnectionHandler(handler) {
@@ -48,11 +49,10 @@ export default function WebSocketMessager(wsw) {
 			}
 			const handlers = wsm.messageNamesToHandlers.get(message.name);
 			if (handlers) {
-				// handlers.forEach(handler => handler({ws, args: message.data}));
-				// Log.debug('message', message);
 				if (!(message.data instanceof Array)) {
 					message.data = [message.data];
 				}
+				Log.info('message', message);
 				handlers.forEach(handler => handler(ws, ...message.data));
 			} else {
 				Log.debug(`No handler for message name: ${message.name}`);
