@@ -8,5 +8,3 @@ import Player from './Player.js';
 export { Player };
 import Raycaster from './Raycaster.js';
 export { Raycaster };
-import Wsm from './Wsm.js';
-export { Wsm };

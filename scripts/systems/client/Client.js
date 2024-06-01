@@ -1,4 +1,5 @@
-import WebSocketMessager from "../../client/WebSocketMessager";
+// import WebSocketMessager from "../../client/WebSocketMessager";
+import WebSocketMessager from "../../WebSocketMessager";
 import Log from "../../Log";
 import { offsetPortOfCurrentUrl } from "../../Utils";
 import Registry from "../../Registry";
@@ -26,15 +27,49 @@ export default function (registry, systems) {
 	const system = {
 		_s2c: {},
 		_c2s: {},
-		// wsm: new WebSocketMessager(),
+		wsm: new WebSocketMessager(),
 		promiseConnect() {
+			const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
+			const ws = new WebSocket(wsUrl);
 			return new Promise((resolve, reject) => {
-				system.wsm = new WebSocketMessager({
-					onConnection() {
-						Log.debug(`onConnection`);
-						resolve();
+				// system.wsm = new WebSocketMessager({
+				// 	onConnection() {
+				// 		Log.debug(`onConnection`);
+				// 		resolve();
+				// 	}
+				// });
+				system.wsm.setWsw({
+					forEachConnection(f) {
+						f(ws);
+					},
+					onConnection(f) {
+						ws.onopen = () => {
+							Log.debug('WebSocketMessager onopen');
+							resolve();
+							f({
+								ws,
+								onMessage(f) {
+									// ws.on('message', f);
+									// ws.onmessage = f;
+									ws.onmessage = (e) => {
+										f(e.data);
+									};
+								},
+								send(data) {
+									ws.send(data);
+								}
+							})
+						};
+					},
+					onListening(f) {
+					},
+					onClose(f) {
+						ws.onclose = f;
+					},
+					onError(f) {
+						ws.onerror = f;
 					}
-				});
+				})
 			})
 		},
 		s2cEntity(serverEntity) {
@@ -60,7 +95,7 @@ export default function (registry, systems) {
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
 			Log.debug(`tempRegistry`, tempRegistry.size());
-	
+
 			const update = this.wsm.addHandler('update', (ws, type, serverEntity, component) => {
 				registry.emplaceOrReplace(type, this.s2cEntity(serverEntity), this.s2cComponent(component));
 			});
