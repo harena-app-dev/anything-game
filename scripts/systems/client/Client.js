@@ -59,18 +59,18 @@ export default function (registry, systems) {
 					update(null, type, entity, component);
 				})
 			})
-			const eraseHandler = this.wsm.addHandler('erase', (ws, type, serverEntity) => {
-				registry.erase(type, this._s2c[serverEntity]);
-			});
-			const destroyHandler = this.wsm.addHandler('destroy', (ws, serverEntity) => {
-				registry.destroy(this._s2c[serverEntity]);
-			});
+			const handlers = [update,
+				this.wsm.addHandler('erase', (ws, type, serverEntity) => {
+					registry.erase(type, this._s2c[serverEntity]);
+				}),
+				this.wsm.addHandler('destroy', (ws, serverEntity) => {
+					registry.destroy(this._s2c[serverEntity]);
+				}),
+			];
 			this.destructor = () => {
-				this.wsm.removeHandler(createHandler);
-				this.wsm.removeHandler(emplaceHandler);
-				this.wsm.removeHandler(update);
-				this.wsm.removeHandler(eraseHandler);
-				this.wsm.removeHandler(destroyHandler);
+				handlers.forEach((handler) => {
+					this.wsm.removeHandler(handler);
+				})
 				this.wsm.close();
 			}
 		},
