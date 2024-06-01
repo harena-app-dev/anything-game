@@ -1,4 +1,4 @@
 import { nullEntity } from "../Core";
 export default {
-	entity: nullEntity,
+	position: [0, 0, 0],
 }

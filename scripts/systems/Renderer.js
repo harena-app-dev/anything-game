@@ -2,12 +2,21 @@ import Log from '../Log.js';
 import * as three from 'three';
 export default function (registry, systems) {
 	this._scene = new three.Scene()
+	this.getScene = function () {
+		return this._scene;
+	}
 	const light = new three.AmbientLight(0x404040); // soft white light
 	this._scene.add(light);
 	this._entitiesToThree = {}
 	this._threeToEntities = {}
 	this._pathsToTextures = {}
 	this._pathsToMaterials = {}
+	this.e2t = function (entity) {
+		return this._entitiesToThree[entity];
+	}
+	this.t2e = function (threeObject) {
+		return this._threeToEntities[threeObject];
+	}
 	this.setSceneElement = function (sceneElement) {
 		this._renderer = new three.WebGLRenderer();
 		this._renderer.setSize(sceneElement.clientWidth, sceneElement.clientHeight);
@@ -49,7 +58,7 @@ export default function (registry, systems) {
 		Log.debug(`Renderer.add:`, entity, threeObject);
 		this._scene.add(threeObject);
 		this._entitiesToThree[entity] = threeObject;
-		this._threeToEntities[threeObject.id] = entity;
+		this._threeToEntities[threeObject] = entity;
 		this.onUpdatePosition(entity, registry.getOrEmplace("Position", entity));
 		this.onUpdateScale(entity, registry.getOrEmplace("Scale", entity));
 		registry.getOrEmplace("Position", entity);
