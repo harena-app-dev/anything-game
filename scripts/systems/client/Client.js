@@ -45,7 +45,7 @@ export default function (registry, systems) {
 			return this._s2c[serverEntity];
 		},
 		s2cComponent(component) {
-			Log.info(`s2cComponent`, component);
+			Log.debug(`s2cComponent`, component);
 			for (const [key, value] of Object.entries(component)) {
 				if (key.toLowerCase().endsWith('entity')) {
 					component[key] = this.s2cEntity(value);
@@ -143,11 +143,14 @@ export default function (registry, systems) {
 				password,
 				isCreate,
 			}).then((data) => {
-				Log.info(`promiseLogin`, data);
+				Log.debug(`promiseLogin`, data);
 				const { accountEntity, message } = data;
 				// const playerEntity = this._s2c[accountEntity];
 				const account = registry.get('Account', this._s2c[accountEntity]);
-				Log.info(`promiseLogin`, message, account);
+				if (account === undefined) {
+					return data;
+				}
+				Log.debug(`promiseLogin`, message, account);
 				systems.get('Player').setPlayerEntity(account.playerEntity);
 				return data;
 			})
