@@ -5,8 +5,13 @@ import Log from '@/scripts/Log';
 import Chat from './Chat';
 
 export default function Scene({ registry, systems }) {
+	const client = systems.get('Client');
+	const raycaster = systems.get('Raycaster');
 	const onRightClick = (e) => {
 		e.preventDefault();
+		// client.promiseCreate().then((entity) => {
+		// 	client.promiseEmplace("MoveGoal", entity, { x: e
+		// })
 	}
 	useEffect(() => {
 		Log.debug(`Scene.useEffect`);

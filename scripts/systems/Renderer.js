@@ -15,13 +15,13 @@ export default function (registry, systems) {
 		const widthHeight = new three.Vector2(sceneElement.clientWidth, sceneElement.clientHeight);
 		let zoom = 100;
 		// const camera = new three.OrthographicCamera(widthHeight.x / -zoom, widthHeight.x / zoom, widthHeight.y / zoom, widthHeight.y / -zoom, 0.001, 1000);
-		const camera = new three.PerspectiveCamera(75, widthHeight.x / widthHeight.y, 0.1, 1000);
-		camera.position.y = 10;
+		this.camera = new three.PerspectiveCamera(75, widthHeight.x / widthHeight.y, 0.1, 1000);
+		this.camera.position.y = 10;
 		// tilt the camera towards x
-		camera.rotation.x = -1.5;
+		this.camera.rotation.x = -1.5;
 		this.tick = function () {
 			Log.debug(`Renderer.tick`);
-			this._renderer.render(this._scene, camera);
+			this._renderer.render(this._scene, this.camera);
 		}
 		this.onSceneElementResize = function () {
 			sceneElement.removeChild(this._renderer.domElement);
