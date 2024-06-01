@@ -19,11 +19,14 @@ export default function App() {
 			constructors: { ...commonSystems, ...clientSystems },
 			registry,
 		});
-		systems.get("Client").promiseSync().then(() => {
-			setContent(<React.Fragment>
-				<Login registry={registry} systems={systems} />
-				<Scene registry={registry} systems={systems} />
-			</React.Fragment>);
+		const client = systems.get("Client");
+		client.promiseConnect().then(() => {
+			client.promiseSync().then(() => {
+				setContent(<React.Fragment>
+					<Login registry={registry} systems={systems} />
+					<Scene registry={registry} systems={systems} />
+				</React.Fragment>);
+			});
 		});
 		return () => {
 			webSocketMessager.current?.close()

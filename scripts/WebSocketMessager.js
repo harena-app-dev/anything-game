@@ -1,6 +1,7 @@
 import { WebSocketServer } from 'ws';
 import Log from '../Log.js';
-export default function WebSocketMessager({server}) {
+// export default function WebSocketMessager({server}) {
+export default function WebSocketMessager(wsw) {
 	const wsm = {
 		addHandler(name, handler) {
 			if (!this.messageNamesToHandlers.has(name)) {
@@ -28,13 +29,11 @@ export default function WebSocketMessager({server}) {
 		},
 		messageNamesToHandlers: new Map(),
 		connectionHandlers: new Set(),
-		wss: new WebSocketServer({ server }),
 	};
 
-	wsm.wss.on('connection', (ws) => {
+	wsm.wss.onConnection((ws) => {
 		const connectionHandlers = wsm.connectionHandlers;
 		connectionHandlers.forEach(handler => handler(ws));
-		Log.debug(`${ws.protocol} connected`);
 		ws.on('message', (data) => {
 			Log.debug(`received message: ${data.toString()}`);
 			let message;
@@ -58,14 +57,14 @@ export default function WebSocketMessager({server}) {
 			}
 		});
 	});
-	wsm.wss.on('listening', () => {
+	wsm.wss.onListening(() => {
 		Log.debug('listening');
 	});
-	wsm.wss.on('close', () => {
+	wsm.wss.onClose(() => {
 		Log.debug('close');
 	});
-	wsm.wss.on('error', (error) => {
-		Log.debug('error', error);
+	wsm.wss.onError((error) => {
+		Log.error('error', error);
 	});
 	return wsm;
 }

@@ -4,34 +4,56 @@ import { offsetPortOfCurrentUrl } from "../../Utils";
 import Registry from "../../Registry";
 
 // export function fetchCmd({ name, args }) {
-export function fetchCmd(name, ...args) {
+let fetchCounter = 0;
+export function fetchCmd(wsm, name, ...args) {
 	Log.info(`fetchCmd`, name, args);
 	Log.debug(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
-	const fetchUrl = `${offsetPortOfCurrentUrl(1)}/${name}`;
-	Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
-	return fetch(fetchUrl, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(args),
-	}).then(response => {
-		if (!response.ok) {
-			Log.error(`fetchCmd ${name} response not ok: ${response}`);
-			return {};
+	// const fetchUrl = `${offsetPortOfCurrentUrl(1)}/${name}`;
+	// Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
+	// return fetch(fetchUrl, {
+	// 	method: 'POST',
+	// 	headers: {
+	// 		'Content-Type': 'application/json',
+	// 	},
+	// 	body: JSON.stringify(args),
+	// }).then(response => {
+	// 	if (!response.ok) {
+	// 		Log.error(`fetchCmd ${name} response not ok: ${response}`);
+	// 		return {};
+	// 	}
+	// 	Log.debug(`fetchCmd`, response);
+	// 	return response.json()
+	// });
+	// use WebSocketMessager instead of fetch
+	const fetchId = fetchCounter++;
+	return new Promise((resolve, reject) => {
+		const handler = (ws, response) => {
+			Log.info(`fetchCmd handler`, response);
+			wsm.removeHandler(handler);
+			resolve(response);
 		}
-		Log.debug(`fetchCmd`, response);
-		return response.json()
-	});
+		wsm.addHandler(`${name}${fetchId}`, handler);
+		wsm.send(name, fetchId, ...args);
+	})
+	// register a handler for the response
+	// send handler name and args to the server
+
 }
 export default function (registry, systems) {
 	Log.debug(`Client`);
 	const system = {
 		_s2c: {},
 		_c2s: {},
-		wsm: new WebSocketMessager({ port: 3001 }),
+		// wsm: new WebSocketMessager(),
+		promiseConnect() {
+			return new Promise((resolve, reject) => {
+				system.wsm = new WebSocketMessager(() => {
+					resolve();
+				});
+			})
+		},
 		onJson(json) {
-			Log.debug(`onJson ${json}`, JSON.stringify(json, null, 2));
+			Log.info(`onJson ${json}`, JSON.stringify(json, null, 2));
 			// registry.fromJson(json);
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
@@ -69,10 +91,10 @@ export default function (registry, systems) {
 		},
 		promiseSync() {
 			Log.debug(`promiseSync`);
-			return fetchCmd('toJson').then(this.onJson.bind(this));
+			return fetchCmd(this.wsm, 'toJson').then(this.onJson.bind(this));
 		},
 		promiseCreate() {
-			return fetchCmd('create').then((serverEntity) => {
+			return fetchCmd(this.wsm, 'create').then((serverEntity) => {
 				if (this._s2c[serverEntity] === undefined) {
 					this._s2c[serverEntity] = registry.create();
 					this._c2s[this._s2c[serverEntity]] = serverEntity;
@@ -86,53 +108,48 @@ export default function (registry, systems) {
 				Log.error(`promiseEmplace serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd('emplace', type, serverEntity, component).then((serverComponent) => {
+			return fetchCmd(this.wsm, 'emplace', type, serverEntity, component).then((serverComponent) => {
 				return registry.emplaceOrReplace(type, entity, serverComponent);
 			})
 		},
 		promiseUpdate(type, entity, component) {
-			// return fetchCmd({ name: 'update', args: { entity, component, type } })
-			// return fetchCmd('update', type, entity, component)
 			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseUpdate serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd('update', type, serverEntity, component).then((serverComponent) => {
+			return fetchCmd(this.wsm, 'update', type, serverEntity, component).then((serverComponent) => {
 				return registry.replace(type, entity, serverComponent);
 			})
 		},
 		promiseErase(type, entity) {
-			// return fetchCmd({ name: 'erase', args: { entity, type } })
-			// return fetchCmd('erase', type, entity)
 			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseErase serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd('erase', type, serverEntity).then(() => {
+			return fetchCmd(this.wsm, 'erase', type, serverEntity).then(() => {
 				return registry.erase(type, entity);
 			})
 		},
 		promiseDestroy(entity) {
-			// return fetchCmd('destroy', entity).
 			const serverEntity = this._c2s[entity];
 			if (serverEntity === undefined) {
 				Log.error(`promiseDestroy serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd('destroy', serverEntity).then(() => {
+			return fetchCmd(this.wsm, 'destroy', serverEntity).then(() => {
 				return registry.destroy(entity);
 			})
 		},
-		promiseLogin({username, password, isCreate=false}) {
-			return fetchCmd('login', {
+		promiseLogin({ username, password, isCreate = false }) {
+			return fetchCmd(this.wsm, 'login', {
 				username,
 				password,
 				isCreate,
 			}).then((data) => {
 				Log.info(`promiseLogin`, data);
-				const {entity: serverPlayerEntity, message} = data;
+				const { entity: serverPlayerEntity, message } = data;
 				const playerEntity = this._s2c[serverPlayerEntity];
 				Log.info(`promiseLogin`, playerEntity, serverPlayerEntity);
 				systems.get('Player').setPlayerEntity(playerEntity);
