@@ -136,7 +136,7 @@ export default function (registry, systems) {
 				Log.debug(`promiseLogin`, data);
 				const { entity: serverPlayerEntity, message } = data;
 				const playerEntity = this._s2c[serverPlayerEntity];
-				Log.debug(`promiseLogin`, playerEntity, serverPlayerEntity);
+				Log.info(`promiseLogin`, playerEntity, serverPlayerEntity);
 				systems.get('Player').setPlayerEntity(playerEntity);
 				return data;
 			})

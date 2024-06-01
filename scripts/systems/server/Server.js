@@ -16,16 +16,16 @@ export default function (registry, systems) {
 	wsm.addConnectionHandler(function (ws) {
 	})
 	registry.onEmplace().connect(function (...args) {
-		wsm.sendToAll('emplace', args);
+		wsm.sendToAll('update', ...args);
 	})
 	registry.onUpdate().connect(function (...args) {
-		wsm.sendToAll('update', args);
+		wsm.sendToAll('update', ...args);
 	})
 	registry.onErase().connect(function (...args) {
-		wsm.sendToAll('erase', args);
+		wsm.sendToAll('erase', ...args);
 	})
-	registry.onDestroy().connect(function (entity) {
-		wsm.sendToAll('destroy', entity);
+	registry.onDestroy().connect(function (...args) {
+		wsm.sendToAll('destroy', ...args);
 	})
 	em.setHandler({
 		name: 'login',

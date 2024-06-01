@@ -37,7 +37,7 @@ export default function WebSocketMessager(wsw) {
 		const connectionHandlers = wsm.connectionHandlers;
 		connectionHandlers.forEach(handler => handler(ws));
 		ws.onMessage((str) => {
-			Log.debug(`received message: ${str}`);
+			Log.info(`received message: ${str}`);
 			let message;
 			try {
 				Log.debug('data', str);
