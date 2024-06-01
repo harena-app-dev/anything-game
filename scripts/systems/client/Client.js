@@ -133,17 +133,31 @@ export default function (registry, systems) {
 				password,
 				isCreate,
 			}).then((data) => {
-				Log.debug(`promiseLogin`, data);
-				const { entity: serverPlayerEntity, message } = data;
-				const playerEntity = this._s2c[serverPlayerEntity];
-				Log.debug(`promiseLogin`, playerEntity, serverPlayerEntity);
-				systems.get('Player').setPlayerEntity(playerEntity);
+				Log.info(`promiseLogin`, data);
+				const { accountEntity, message } = data;
+				// const playerEntity = this._s2c[accountEntity];
+				const account = registry.get('Account', accountEntity);
+				Log.info(`promiseLogin`, message, account);
+				systems.get('Player').setPlayerEntity(account.playerEntity);
 				return data;
 			})
 		},
 		destructor() {
 		}
 	}
-
+	registry.onUpdate().connect(function (...args) {
+		// const [type, entity, component] = args;
+		// if (registry.has('AccountOwner', entity)) {
+		// 	const accountEntity = registry.get('AccountOwner', entity).accountEntity;
+		// 	system.wsm.forEachConnection(ws => {
+		// 		if (ws === accountsToWs[accountEntity]) {
+		// 			return;
+		// 		}
+		// 		system.wsm.send(ws, 'update', ...args);
+		// 	});
+		// 	return;
+		// }
+		// system.wsm.sendToAll('update', ...args);
+	})
 	return system
 }

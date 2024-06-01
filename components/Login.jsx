@@ -20,8 +20,8 @@ export default function ({ registry, systems }) {
 	function login(isCreate) {
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
-		systems.get("Client").promiseLogin({ username, password, isCreate }).then(({ entity, message }) => {
-			if (entity === undefined) {
+		systems.get("Client").promiseLogin({ username, password, isCreate }).then(({ accountEntity, message }) => {
+			if (accountEntity === undefined) {
 				alert(message);
 				return;
 			}

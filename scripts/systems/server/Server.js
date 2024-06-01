@@ -64,7 +64,7 @@ export default function (registry, systems) {
 			}
 			wsToAccounts[ws] = accountEntity;
 			accountsToWs[accountEntity] = ws;
-			return { entity: account.playerEntity, message: 'Login successful' }
+			return { accountEntity, message: 'Login successful' }
 		},
 	});
 	em.setHandler({
@@ -73,34 +73,51 @@ export default function (registry, systems) {
 			return registry.toJson();
 		},
 	});
-	em.setHandler({
-		name: 'create',
-		handler: (ws, ...args) => {
-			return registry.create();
-		},
+	// em.setHandler({
+	// 	name: 'create',
+	// 	handler: (ws, ...args) => {
+	// 		return registry.create();
+	// 	},
+	// });
+	// em.setHandler({
+	// 	name: 'emplace',
+	// 	handler: (ws, ...args) => {
+	// 		return registry.emplace(...args);
+	// 	},
+	// });
+	// em.setHandler({
+	// 	name: 'update',
+	// 	handler: (ws, ...args) => {
+	// 		return registry.update(...args);
+	// 	},
+	// });
+	// em.setHandler({
+	// 	name: 'erase',
+	// 	handler: (ws, ...args) => {
+	// 		return registry.erase(...args);
+	// 	},
+	// });
+	// em.setHandler({
+	// 	name: 'destroy',
+	// 	handler: (ws, ...args) => {
+	// 		return registry.destroy(...args);
+	// 	},
+	// });
+	const update = wsm.addHandler('update', (ws, type, serverEntity, component) => {
+		registry.emplaceOrReplace(type, serverEntity, component);
 	});
-	em.setHandler({
-		name: 'emplace',
-		handler: (ws, ...args) => {
-			return registry.emplace(...args);
-		},
-	});
-	em.setHandler({
-		name: 'update',
-		handler: (ws, ...args) => {
-			return registry.update(...args);
-		},
-	});
-	em.setHandler({
-		name: 'erase',
-		handler: (ws, ...args) => {
-			return registry.erase(...args);
-		},
-	});
-	em.setHandler({
-		name: 'destroy',
-		handler: (ws, ...args) => {
-			return registry.destroy(...args);
-		},
-	});
+	const handlers = [update,
+		wsm.addHandler('erase', (ws, type, serverEntity) => {
+			registry.erase(type, serverEntity);
+		}),
+		wsm.addHandler('destroy', (ws, serverEntity) => {
+			registry.destroy(serverEntity);
+		}),
+	];
+	this.destructor = () => {
+		handlers.forEach((handler) => {
+			this.wsm.removeHandler(handler);
+		})
+		this.wsm.close();
+	}
 }
