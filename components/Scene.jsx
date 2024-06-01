@@ -7,8 +7,10 @@ import Chat from './Chat';
 export default function Scene({ registry, systems }) {
 	const client = systems.get('Client');
 	const raycaster = systems.get('Raycaster');
+	const moba = systems.get('Moba');
 	const onRightClick = (e) => {
 		e.preventDefault();
+		// moba.cmdMoveTo(
 		// client.promiseCreate().then((entity) => {
 		// 	client.promiseEmplace("MoveGoal", entity, { x: e
 		// })
