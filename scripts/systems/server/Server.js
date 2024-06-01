@@ -32,9 +32,11 @@ export default function (registry, systems) {
 					return { message: 'Username already exists' }
 				}
 				const entity = registry.create();
-				registry.emplace('Account', entity, { username, password });
+				const playerEntity = registry.create();
+				registry.emplace('Sprite', playerEntity, { path: 'rogue.png' });
+				registry.emplace('Account', entity, { username, password, playerEntity });
 				usernames[username] = entity;
-				return { entity, message: 'Account created' }
+				return { entity: playerEntity, message: 'Account created' }
 			}
 			const entity = usernames[username];
 			if (entity === undefined) {
@@ -44,7 +46,7 @@ export default function (registry, systems) {
 			if (account.password !== password) {
 				return { message: 'Invalid combination' }
 			}
-			return { entity, message: 'Login successful' }
+			return { entity: account.playerEntity, message: 'Login successful' }
 		},
 	});
 	system.em.setHandler({

@@ -24,7 +24,7 @@ export function fetchCmd(name, ...args) {
 		return response.json()
 	});
 }
-export default function (registry) {
+export default function (registry, systems) {
 	Log.debug(`Client`);
 	const system = {
 		_s2c: {},
@@ -133,6 +133,7 @@ export default function (registry) {
 			}).then((data) => {
 				Log.info(`promiseLogin`, data);
 				const {entity, message} = data;
+				systems.get('Player').setPlayerEntity(entity);
 				return data;
 			})
 		},
