@@ -71,6 +71,21 @@ export default function WebSocketMessager(wsw) {
 				Log.error('error', error);
 			});
 		},
+		setFetchHandler({ name, handler }) {
+			Log.debug(`setting handler ${name}`)
+			wsm.addHandler(`${name}`, (ws, fetchId, ...args) => {
+				Log.debug('handling', name, fetchId, args)
+				const result = handler(ws, ...args)
+				if (result === undefined) {
+					Log.debug('result is undefined')
+					wsm.send(ws, fetchId, {})
+					return
+				}
+				const sendName = `${name}${fetchId}`
+				Log.debug('sendName', sendName)
+				wsm.send(ws, sendName, result)
+			})
+		},
 		messageNamesToHandlers: new Map(),
 		connectionHandlers: new Set(),
 	};

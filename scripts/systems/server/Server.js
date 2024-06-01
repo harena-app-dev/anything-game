@@ -1,5 +1,4 @@
 import WebSocketMessager from "../../WebSocketMessager";
-import ExpressMessager from "../../server/ExpressMessager";
 import Log from "../../Log";
 import http from 'http';
 import { WebSocketServer } from 'ws';
@@ -15,7 +14,6 @@ export default function (registry, systems) {
 	const server = http.createServer();
 	const wss = new WebSocketServer({ server });
 	const wsm = WebSocketMessager(server);
-	const em = ExpressMessager({ server, wsm });
 	wsm.setWsw({
 		wss,
 		forEachConnection(f) {
@@ -72,7 +70,7 @@ export default function (registry, systems) {
 	registry.onDestroy().connect(function (...args) {
 		wsm.sendToAll('destroy', ...args);
 	})
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'login',
 		handler: (ws, { username, password, isCreate }) => {
 			if (isCreate) {
@@ -99,37 +97,37 @@ export default function (registry, systems) {
 			return { accountEntity, message: 'Login successful' }
 		},
 	});
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'toJson',
 		handler: (ws, ...args) => {
 			return registry.toJson();
 		},
 	});
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'createAsync',
 		handler: (ws, ...args) => {
 			return registry.create();
 		},
 	});
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'emplaceAsync',
 		handler: (ws, ...args) => {
 			return registry.emplace(...args);
 		},
 	});
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'updateAsync',
 		handler: (ws, ...args) => {
 			return registry.update(...args);
 		},
 	});
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'eraseAsync',
 		handler: (ws, ...args) => {
 			return registry.erase(...args);
 		},
 	});
-	em.setHandler({
+	wsm.setFetchHandler({
 		name: 'destroyAsync',
 		handler: (ws, ...args) => {
 			return registry.destroy(...args);
