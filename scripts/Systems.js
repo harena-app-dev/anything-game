@@ -19,12 +19,7 @@ export default function ({
 		return this._systems[name];
 	}
 	for (let [name, constructor] of Object.entries(constructors)) {
-		if (this._systems[name] !== undefined) {
-			continue;
-		}
-		Log.debug(`constructing system ${name}`);
-		this._systems[name] = new constructor(registry, this);
-		Log.debug(`end constructing ${name}`);
+		this.get(name);
 	}
 	this.tick = function () {
 		// Log.debug(`Systems.tick`);

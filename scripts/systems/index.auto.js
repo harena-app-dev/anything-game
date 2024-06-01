@@ -1,5 +1,7 @@
 import Blocks from './Blocks.js';
 export { Blocks };
+import Moba from './Moba.js';
+export { Moba };
 import Parenter from './Parenter.js';
 export { Parenter };
 import Renderer from './Renderer.js';
