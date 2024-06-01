@@ -6,7 +6,6 @@ export default function ({
 	Log.info(`Systems constructor`);
 	this._systems = {};
 	this._registry = registry;
-	this.ticksPerSecond = 60;
 	this.get = function (name) {
 		if (this._systems[name] === undefined) {
 			const constructor = constructors[name];
@@ -27,16 +26,7 @@ export default function ({
 		this._systems[name] = new constructor(registry, this);
 		Log.debug(`end constructing ${name}`);
 	}
-	// var msSinceLastTick = Date.now();
-	var lastTick = Date.now();
 	this.tick = function () {
-		var now = Date.now();
-		var msSinceLastTick = now - lastTick;
-		if (msSinceLastTick < 1000 / this.ticksPerSecond) {
-			return;
-		}
-		lastTick = now;
-		
 		// Log.info(`Systems.tick`);
 		for (let [name, system] of Object.entries(this._systems)) {
 			if (system.tick === undefined) {
