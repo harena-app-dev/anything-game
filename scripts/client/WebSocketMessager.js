@@ -14,7 +14,7 @@ export default function WebSocketMessager({ onConnection }) {
 		},
 		onConnection(f) {
 			ws.onopen = () => {
-				Log.info('WebSocketMessager onopen');
+				Log.debug('WebSocketMessager onopen');
 				onConnectionArg();
 				f({
 					ws,

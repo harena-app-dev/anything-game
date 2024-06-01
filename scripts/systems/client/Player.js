@@ -21,13 +21,13 @@ export default function (registry, systems) {
 	// const client = systems.get('Client');
 
 	this.destructor = function () {
-		Log.info('Player.destructor');
+		Log.debug('Player.destructor');
 		// if (registry.valid(this._playerEntity)) {
 			// client.promiseDestroy(this._playerEntity);
 		// }
 	}
 	// client.promiseCreate().then((entity) => {
-	// 	Log.info('promiseCreate', entity);
+	// 	Log.debug('promiseCreate', entity);
 
 	// 	// client.promiseEmplace({ entity, type: 'Spawner' });
 	// 	client.promiseEmplace("Sprite", entity, { path: "rogue.png" }).then(() => {

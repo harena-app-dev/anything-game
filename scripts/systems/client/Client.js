@@ -3,32 +3,14 @@ import Log from "../../Log";
 import { offsetPortOfCurrentUrl } from "../../Utils";
 import Registry from "../../Registry";
 
-// export function fetchCmd({ name, args }) {
 let fetchCounter = 0;
 export function fetchCmd(wsm, name, ...args) {
-	Log.info(`fetchCmd`, name, args);
+	Log.debug(`fetchCmd`, name, args);
 	Log.debug(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
-	// const fetchUrl = `${offsetPortOfCurrentUrl(1)}/${name}`;
-	// Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
-	// return fetch(fetchUrl, {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		'Content-Type': 'application/json',
-	// 	},
-	// 	body: JSON.stringify(args),
-	// }).then(response => {
-	// 	if (!response.ok) {
-	// 		Log.error(`fetchCmd ${name} response not ok: ${response}`);
-	// 		return {};
-	// 	}
-	// 	Log.debug(`fetchCmd`, response);
-	// 	return response.json()
-	// });
-	// use WebSocketMessager instead of fetch
 	const fetchId = fetchCounter++;
 	return new Promise((resolve, reject) => {
 		const handler = (ws, response) => {
-			Log.info(`fetchCmd handler`, response);
+			Log.debug(`fetchCmd handler`, response);
 			wsm.removeHandler(handler);
 			resolve(response);
 		}
@@ -49,14 +31,14 @@ export default function (registry, systems) {
 			return new Promise((resolve, reject) => {
 				system.wsm = new WebSocketMessager({
 					onConnection() {
-						Log.info(`onConnection`);
+						Log.debug(`onConnection`);
 						resolve();
 					}
 				});
 			})
 		},
 		onJson(json) {
-			Log.info(`onJson ${json}`, JSON.stringify(json, null, 2));
+			Log.debug(`onJson ${json}`, JSON.stringify(json, null, 2));
 			// registry.fromJson(json);
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
@@ -151,10 +133,10 @@ export default function (registry, systems) {
 				password,
 				isCreate,
 			}).then((data) => {
-				Log.info(`promiseLogin`, data);
+				Log.debug(`promiseLogin`, data);
 				const { entity: serverPlayerEntity, message } = data;
 				const playerEntity = this._s2c[serverPlayerEntity];
-				Log.info(`promiseLogin`, playerEntity, serverPlayerEntity);
+				Log.debug(`promiseLogin`, playerEntity, serverPlayerEntity);
 				systems.get('Player').setPlayerEntity(playerEntity);
 				return data;
 			})

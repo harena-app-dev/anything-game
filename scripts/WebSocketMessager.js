@@ -12,7 +12,7 @@ export default function WebSocketMessager(wsw) {
 			this.messageNamesToHandlers.get(name)?.delete(handler);
 		},
 		send(ws, name, data) {
-			// Log.info('send', ws, name, data);
+			// Log.debug('send', ws, name, data);
 			ws.send(JSON.stringify({ name, data }));
 		},
 		sendToAll(name, data) {
@@ -39,7 +39,7 @@ export default function WebSocketMessager(wsw) {
 			Log.debug(`received message: ${str}`);
 			let message;
 			try {
-				Log.info('data', str);
+				Log.debug('data', str);
 				message = JSON.parse(str);
 			}
 			catch (error) {
@@ -49,7 +49,7 @@ export default function WebSocketMessager(wsw) {
 			const handlers = wsm.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				// handlers.forEach(handler => handler({ws, args: message.data}));
-				// Log.info('message', message);
+				// Log.debug('message', message);
 				if (!(message.data instanceof Array)) {
 					message.data = [message.data];
 				}

@@ -26,12 +26,12 @@ export default function (registry, systems) {
 		}
 		try {
 			const args = ["", ""].concat(message.value.replace("/", "").split(" "));
-			Log.info("info", "Command: ", args);
+			Log.debug("info", "Command: ", args);
 			this._program.parse((args)); // ["", "observe"
 		} catch (err) {
 			registry.emplace("Message", registry.create(), { value: this._program.helpInformation() });
 
-			Log.info("parse error", err);
+			Log.debug("parse error", err);
 		}
 	});
 }

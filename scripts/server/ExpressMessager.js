@@ -20,7 +20,7 @@ export default function ExpressMessager({ server, wsm}) {
 			// 	res.send(JSON.stringify(result))
 			// })
 			wsm.addHandler(`${name}`, (ws, fetchId, ...args) => {
-				Log.info('handling', name, fetchId, args)
+				Log.debug('handling', name, fetchId, args)
 				const result = handler(...args)
 				if (result === undefined) {
 					Log.debug('result is undefined')
@@ -28,7 +28,7 @@ export default function ExpressMessager({ server, wsm}) {
 					return
 				}
 				const sendName = `${name}${fetchId}`
-				Log.info('sendName', sendName)
+				Log.debug('sendName', sendName)
 				wsm.send(ws, sendName, result)
 			})
 		},
