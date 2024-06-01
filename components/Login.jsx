@@ -17,7 +17,7 @@ const style = {
 };
 export default function ({ registry, systems }) {
 	const [open, setOpen] = React.useState(true);
-	function login(isCreate=false) {
+	function login(isCreate) {
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 		systems.get("Client").promiseLogin({ username, password, isCreate }).then(({ entity, message }) => {
@@ -41,8 +41,9 @@ export default function ({ registry, systems }) {
 							Login
 					</Typography>
 					<TextField label="Username" variant="filled" id="username" />
-					<TextField label="Password" variant="filled" id="password" />
-					<Button variant="contained" onClick={login}>
+					<TextField label="Password (optional)" 
+					variant="filled" id="password" />
+					<Button variant="contained" onClick={() => login(false)}>
 						Login</Button>
 					<Button variant="contained" onClick={() => login(true)}>
 						Create Account</Button>
