@@ -7,18 +7,6 @@ export default function ExpressMessager({ server, wsm}) {
 		app: express(),
 		setHandler({ name, handler }) {
 			Log.debug(`setting handler ${name}`)
-			// em.app.post(`/${name}`, (req, res) => {
-			// 	Log.debug(`handling post ${name}`)
-			// 	Log.debug('req.body', req.body)
-			// 	const result = handler(...req.body)
-			// 	if (result === undefined) {
-			// 		Log.debug('result is undefined')
-			// 		res.send(JSON.stringify({}))
-			// 		return
-			// 	}
-			// 	Log.debug('result', result)
-			// 	res.send(JSON.stringify(result))
-			// })
 			wsm.addHandler(`${name}`, (ws, fetchId, ...args) => {
 				Log.debug('handling', name, fetchId, args)
 				const result = handler(ws, ...args)

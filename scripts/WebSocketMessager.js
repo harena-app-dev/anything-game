@@ -16,10 +16,14 @@ export default function WebSocketMessager(wsw) {
 			// ws.send(JSON.stringify({ name, data }));
 			ws.send(JSON.stringify({ name, data }));
 		},
+		forEachConnection(callback) {
+			// this.wss.clients.forEach(callback);
+			wsw.forEachConnection(callback);
+		},
 		sendToAll(name, ...data) {
 			Log.debug(`sendToAll ${name} ${JSON.stringify(data)}`);
 			// this.wss.clients.forEach(ws => {
-			wsw.forEachConnection(ws => {
+			this.forEachConnection(ws => {
 				this.send(ws, name, ...data);
 			});
 		},
