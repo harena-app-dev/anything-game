@@ -1,6 +1,4 @@
-import { WebSocketServer } from 'ws';
-import Log from '../Log.js';
-// export default function WebSocketMessager({server}) {
+import Log from './Log.js';
 export default function WebSocketMessager(wsw) {
 	const wsm = {
 		addHandler(name, handler) {
@@ -17,7 +15,8 @@ export default function WebSocketMessager(wsw) {
 		},
 		sendToAll(name, data) {
 			Log.debug(`sendToAll ${name} ${JSON.stringify(data)}`);
-			this.wss.clients.forEach(ws => {
+			// this.wss.clients.forEach(ws => {
+			wsw.forEachConnection(ws => {
 				this.send(ws, name, data);
 			});
 		},
@@ -31,10 +30,10 @@ export default function WebSocketMessager(wsw) {
 		connectionHandlers: new Set(),
 	};
 
-	wsm.wss.onConnection((ws) => {
+	wsw.onConnection((ws) => {
 		const connectionHandlers = wsm.connectionHandlers;
 		connectionHandlers.forEach(handler => handler(ws));
-		ws.on('message', (data) => {
+		ws.onMessage((data) => {
 			Log.debug(`received message: ${data.toString()}`);
 			let message;
 			try {
@@ -57,13 +56,13 @@ export default function WebSocketMessager(wsw) {
 			}
 		});
 	});
-	wsm.wss.onListening(() => {
+	wsw.onListening(() => {
 		Log.debug('listening');
 	});
-	wsm.wss.onClose(() => {
+	wsw.onClose(() => {
 		Log.debug('close');
 	});
-	wsm.wss.onError((error) => {
+	wsw.onError((error) => {
 		Log.error('error', error);
 	});
 	return wsm;

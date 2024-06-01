@@ -9,7 +9,7 @@ export default function (registry, systems) {
 		usernames[account.username] = entity;
 	});
 	const server = http.createServer();
-	const wsm = WebSocketMessager({ server })
+	const wsm = WebSocketMessager(server);
 	const em = ExpressMessager({ server, wsm });
 	server.listen(3001, function () {
 	});
