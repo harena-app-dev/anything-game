@@ -21,6 +21,7 @@ export default function App() {
 		});
 		systems.get("Client").promiseSync().then(() => {
 			setContent(<React.Fragment>
+				<Login registry={registry} systems={systems} />
 				<Scene registry={registry} systems={systems} />
 			</React.Fragment>);
 		});
@@ -31,7 +32,6 @@ export default function App() {
 	}, []);
 
 	return <Box className="row grow">
-		<Login />
 		{content}
 	</Box>
 }

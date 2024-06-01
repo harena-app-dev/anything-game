@@ -17,9 +17,16 @@ const style = {
 };
 export default function ({ registry, systems }) {
 	const [open, setOpen] = React.useState(true);
-	function login() {
+	function login(isCreate=false) {
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
+		systems.get("Client").promiseLogin({ username, password, isCreate }).then(({ entity, message }) => {
+			if (entity === undefined) {
+				alert(message);
+				return;
+			}
+			setOpen(false);
+		})
 	};
 
 	return (
@@ -35,8 +42,10 @@ export default function ({ registry, systems }) {
 					</Typography>
 					<TextField label="Username" variant="filled" id="username" />
 					<TextField label="Password" variant="filled" id="password" />
-					<Button variant="contained">Login</Button>
-					<Button variant="contained">Create Account</Button>
+					<Button variant="contained" onClick={login}>
+						Login</Button>
+					<Button variant="contained" onClick={() => login(true)}>
+						Create Account</Button>
 				</Stack>
 			</Box>
 		</Modal>

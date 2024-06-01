@@ -1,3 +1,5 @@
+import Account from './Account.js';
+export { Account };
 import Block from './Block.js';
 export { Block };
 import Camera from './Camera.js';

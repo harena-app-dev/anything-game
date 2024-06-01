@@ -8,7 +8,6 @@ export default  {
 	},
 	warn(...args) {
 		console.warn(...args)
-		console.trace()
 	},
 	error(...args) {
 		console.error(...args)

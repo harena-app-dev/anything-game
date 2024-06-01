@@ -2,6 +2,10 @@ import WebSocketMessager from "../../server/WebSocketMessager";
 import ExpressMessager from "../../server/ExpressMessager";
 import Log from "../../Log";
 export default function (registry, systems) {
+	const usernames = {};
+	registry.view('Account').each((entity, account) => {
+		usernames[account.username] = entity;
+	});
 	const system = {
 		wsm: WebSocketMessager({ port: 3001 }),
 		em: ExpressMessager({ port: 3002 }),
@@ -20,6 +24,29 @@ export default function (registry, systems) {
 	registry.onDestroy().connect(function (entity) {
 		system.wsm.sendToAll("destroy", [entity])
 	})
+	system.em.setHandler({
+		name: 'login',
+		handler: ({ username, password, isCreate }) => {
+			if (isCreate) {
+				if (usernames[username] !== undefined) {
+					return { message: 'Username already exists' }
+				}
+				const entity = registry.create();
+				registry.emplace('Account', entity, { username, password });
+				usernames[username] = entity;
+				return { entity, message: 'Account created' }
+			}
+			const entity = usernames[username];
+			if (entity === undefined) {
+				return { message: 'Invalid combination' }
+			}
+			const account = registry.get('Account', entity);
+			if (account.password !== password) {
+				return { message: 'Invalid combination' }
+			}
+			return { entity, message: 'Login successful' }
+		},
+	});
 	system.em.setHandler({
 		name: 'toJson',
 		handler: () => {

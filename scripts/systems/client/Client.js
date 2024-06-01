@@ -5,6 +5,7 @@ import Registry from "../../Registry";
 
 // export function fetchCmd({ name, args }) {
 export function fetchCmd(name, ...args) {
+	Log.info(`fetchCmd`, name, args);
 	Log.debug(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
 	const fetchUrl = `${offsetPortOfCurrentUrl(2)}/${name}`;
 	Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
@@ -19,7 +20,7 @@ export function fetchCmd(name, ...args) {
 			Log.error(`fetchCmd ${name} response not ok: ${response}`);
 			return {};
 		}
-		Log.debug(`fetchCmd ${name} response: ${response}`);
+		Log.debug(`fetchCmd`, response);
 		return response.json()
 	});
 }
@@ -124,9 +125,15 @@ export default function (registry) {
 				return registry.destroy(entity);
 			})
 		},
-		promiseLogin(username, password) {
-			return fetchCmd('login', username, password).then((json) => {
-				this.onJson(json);
+		promiseLogin({username, password, isCreate=false}) {
+			return fetchCmd('login', {
+				username,
+				password,
+				isCreate,
+			}).then((data) => {
+				Log.info(`promiseLogin`, data);
+				const {entity, message} = data;
+				return data;
 			})
 		},
 		destructor() {
