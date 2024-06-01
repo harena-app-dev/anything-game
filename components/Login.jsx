@@ -31,7 +31,7 @@ export default function ({ }) {
 			aria-describedby="child-modal-description"
 		>
 			<Box sx={{ ...style }}>
-				<GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+				{/* <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> */}
 			</Box>
 		</Modal>
 	);
