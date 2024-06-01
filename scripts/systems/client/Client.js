@@ -7,7 +7,7 @@ import Registry from "../../Registry";
 export function fetchCmd(name, ...args) {
 	Log.info(`fetchCmd`, name, args);
 	Log.debug(`fetchCmd ${name} ${JSON.stringify(args, null, 2)}`);
-	const fetchUrl = `${offsetPortOfCurrentUrl(2)}/${name}`;
+	const fetchUrl = `${offsetPortOfCurrentUrl(1)}/${name}`;
 	Log.debug(`fetchCmd ${name} fetchUrl: ${fetchUrl}`)
 	return fetch(fetchUrl, {
 		method: 'POST',
@@ -134,6 +134,7 @@ export default function (registry, systems) {
 				Log.info(`promiseLogin`, data);
 				const {entity: serverPlayerEntity, message} = data;
 				const playerEntity = this._s2c[serverPlayerEntity];
+				Log.info(`promiseLogin`, playerEntity, serverPlayerEntity);
 				systems.get('Player').setPlayerEntity(playerEntity);
 				return data;
 			})

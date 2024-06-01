@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 import Log from '../Log.js'
-export default function ExpressMessager({ port }) {
+export default function ExpressMessager({ server }) {
 	const em = {
 		app: express(),
 		setHandler({ name, handler }) {
@@ -25,9 +25,10 @@ export default function ExpressMessager({ port }) {
 	em.app.use(bodyParser.json());
 	em.app.use(bodyParser.urlencoded({ extended: true }));
 	em.app.use(cors());
+	server.on('request', em.app);
 
-	em.app.listen(port, () => {
-		Log.debug(`Express is running on port ${port}`)
-	})
+	// em.app.listen(port, () => {
+	// 	Log.debug(`Express is running on port ${port}`)
+	// })
 	return em
 }

@@ -1,42 +1,33 @@
 import WebSocketMessager from "../../server/WebSocketMessager";
 import ExpressMessager from "../../server/ExpressMessager";
 import Log from "../../Log";
+import http from 'http';
+
 export default function (registry, systems) {
 	const usernames = {};
 	registry.view('Account').each((entity, account) => {
 		usernames[account.username] = entity;
 	});
-	const system = {
-		wsm: WebSocketMessager({ port: 3001 }),
-		em: ExpressMessager({ port: 3002 }),
-	}
-	system.wsm.addConnectionHandler(function (ws) {
+	const server = http.createServer();
+	const em = ExpressMessager({ server })
+	const wsm = WebSocketMessager({ server })
+	server.listen(3001, function () {
+	});
+	wsm.addConnectionHandler(function (ws) {
 	})
-	// registry.onEmplace().connect(function (type, entity, component) {
-	// 	system.wsm.sendToAll("update", [type, entity, component])
-	// })
-	// registry.onUpdate().connect(function (type, entity, component) {
-	// 	system.wsm.sendToAll("update", [type, entity, component])
-	// })
-	// registry.onErase().connect(function (type, entity, component) {
-	// 	system.wsm.sendToAll("erase", [type, entity, component])
-	// })
-	// registry.onDestroy().connect(function (entity) {
-	// 	system.wsm.sendToAll("destroy", [entity])
-	// })
 	registry.onEmplace().connect(function (...args) {
-		system.wsm.sendToAll('emplace', args);
+		wsm.sendToAll('emplace', args);
 	})
 	registry.onUpdate().connect(function (...args) {
-		system.wsm.sendToAll('update', args);
+		wsm.sendToAll('update', args);
 	})
 	registry.onErase().connect(function (...args) {
-		system.wsm.sendToAll('erase', args);
+		wsm.sendToAll('erase', args);
 	})
 	registry.onDestroy().connect(function (entity) {
-		system.wsm.sendToAll('destroy', entity);
+		wsm.sendToAll('destroy', entity);
 	})
-	system.em.setHandler({
+	em.setHandler({
 		name: 'login',
 		handler: ({ username, password, isCreate }) => {
 			if (isCreate) {
@@ -61,41 +52,40 @@ export default function (registry, systems) {
 			return { entity: account.playerEntity, message: 'Login successful' }
 		},
 	});
-	system.em.setHandler({
+	em.setHandler({
 		name: 'toJson',
 		handler: () => {
 			return registry.toJson();
 		},
 	});
-	system.em.setHandler({
+	em.setHandler({
 		name: 'create',
 		handler: () => {
 			return registry.create();
 		},
 	});
-	system.em.setHandler({
+	em.setHandler({
 		name: 'emplace',
 		handler: (...args) => {
 			return registry.emplace(...args);
 		},
 	});
-	system.em.setHandler({
+	em.setHandler({
 		name: 'update',
 		handler: (...args) => {
 			return registry.update(...args);
 		},
 	});
-	system.em.setHandler({
+	em.setHandler({
 		name: 'erase',
 		handler: (...args) => {
 			return registry.erase(...args);
 		},
 	});
-	system.em.setHandler({
+	em.setHandler({
 		name: 'destroy',
 		handler: (entity) => {
 			return registry.destroy(entity);
 		},
 	});
-	return system
 }

@@ -1,6 +1,6 @@
 import { WebSocketServer } from 'ws';
 import Log from '../Log.js';
-export default function WebSocketMessager({port}) {
+export default function WebSocketMessager({server}) {
 	const wsm = {
 		addHandler(name, handler) {
 			if (!this.messageNamesToHandlers.has(name)) {
@@ -28,8 +28,9 @@ export default function WebSocketMessager({port}) {
 		},
 		messageNamesToHandlers: new Map(),
 		connectionHandlers: new Set(),
-		wss: new WebSocketServer({ port}),
+		wss: new WebSocketServer({ server }),
 	};
+
 	wsm.wss.on('connection', (ws) => {
 		const connectionHandlers = wsm.connectionHandlers;
 		connectionHandlers.forEach(handler => handler(ws));
