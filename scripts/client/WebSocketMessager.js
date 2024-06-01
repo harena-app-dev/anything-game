@@ -5,9 +5,8 @@ import { offsetPortOfCurrentUrl } from '../Utils.js';
 export default function WebSocketMessager({ onConnection }) {
 	const onConnectionArg = onConnection;
 	const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
-	const ws = new WebSocket(wsUrl);
+	const ws = new WebSocket(wsUrl)
 	return new BaseWebSocketMessager({
-		ws,
 		forEachConnection(f) {
 			// ws.clients.forEach(f);
 			f(ws);

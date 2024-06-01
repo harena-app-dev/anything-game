@@ -5,6 +5,11 @@ export default function ({
 }) {
 	Log.debug(`Systems constructor`);
 	this._systems = {};
+	this.each = function (callback) {
+		for (let [name, system] of Object.entries(this._systems)) {
+			callback(name, system);
+		}
+	}
 	this._registry = registry;
 	this.get = function (name) {
 		if (this._systems[name] === undefined) {
@@ -18,8 +23,14 @@ export default function ({
 		}
 		return this._systems[name];
 	}
-	for (let [name, constructor] of Object.entries(constructors)) {
+	for (const name of Object.keys(constructors)) {
 		this.get(name);
+	}
+	for (const system of Object.values(this._systems)) {
+		if (system.onSystemsReady === undefined) {
+			continue;
+		}
+		system.onSystemsReady();
 	}
 	this.tick = function () {
 		// Log.debug(`Systems.tick`);
