@@ -3,16 +3,16 @@ import Log from '../../Log.js';
 export default function (registry, systems) {
 	this._playerEntity = nullEntity;
 	this.tick = function () {
-		// if (!registry.valid(this._playerEntity)) {
-		// 	return;
-		// }
-		// const keyboard = systems.get('Keyboard');
-		// const x = keyboard.isKeyDown('d') - keyboard.isKeyDown('a');
-		// const z = keyboard.isKeyDown('s') - keyboard.isKeyDown('w');
-		// const position = registry.get('Position', this._playerEntity);
-		// position.x += x * 0.1;
-		// position.z += z * 0.1;
-		// registry.replace('Position', this._playerEntity, position);
+		if (!registry.valid(this._playerEntity)) {
+			return;
+		}
+		const keyboard = systems.get('Keyboard');
+		const x = keyboard.isKeyDown('d') - keyboard.isKeyDown('a');
+		const z = keyboard.isKeyDown('s') - keyboard.isKeyDown('w');
+		const position = registry.get('Position', this._playerEntity);
+		position.x += x * 0.1;
+		position.z += z * 0.1;
+		registry.replace('Position', this._playerEntity, position);
 
 	}
 	const client = systems.get('Client');
