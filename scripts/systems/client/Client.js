@@ -31,12 +31,6 @@ export default function (registry, systems) {
 			const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
 			const ws = new WebSocket(wsUrl);
 			return new Promise((resolve, reject) => {
-				// system.wsm = new WebSocketMessager({
-				// 	onConnection() {
-				// 		Log.debug(`onConnection`);
-				// 		resolve();
-				// 	}
-				// });
 				wsm.setWsw({
 					forEachConnection(f) {
 						f(ws);

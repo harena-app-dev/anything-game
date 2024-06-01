@@ -3,6 +3,7 @@ export default function (registry, systems) {
 	}
 	this.destructor = function () {
 	}
+	const wsm = systems.get('Wsm').getWsm();
 	this._addRpc = function (name, system) {
 		const rpcs = {};
 		for (let [fieldName, field] of Object.entries(system)) {
@@ -15,10 +16,9 @@ export default function (registry, systems) {
 			rpcs[`${fieldName}Rpc`] = function (...args) {
 				systems.get('Client').wsm.sendToAll(`${name}.${fieldName}`, ...args);
 			}
-			// wsm.addHandler(`${name}.${fieldName}`, (ws, ...args) => {
-			// 	Log.debug(`rpc ${name}.${fieldName}`, args);
-			// 	system[fieldName](...args);
-			// })
+			wsm.addHandler(`${name}.${fieldName}`, (ws, ...args) => {
+				system[fieldName](...args);
+			})
 		}
 		for (let [rpcName, rpc] of Object.entries(rpcs)) {
 			system[rpcName] = rpc;
