@@ -132,8 +132,9 @@ export default function (registry, systems) {
 				isCreate,
 			}).then((data) => {
 				Log.info(`promiseLogin`, data);
-				const {entity, message} = data;
-				systems.get('Player').setPlayerEntity(entity);
+				const {entity: serverPlayerEntity, message} = data;
+				const playerEntity = this._s2c[serverPlayerEntity];
+				systems.get('Player').setPlayerEntity(playerEntity);
 				return data;
 			})
 		},

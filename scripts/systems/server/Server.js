@@ -12,17 +12,29 @@ export default function (registry, systems) {
 	}
 	system.wsm.addConnectionHandler(function (ws) {
 	})
-	registry.onEmplace().connect(function (type, entity, component) {
-		system.wsm.sendToAll("update", [type, entity, component])
+	// registry.onEmplace().connect(function (type, entity, component) {
+	// 	system.wsm.sendToAll("update", [type, entity, component])
+	// })
+	// registry.onUpdate().connect(function (type, entity, component) {
+	// 	system.wsm.sendToAll("update", [type, entity, component])
+	// })
+	// registry.onErase().connect(function (type, entity, component) {
+	// 	system.wsm.sendToAll("erase", [type, entity, component])
+	// })
+	// registry.onDestroy().connect(function (entity) {
+	// 	system.wsm.sendToAll("destroy", [entity])
+	// })
+	registry.onEmplace().connect(function (...args) {
+		system.wsm.sendToAll('emplace', args);
 	})
-	registry.onUpdate().connect(function (type, entity, component) {
-		system.wsm.sendToAll("update", [type, entity, component])
+	registry.onUpdate().connect(function (...args) {
+		system.wsm.sendToAll('update', args);
 	})
-	registry.onErase().connect(function (type, entity, component) {
-		system.wsm.sendToAll("erase", [type, entity, component])
+	registry.onErase().connect(function (...args) {
+		system.wsm.sendToAll('erase', args);
 	})
 	registry.onDestroy().connect(function (entity) {
-		system.wsm.sendToAll("destroy", [entity])
+		system.wsm.sendToAll('destroy', entity);
 	})
 	system.em.setHandler({
 		name: 'login',
