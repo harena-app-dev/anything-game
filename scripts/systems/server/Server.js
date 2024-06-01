@@ -2,6 +2,8 @@ import WebSocketMessager from "../../server/WebSocketMessager";
 import ExpressMessager from "../../server/ExpressMessager";
 import Log from "../../Log";
 import http from 'http';
+import { WebSocketServer } from 'ws';
+
 
 export default function (registry, systems) {
 	const usernames = {};
@@ -11,12 +13,42 @@ export default function (registry, systems) {
 		usernames[account.username] = entity;
 	});
 	const server = http.createServer();
+	const wss = new WebSocketServer({ server });
 	const wsm = WebSocketMessager(server);
 	const em = ExpressMessager({ server, wsm });
+	wsm.setWsw({
+		wss,
+		forEachConnection(f) {
+			wss.clients.forEach(f);
+		},
+		onConnection(f) {
+			wss.on('connection', (ws) => {
+				f({
+					ws,
+					onMessage(f) {
+						ws.on('message', f);
+					},
+					send(data) {
+						ws.send(data);
+					}
+				})
+			});
+		},
+		onListening(f) {
+			wss.on('listening', f);
+		},
+		onMessage(f) {
+			wss.on('message', f);
+		},
+		onClose(f) {
+			wss.on('close', f);
+		},
+		onError(f) {
+			wss.on('error', f);
+		}
+	})
 	server.listen(3001, function () {
 	});
-	wsm.addConnectionHandler(function (ws) {
-	})
 	registry.onEmplace().connect(function (...args) {
 		wsm.sendToAll('update', ...args);
 	})

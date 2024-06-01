@@ -8,7 +8,6 @@ export default function WebSocketMessager({ onConnection }) {
 	const ws = new WebSocket(wsUrl)
 	return new BaseWebSocketMessager({
 		forEachConnection(f) {
-			// ws.clients.forEach(f);
 			f(ws);
 		},
 		onConnection(f) {
