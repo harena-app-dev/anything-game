@@ -37,18 +37,32 @@ export default function (registry, systems) {
 				});
 			})
 		},
+		s2cEntity(serverEntity) {
+			if (this._s2c[serverEntity] === undefined) {
+				this._s2c[serverEntity] = registry.create();
+				this._c2s[this._s2c[serverEntity]] = serverEntity;
+			}
+			return this._s2c[serverEntity];
+		},
+		s2cComponent(component) {
+			Log.info(`s2cComponent`, component);
+			for (const [key, value] of Object.entries(component)) {
+				if (key.toLowerCase().endsWith('entity')) {
+					component[key] = this.s2cEntity(value);
+				}
+				// component[key] = s2cEntity(value);
+			}
+			return component;
+		},
 		onJson(json) {
 			Log.debug(`onJson ${json}`, JSON.stringify(json, null, 2));
 			// registry.fromJson(json);
 			const tempRegistry = new Registry();
 			tempRegistry.fromJson(json);
 			Log.debug(`tempRegistry`, tempRegistry.size());
+	
 			const update = this.wsm.addHandler('update', (ws, type, serverEntity, component) => {
-				if (this._s2c[serverEntity] === undefined) {
-					this._s2c[serverEntity] = registry.create();
-					this._c2s[this._s2c[serverEntity]] = serverEntity;
-				}
-				registry.emplaceOrReplace(type, this._s2c[serverEntity], component);
+				registry.emplaceOrReplace(type, this.s2cEntity(serverEntity), this.s2cComponent(component));
 			});
 			tempRegistry.each((entity) => {
 				Log.debug(`onJson each entity ${entity}`);
@@ -80,11 +94,7 @@ export default function (registry, systems) {
 		},
 		promiseCreate() {
 			return fetchCmd(this.wsm, 'create').then((serverEntity) => {
-				if (this._s2c[serverEntity] === undefined) {
-					this._s2c[serverEntity] = registry.create();
-					this._c2s[this._s2c[serverEntity]] = serverEntity;
-				}
-				return this._s2c[serverEntity];
+				return this.s2cEntity(serverEntity);
 			})
 		},
 		promiseEmplace(type, entity, component) {
@@ -136,7 +146,7 @@ export default function (registry, systems) {
 				Log.info(`promiseLogin`, data);
 				const { accountEntity, message } = data;
 				// const playerEntity = this._s2c[accountEntity];
-				const account = registry.get('Account', accountEntity);
+				const account = registry.get('Account', this._s2c[accountEntity]);
 				Log.info(`promiseLogin`, message, account);
 				systems.get('Player').setPlayerEntity(account.playerEntity);
 				return data;

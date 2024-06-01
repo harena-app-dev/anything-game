@@ -5,6 +5,9 @@ import Log from '@/scripts/Log';
 import Chat from './Chat';
 
 export default function Scene({ registry, systems }) {
+	const onRightClick = (e) => {
+		e.preventDefault();
+	}
 	useEffect(() => {
 		Log.debug(`Scene.useEffect`);
 		const renderer = systems.get('Renderer')
@@ -19,7 +22,7 @@ export default function Scene({ registry, systems }) {
 		};
 	});
 	return (
-		<Box className="col grow" id="scene">
+		<Box className="col grow" id="scene" onContextMenu={onRightClick}>
 			<Chat sx={{ position: 'absolute', left: 0, bottom: 0, zIndex: 1, padding: 0,
 				backgroundColor: 'rgba(0,0,0,0.5)'
 			}} 

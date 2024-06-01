@@ -73,36 +73,36 @@ export default function (registry, systems) {
 			return registry.toJson();
 		},
 	});
-	// em.setHandler({
-	// 	name: 'create',
-	// 	handler: (ws, ...args) => {
-	// 		return registry.create();
-	// 	},
-	// });
-	// em.setHandler({
-	// 	name: 'emplace',
-	// 	handler: (ws, ...args) => {
-	// 		return registry.emplace(...args);
-	// 	},
-	// });
-	// em.setHandler({
-	// 	name: 'update',
-	// 	handler: (ws, ...args) => {
-	// 		return registry.update(...args);
-	// 	},
-	// });
-	// em.setHandler({
-	// 	name: 'erase',
-	// 	handler: (ws, ...args) => {
-	// 		return registry.erase(...args);
-	// 	},
-	// });
-	// em.setHandler({
-	// 	name: 'destroy',
-	// 	handler: (ws, ...args) => {
-	// 		return registry.destroy(...args);
-	// 	},
-	// });
+	em.setHandler({
+		name: 'createAsync',
+		handler: (ws, ...args) => {
+			return registry.create();
+		},
+	});
+	em.setHandler({
+		name: 'emplaceAsync',
+		handler: (ws, ...args) => {
+			return registry.emplace(...args);
+		},
+	});
+	em.setHandler({
+		name: 'updateAsync',
+		handler: (ws, ...args) => {
+			return registry.update(...args);
+		},
+	});
+	em.setHandler({
+		name: 'eraseAsync',
+		handler: (ws, ...args) => {
+			return registry.erase(...args);
+		},
+	});
+	em.setHandler({
+		name: 'destroyAsync',
+		handler: (ws, ...args) => {
+			return registry.destroy(...args);
+		},
+	});
 	const update = wsm.addHandler('update', (ws, type, serverEntity, component) => {
 		registry.emplaceOrReplace(type, serverEntity, component);
 	});
