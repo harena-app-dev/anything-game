@@ -16,7 +16,7 @@ export default function (registry, systems) {
 				systems.get('Client').wsm.sendToAll(`${name}.${fieldName}`, ...args);
 			}
 			// wsm.addHandler(`${name}.${fieldName}`, (ws, ...args) => {
-			// 	Log.info(`rpc ${name}.${fieldName}`, args);
+			// 	Log.debug(`rpc ${name}.${fieldName}`, args);
 			// 	system[fieldName](...args);
 			// })
 		}

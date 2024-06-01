@@ -1,5 +1,4 @@
 // import WebSocketMessager from "../../client/WebSocketMessager";
-import WebSocketMessager from "../../WebSocketMessager";
 import Log from "../../Log";
 import { offsetPortOfCurrentUrl } from "../../Utils";
 import Registry from "../../Registry";
@@ -24,10 +23,10 @@ export function fetchCmd(wsm, name, ...args) {
 }
 export default function (registry, systems) {
 	Log.debug(`Client`);
+	const wsm = systems.get('Wsm').getWsm();
 	const system = {
 		_s2c: {},
 		_c2s: {},
-		wsm: new WebSocketMessager(),
 		promiseConnect() {
 			const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
 			const ws = new WebSocket(wsUrl);
@@ -38,7 +37,7 @@ export default function (registry, systems) {
 				// 		resolve();
 				// 	}
 				// });
-				system.wsm.setWsw({
+				wsm.setWsw({
 					forEachConnection(f) {
 						f(ws);
 					},
@@ -96,7 +95,7 @@ export default function (registry, systems) {
 			tempRegistry.fromJson(json);
 			Log.debug(`tempRegistry`, tempRegistry.size());
 
-			const update = this.wsm.addHandler('update', (ws, type, serverEntity, component) => {
+			const update = wsm.addHandler('update', (ws, type, serverEntity, component) => {
 				registry.emplaceOrReplace(type, this.s2cEntity(serverEntity), this.s2cComponent(component));
 			});
 			tempRegistry.each((entity) => {
@@ -109,26 +108,26 @@ export default function (registry, systems) {
 				})
 			})
 			const handlers = [update,
-				this.wsm.addHandler('erase', (ws, type, serverEntity) => {
+				wsm.addHandler('erase', (ws, type, serverEntity) => {
 					registry.erase(type, this._s2c[serverEntity]);
 				}),
-				this.wsm.addHandler('destroy', (ws, serverEntity) => {
+				wsm.addHandler('destroy', (ws, serverEntity) => {
 					registry.destroy(this._s2c[serverEntity]);
 				}),
 			];
 			this.destructor = () => {
 				handlers.forEach((handler) => {
-					this.wsm.removeHandler(handler);
+					wsm.removeHandler(handler);
 				})
-				this.wsm.close();
+				wsm.close();
 			}
 		},
 		promiseSync() {
 			Log.debug(`promiseSync`);
-			return fetchCmd(this.wsm, 'toJson').then(this.onJson.bind(this));
+			return fetchCmd(wsm, 'toJson').then(this.onJson.bind(this));
 		},
 		promiseCreate() {
-			return fetchCmd(this.wsm, 'create').then((serverEntity) => {
+			return fetchCmd(wsm, 'create').then((serverEntity) => {
 				return this.s2cEntity(serverEntity);
 			})
 		},
@@ -138,7 +137,7 @@ export default function (registry, systems) {
 				Log.error(`promiseEmplace serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd(this.wsm, 'emplace', type, serverEntity, component).then((serverComponent) => {
+			return fetchCmd(wsm, 'emplace', type, serverEntity, component).then((serverComponent) => {
 				return registry.emplaceOrReplace(type, entity, serverComponent);
 			})
 		},
@@ -148,7 +147,7 @@ export default function (registry, systems) {
 				Log.error(`promiseUpdate serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd(this.wsm, 'update', type, serverEntity, component).then((serverComponent) => {
+			return fetchCmd(wsm, 'update', type, serverEntity, component).then((serverComponent) => {
 				return registry.replace(type, entity, serverComponent);
 			})
 		},
@@ -158,7 +157,7 @@ export default function (registry, systems) {
 				Log.error(`promiseErase serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd(this.wsm, 'erase', type, serverEntity).then(() => {
+			return fetchCmd(wsm, 'erase', type, serverEntity).then(() => {
 				return registry.erase(type, entity);
 			})
 		},
@@ -168,12 +167,12 @@ export default function (registry, systems) {
 				Log.error(`promiseDestroy serverEntity undefined ${entity}`);
 				return;
 			}
-			return fetchCmd(this.wsm, 'destroy', serverEntity).then(() => {
+			return fetchCmd(wsm, 'destroy', serverEntity).then(() => {
 				return registry.destroy(entity);
 			})
 		},
 		promiseLogin({ username, password, isCreate = false }) {
-			return fetchCmd(this.wsm, 'login', {
+			return fetchCmd(wsm, 'login', {
 				username,
 				password,
 				isCreate,
@@ -197,15 +196,15 @@ export default function (registry, systems) {
 		// const [type, entity, component] = args;
 		// if (registry.has('AccountOwner', entity)) {
 		// 	const accountEntity = registry.get('AccountOwner', entity).accountEntity;
-		// 	system.wsm.forEachConnection(ws => {
+		// 	wsm.forEachConnection(ws => {
 		// 		if (ws === accountsToWs[accountEntity]) {
 		// 			return;
 		// 		}
-		// 		system.wsm.send(ws, 'update', ...args);
+		// 		wsm.send(ws, 'update', ...args);
 		// 	});
 		// 	return;
 		// }
-		// system.wsm.sendToAll('update', ...args);
+		// wsm.sendToAll('update', ...args);
 	})
 	return system
 }

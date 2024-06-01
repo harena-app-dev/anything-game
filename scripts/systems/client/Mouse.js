@@ -3,7 +3,7 @@ import Log from '../../Log'
 export default function (registry, systems) {
 	this.pointer = new THREE.Vector2()
 	this.tick = function () {
-		Log.info(`Raycaster.tick`, this.pointer);
+		Log.debug(`Raycaster.tick`, this.pointer);
 	}
 	this.onPointerMove = function (event) {
 		// const offset = sceneElement.getBoundingClientRect();

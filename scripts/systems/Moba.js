@@ -4,7 +4,7 @@ export default function (registry, systems) {
 	this.destructor = function () {
 	}
 	this.moveTo = function (entity, x, y) {
-		Log.info(`Moba.moveTo`, entity, x, y);
+		Log.debug(`Moba.moveTo`, entity, x, y);
 		const moveGoal = registry.get(entity, 'MoveGoal');
 		if (moveGoal) {
 			moveGoal.x = x;
