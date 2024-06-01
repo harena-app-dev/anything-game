@@ -43,13 +43,13 @@ export default function (registry, systems) {
 				registry.emplace('Account', accountEntity, { username, password, playerEntity });
 				registry.emplace('AccountOwner', playerEntity, { accountEntity });
 				usernames[username] = accountEntity;
-				return { entity: playerEntity, message: 'Account created' }
+				// return { entity: playerEntity, message: 'Account created' }
 			}
-			const entity = usernames[username];
-			if (entity === undefined) {
+			const accountEntity = usernames[username];
+			if (accountEntity === undefined) {
 				return { message: 'Invalid combination' }
 			}
-			const account = registry.get('Account', entity);
+			const account = registry.get('Account', accountEntity);
 			if (account.password !== password) {
 				return { message: 'Invalid combination' }
 			}
