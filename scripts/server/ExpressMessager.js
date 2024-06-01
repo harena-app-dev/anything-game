@@ -21,7 +21,7 @@ export default function ExpressMessager({ server, wsm}) {
 			// })
 			wsm.addHandler(`${name}`, (ws, fetchId, ...args) => {
 				Log.debug('handling', name, fetchId, args)
-				const result = handler(...args)
+				const result = handler(ws, ...args)
 				if (result === undefined) {
 					Log.debug('result is undefined')
 					wsm.send(ws, fetchId, {})

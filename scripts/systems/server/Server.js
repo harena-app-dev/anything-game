@@ -19,6 +19,9 @@ export default function (registry, systems) {
 		wsm.sendToAll('update', ...args);
 	})
 	registry.onUpdate().connect(function (...args) {
+		const [type, entity, component] = args;
+		// if (registry.has('AccountOwner', entity)) {
+
 		wsm.sendToAll('update', ...args);
 	})
 	registry.onErase().connect(function (...args) {
@@ -29,7 +32,7 @@ export default function (registry, systems) {
 	})
 	em.setHandler({
 		name: 'login',
-		handler: ({ username, password, isCreate }) => {
+		handler: (ws, { username, password, isCreate }) => {
 			if (isCreate) {
 				if (usernames[username] !== undefined) {
 					return { message: 'Username already exists' }
@@ -55,38 +58,38 @@ export default function (registry, systems) {
 	});
 	em.setHandler({
 		name: 'toJson',
-		handler: () => {
+		handler: (ws, ...args) => {
 			return registry.toJson();
 		},
 	});
 	em.setHandler({
 		name: 'create',
-		handler: () => {
+		handler: (ws, ...args) => {
 			return registry.create();
 		},
 	});
 	em.setHandler({
 		name: 'emplace',
-		handler: (...args) => {
+		handler: (ws, ...args) => {
 			return registry.emplace(...args);
 		},
 	});
 	em.setHandler({
 		name: 'update',
-		handler: (...args) => {
+		handler: (ws, ...args) => {
 			return registry.update(...args);
 		},
 	});
 	em.setHandler({
 		name: 'erase',
-		handler: (...args) => {
+		handler: (ws, ...args) => {
 			return registry.erase(...args);
 		},
 	});
 	em.setHandler({
 		name: 'destroy',
-		handler: (entity) => {
-			return registry.destroy(entity);
+		handler: (ws, ...args) => {
+			return registry.destroy(...args);
 		},
 	});
 }
