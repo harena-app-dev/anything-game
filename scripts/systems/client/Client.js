@@ -33,7 +33,7 @@ export function fetchCmd(wsm, name, ...args) {
 			resolve(response);
 		}
 		wsm.addHandler(`${name}${fetchId}`, handler);
-		wsm.send(name, fetchId, ...args);
+		wsm.sendToAll(name, fetchId, ...args);
 	})
 	// register a handler for the response
 	// send handler name and args to the server
@@ -47,8 +47,11 @@ export default function (registry, systems) {
 		// wsm: new WebSocketMessager(),
 		promiseConnect() {
 			return new Promise((resolve, reject) => {
-				system.wsm = new WebSocketMessager(() => {
-					resolve();
+				system.wsm = new WebSocketMessager({
+					onConnection() {
+						Log.info(`onConnection`);
+						resolve();
+					}
 				});
 			})
 		},

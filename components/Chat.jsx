@@ -11,14 +11,12 @@ export default function ({ registry, systems, ...props }) {
 		client.promiseCreate().then((entity) => {
 			client.promiseEmplace("Message", entity, { value })
 				.then((message) => {
-					Log.info(`Chat.sendChatMessage`, message);
 				});
 		});
 		e.target.value = '';
 	}
 	function getMessages() {
 		return registry.view("Message").map((entity, message) => {
-			Log.info(`Chat.onEmplace`, entity);
 			return message.value;
 		})
 	}

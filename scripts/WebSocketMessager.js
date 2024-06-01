@@ -6,11 +6,13 @@ export default function WebSocketMessager(wsw) {
 				this.messageNamesToHandlers.set(name, new Set());
 			}
 			this.messageNamesToHandlers.get(name)?.add(handler);
+			return handler;
 		},
 		removeHandler(name, handler) {
 			this.messageNamesToHandlers.get(name)?.delete(handler);
 		},
 		send(ws, name, data) {
+			// Log.info('send', ws, name, data);
 			ws.send(JSON.stringify({ name, data }));
 		},
 		sendToAll(name, data) {
@@ -33,11 +35,12 @@ export default function WebSocketMessager(wsw) {
 	wsw.onConnection((ws) => {
 		const connectionHandlers = wsm.connectionHandlers;
 		connectionHandlers.forEach(handler => handler(ws));
-		ws.onMessage((data) => {
-			Log.debug(`received message: ${data.toString()}`);
+		ws.onMessage((str) => {
+			Log.debug(`received message: ${str}`);
 			let message;
 			try {
-				message = JSON.parse(data.toString());
+				Log.info('data', str);
+				message = JSON.parse(str);
 			}
 			catch (error) {
 				console.error('error parsing message', event.data);
@@ -46,7 +49,7 @@ export default function WebSocketMessager(wsw) {
 			const handlers = wsm.messageNamesToHandlers.get(message.name);
 			if (handlers) {
 				// handlers.forEach(handler => handler({ws, args: message.data}));
-				Log.info('message', message);
+				// Log.info('message', message);
 				if (!(message.data instanceof Array)) {
 					message.data = [message.data];
 				}
