@@ -4,6 +4,7 @@ import { Alert, LinearProgress, Stack, TextField, Typography, linearProgressClas
 import Log from '@/scripts/Log';
 import Points from './Health';
 import Stats from './Stats';
+import Inventory from './Inventory';
 
 export default function ({ app, ...props }) {
 	const { registry, systems } = app;
@@ -11,15 +12,16 @@ export default function ({ app, ...props }) {
 	}, []);
 	const sx = {
 		...props.sx,
-		width: 900,
+		width: 1500,
 	};
 	delete props.sx;
 	return (
-		<Box sx={sx} {...props}>
-			<Stack direction="row" spacing={0}>
-				<Stats app={app} />
-				<Points app={app} />
-			</Stack>
-		</Box>
+		// <Box sx={sx} {...props}>
+		// 	<Stack direction="row" spacing={0}>
+		// 		<Stats app={app} />
+		// 		<Points app={app} />
+		// 	</Stack>
+		// </Box>
+		<Inventory app={app} />
 	);
 }

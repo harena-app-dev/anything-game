@@ -15,16 +15,39 @@ export default function ({ app, ...props }) {
 	};
 	delete props.sx;
 	return (
-		<Box sx={sx} {...props}>
-			<Stack direction="row" spacing={2}>
+		<Box sx={sx} {...props} className="row">
+			<Box className="row">
 				<ShieldIcon />
 				<Typography variant="h6">100</Typography>
-			</Stack>
-			<Stack direction="row" spacing={2}>
+			</Box>
+			<Box className="row">
 				<ShieldIcon />
 				<Typography variant="h6">100</Typography>
-			</Stack>
-			
+			</Box>
+			<Box className="row">
+				<ShieldIcon />
+				<Typography variant="h6">100</Typography>
+			</Box>
+			<Box className="row">
+				<ShieldIcon />
+				<Typography variant="h6">100</Typography>
+			</Box>
+			<Box className="row">
+				<ShieldIcon />
+				<Typography variant="h6">100</Typography>
+			</Box>
+			<Box className="row">
+				<ShieldIcon />
+				<Typography variant="h6">100</Typography>
+			</Box>
+			<Box className="row">
+				<ShieldIcon />
+				<Typography variant="h6">100</Typography>
+			</Box>
+			<Box className="row">
+				<ShieldIcon />
+				<Typography variant="h6">100</Typography>
+			</Box>
 		</Box>
 	);
 }

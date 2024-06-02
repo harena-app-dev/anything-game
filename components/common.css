@@ -11,62 +11,90 @@ body {
 	/* font-size: 16px; */
 	font-family: 'Roboto', sans-serif;
 }
+
 .expandable {
 	transition: height 0.5s;
 }
+
 .square-text {
 	width: 16px;
 	height: 16px;
 	align-items: center;
 }
+
 .text-wrap {
 	text-wrap: wrap;
 }
+
 .ms-auto {
 	margin-left: auto;
 }
+
 .resizable {
 	min-width: min-content;
 }
+
 .vertical-resizer {
 	background: linear-gradient(#ffffff, #ffffff) no-repeat center/1px 100%;
 	width: 10px;
 	cursor: 'ew-resize'
 }
+
 .vertical-resizer:hover {
 	background: linear-gradient(#ffffff, #ffffff) no-repeat center/5px 100%;
 	cursor: ew-resize;
 }
-.col, 
+
+.col,
 .row {
 	display: flex;
+	flex-wrap: wrap;
+	column-gap: 0px;
+	row-gap: 0px;
 }
+
+.itemIcon {
+	/* IE, only works on <img> tags */
+	-ms-interpolation-mode: nearest-neighbor;
+	/* Firefox */
+	image-rendering: crisp-edges;
+	/* Chromium + Safari */
+	image-rendering: pixelated;
+}
+
 .col {
 	flex-direction: column;
 }
+
 .row {
 	flex-direction: row;
 }
+
 .ui {
 	/* padding: 0.5rem; */
 }
+
 .long-text {
 	width: 200px;
 	overflow: auto;
 	text-wrap: wrap;
 }
+
 .grow {
 	flex-grow: 1;
 	flex-basis: 0;
 }
+
 input {
 	color: #fff;
 	background-color: #333;
 	border: 0px solid #444;
 }
+
 input:focus {
 	outline: none;
 }
+
 /* .title {
 	text-transform: uppercase;
 	padding: 8px;
@@ -76,14 +104,17 @@ input:focus {
 	justify-content: center;
 	border: 1px solid #000000;
 }
+
 .button:hover {
 	cursor: pointer;
 	border: 1px solid #fff;
 }
+
 .scroll-y {
 	overflow-y: auto;
 	height: 0px;
 }
+
 .expandable {
 	transition: height 0.5s;
 }

@@ -4,6 +4,7 @@ import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 import Chat from './Chat';
 import Status from './status/Status';
+import ShieldIcon from '@mui/icons-material/Shield';
 
 export default function Scene({ app }) {
 	const { registry, systems } = app;
@@ -12,7 +13,7 @@ export default function Scene({ app }) {
 	const raycaster = systems.get('Raycaster');
 	const moba = systems.get('Moba');
 	const onRightClick = (e) => {
-		e.preventDefault();
+		// e.preventDefault();
 		const intersection = raycaster.getCursorIntersection();
 		const player = systems.get('Player');
 		moba.moveToRpc(player.getPlayerEntity(), intersection.worldPosition);
@@ -41,6 +42,7 @@ export default function Scene({ app }) {
 		// 	clearInterval(intervalId);
 		// };
 	}, []);
+	const itemWidth = 32;
 	return (
 		<Box className="col grow" id="scene" onContextMenu={onRightClick}>
 			<Chat sx={{
@@ -49,18 +51,30 @@ export default function Scene({ app }) {
 			}}
 				app={app}
 			/>
-			<Status sx={{
-				position: 'absolute',
-				mx: 'auto',
-				mt: 'auto',
-				height: 'fit-content',
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
+			{/* <Status sx={{
+				// position: 'absolute',
+				// mx: 'auto',
+				// mt: 'auto',
+				// height: 'fit-content',
+				// top: 0,
+				// left: 0,
+				// right: 0,
+				// bottom: 0,
 			}}
+
 				app={app}
-			/>
-		</Box>
+			/> */}
+			<div className='row' style={{ position:"absolute", width: itemWidth*4, height: itemWidth*2, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+				{
+					[...Array(8)].map((_, i) => (
+							<img src="textures/tree.png"
+								key={i}
+								className='itemIcon' style={{ width: itemWidth, height: itemWidth }}
+								> 
+							</img>
+			))
+				}
+		</div>
+		</Box >
 	);
 }
