@@ -4,7 +4,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { Stack } from "@mui/material";
 
-export default function Console(registry) {
+export default function Console() {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {

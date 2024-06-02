@@ -1,4 +1,5 @@
 import Log from '../Log.js';
+import * as three from 'three';
 export default function (registry, systems) {
 	this.tick = function () {
 		const client = systems.get('Client');
@@ -11,17 +12,19 @@ export default function (registry, systems) {
 			let dy = moveGoal.position.y - position.y;
 			let dz = moveGoal.position.z - position.z;
 			const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+			if (distance < 0.001) {
+				return;
+				// registry.erase('MoveGoal', entity);
+			}
+			Log.info(`Moba.tick`, { entity, position, moveGoal, distance });
 			dx = dx / distance;
 			dy = dy / distance;
 			dz = dz / distance;
 			const speed = 0.1;
-			position.x += dx * speed;
-			position.y += dy * speed;
-			position.z += dz * speed;
+			position.x += dx * Math.min(speed, distance);
+			position.y += dy * Math.min(speed, distance);
+			position.z += dz * Math.min(speed, distance);
 			registry.replace('Position', entity, position);
-			if (distance < 0.1) {
-				registry.erase('MoveGoal', entity);
-			}
 
 		});
 	}

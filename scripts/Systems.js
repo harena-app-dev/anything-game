@@ -15,8 +15,7 @@ export default function ({
 		if (this._systems[name] === undefined) {
 			const constructor = constructors[name];
 			if (constructor === undefined) {
-				Log.error(`system ${name} not found`);
-				return;
+				return undefined;
 			}
 			Log.debug(`get-constructing system ${name}`);
 			this._systems[name] = new constructor(registry, this);
