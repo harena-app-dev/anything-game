@@ -1,45 +1,34 @@
 import React, { use, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
-import { Alert, Stack, TextField, Typography } from '@mui/material';
+import { Alert, LinearProgress, Stack, TextField, Typography, linearProgressClasses, styled } from '@mui/material';
 import Log from '@/scripts/Log';
-
-export default function ({ registry, systems, ...props }) {
-	function sendChatMessage(e) {
-		const value = e.target.value;
-		const client = systems.get("Client");
-		// create a new message entity
-		client.promiseCreate().then((entity) => {
-			client.promiseEmplace("Message", entity, { value })
-				.then((message) => {
-				});
-		});
-		e.target.value = '';
-	}
-	function getMessages() {
-		return registry.view("Message").map((entity, message) => {
-			return message.value;
-		})
-	}
-	const [messages, setMessages] = useState(getMessages());
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+	height: 15,
+	borderRadius: 0,
+	[`&.${linearProgressClasses.colorPrimary}`]: {
+		backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+	},
+	[`& .${linearProgressClasses.bar}`]: {
+		borderRadius: 5,
+		backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+	},
+}));
+export default function ({ app, ...props }) {
+	const { registry, systems } = app;
 	useEffect(() => {
-		Log.debug(`Chat.useEffect`);
-		registry.onEmplace("Message").connect((entity) => {
-			setMessages(getMessages());
-		});
 	}, []);
+	const progressHeight = 25;
 	return (
 		<Box {...props}>
-			<Stack spacing={0}>
-				{messages.map((message, i) => (
-					<Typography key={i} component="pre">
-						{message}</Typography>
-				))}
-				<TextField placeholder="/help"
-				variant="outlined" onKeyDown={(e) => {
-					if (e.key === 'Enter') {
-						sendChatMessage(e);
-					}
-				}} />
+			<Stack direction="column" spacing={0}>
+				<LinearProgress variant="determinate" value={25} sx={{
+					height: progressHeight,
+				}}
+					color="success" />
+				<LinearProgress variant="determinate" value={25} sx={{
+					height: progressHeight,
+				}}
+					color="secondary" />
 			</Stack>
 		</Box>
 	);

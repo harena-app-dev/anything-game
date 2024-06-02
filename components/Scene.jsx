@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 import Chat from './Chat';
+import PlayerStatus from './PlayerStatus';
 
 export default function Scene({ app }) {
 	const { registry, systems } = app;
@@ -22,7 +23,7 @@ export default function Scene({ app }) {
 		renderer.setSceneElement(document.getElementById("scene"));
 		function loop() {
 			requestAnimationFrame(loop);
-			systems.tick();	
+			systems.tick();
 		}
 		loop();
 		return () => {
@@ -47,7 +48,20 @@ export default function Scene({ app }) {
 				backgroundColor: 'rgba(0,0,0,0.5)'
 			}}
 				app={app}
-				/>
+			/>
+			<PlayerStatus sx={{
+				position: 'absolute',
+				mx: 'auto',
+				mt: 'auto',
+				height: 'fit-content',
+				width: 300,
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+			}}
+				app={app}
+			/>
 		</Box>
 	);
 }
