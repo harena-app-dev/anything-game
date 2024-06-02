@@ -171,14 +171,15 @@ export default function (registry, systems) {
 				password,
 				isCreate,
 			}).then((data) => {
-				Log.debug(`promiseLogin`, data);
+				Log.info(`promiseLogin`, data);
 				const { accountEntity, message } = data;
 				// const playerEntity = this._s2c[accountEntity];
 				const account = registry.get('Account', this._s2c[accountEntity]);
+				Log.info(`promiseLogin`, account);
 				if (account === undefined) {
 					return data;
 				}
-				Log.debug(`promiseLogin`, message, account);
+				Log.info(`promiseLogin`, message, account);
 				systems.get('Player').setPlayerEntity(account.playerEntity);
 				return data;
 			})

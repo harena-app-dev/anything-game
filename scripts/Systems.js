@@ -32,8 +32,9 @@ export default function ({
 		}
 		system.onSystemsReady();
 	}
+	let tickCount = 0;
 	this.tick = function () {
-		// Log.debug(`Systems.tick`);
+		Log.debug(`Systems.tick start`, tickCount++);
 		for (let [name, system] of Object.entries(this._systems)) {
 			if (system.tick === undefined) {
 				continue;
@@ -51,6 +52,7 @@ export default function ({
 			}
 			system.destructor();
 		}
+
 	}
 	Log.debug(`Systems end`);
 	return this;

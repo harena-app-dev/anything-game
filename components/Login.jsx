@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Button, Stack, TextField, Typography } from '@mui/material';
+import Log from '@/scripts/Log';
 
 const style = {
 	position: 'absolute',
@@ -21,6 +22,7 @@ export default function ({ registry, systems }) {
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 		systems.get("Client").promiseLogin({ username, password, isCreate }).then(({ accountEntity, message }) => {
+			Log.info(`promiseLogin`, accountEntity, message);
 			if (accountEntity === undefined) {
 				alert(message);
 				return;

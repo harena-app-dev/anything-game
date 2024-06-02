@@ -26,3 +26,5 @@ import Sprite from './Sprite.js';
 export { Sprite };
 import ThreeId from './ThreeId.js';
 export { ThreeId };
+import Virtual from './Virtual.js';
+export { Virtual };
