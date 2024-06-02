@@ -13,8 +13,8 @@ export default function (registry, systems) {
 			let dz = moveGoal.position.z - position.z;
 			const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 			if (distance < 0.001) {
+				registry.erase('MoveGoal', entity);
 				return;
-				// registry.erase('MoveGoal', entity);
 			}
 			Log.info(`Moba.tick`, { entity, position, moveGoal, distance });
 			dx = dx / distance;
