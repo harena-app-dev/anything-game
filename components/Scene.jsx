@@ -54,7 +54,6 @@ export default function Scene({ app }) {
 				mx: 'auto',
 				mt: 'auto',
 				height: 'fit-content',
-				width: 300,
 				top: 0,
 				left: 0,
 				right: 0,
