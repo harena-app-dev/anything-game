@@ -7,7 +7,7 @@ import Observable from './Observable';
 import { arrayRemove } from './Utils';
 export function assert(condition, message) {
 	if (!condition) {
-		throw new Error(message);
+		Log.error(message);
 	}
 }
 export default function Registry() {
@@ -36,11 +36,15 @@ export default function Registry() {
 			Log.debug(`create ${entity}`);
 			return entity;
 		},
-
 		emplace(type, entity, component) {
 			Log.debug(`emplace`, type, entity, component);
+			if (!this.valid(entity)) {
+				Log.error(`Entity ${entity} does not exist`);
+				return;
+			}
 			if (this.entitiesToTypes[entity].includes(type)) {
-				throw new Error(`Entity ${entity} already has component of type ${type}`);
+				Log.error(`Entity ${entity} already has component of type ${type}`);
+				return;
 			}
 			if (component === undefined) {
 				if (!(this.typesToConstructors[type] instanceof Function)) {
@@ -69,7 +73,7 @@ export default function Registry() {
 		},
 		erase(type, entity) {
 			if (!this.has(type, entity)) {
-				throw new Error(`Entity ${entity} does not have component of type ${type}`);
+				Log.error(`Entity ${entity} does not have component of type ${type}`);
 			}
 			const component = this.get(type, entity);
 			this.onErase().notify(type, entity, component);
@@ -80,7 +84,7 @@ export default function Registry() {
 		},
 		destroy(entity) {
 			if (!this.valid(entity)) {
-				throw new Error(`Entity ${entity} does not exist`);
+				Log.error(`Entity ${entity} does not exist`);
 			}
 			Log.debug(`this.entitiesToTypes[entity] ${JSON.stringify(this.entitiesToTypes[entity], null, 2)}`);
 			for (let type of this.entitiesToTypes[entity].slice()) {

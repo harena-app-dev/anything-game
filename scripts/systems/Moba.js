@@ -5,8 +5,8 @@ export default function (registry, systems) {
 	this.destructor = function () {
 	}
 	this.moveTo = function (entity, position) {
-		Log.debug(`Moba.moveTo`, entity, position);
-		const moveGoal = registry.getOrEmplace(entity, 'MoveGoal');
+		Log.info(`Moba.moveTo`, entity, position);
+		const moveGoal = registry.getOrEmplace('MoveGoal', entity);
 		moveGoal.position = position;
 	}
 	// this.rpcMoveTo = function (entity, x, y) {
