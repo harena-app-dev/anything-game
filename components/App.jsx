@@ -22,11 +22,12 @@ export default function App() {
 		Log.debug(`App.useEffect`);
 
 		const client = systemsRef.current.get("Client");
+		const app = { registry: registryRef.current, systems: systemsRef.current };
 		client.promiseConnect().then(() => {
 			client.promiseSync().then(() => {
 				setContent(<React.Fragment>
 					<Login registry={registryRef.current} systems={systemsRef.current} />
-					<Scene registry={registryRef.current} systems={systemsRef.current} />
+					<Scene app={app}/>
 				</React.Fragment>);
 			});
 		});

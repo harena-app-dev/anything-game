@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 
-export default function ({ registry, systems, ...props }) {
+export default function ({ app, ...props }) {
+	const { registry, systems } = app;
 	function sendChatMessage(e) {
 		const value = e.target.value;
 		const client = systems.get("Client");

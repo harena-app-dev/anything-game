@@ -4,7 +4,9 @@ import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 import Chat from './Chat';
 
-export default function Scene({ registry, systems }) {
+export default function Scene({ app }) {
+	const { registry, systems } = app;
+
 	const client = systems.get('Client');
 	const raycaster = systems.get('Raycaster');
 	const moba = systems.get('Moba');
@@ -44,8 +46,8 @@ export default function Scene({ registry, systems }) {
 				position: 'absolute', left: 0, bottom: 0, zIndex: 1, padding: 0,
 				backgroundColor: 'rgba(0,0,0,0.5)'
 			}}
-				registry={registry}
-				systems={systems} />
+				app={app}
+				/>
 		</Box>
 	);
 }
