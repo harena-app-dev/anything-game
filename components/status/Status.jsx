@@ -18,8 +18,13 @@ export default function ({ app, ...props }) {
 	useEffect(() => {
 	}, []);
 	const progressHeight = 25;
+	const sx = {
+		...props.sx,
+		width: 300,
+	};
+	delete props.sx;
 	return (
-		<Box {...props}>
+		<Box sx={sx} {...props}>
 			<Stack direction="column" spacing={0}>
 				<LinearProgress variant="determinate" value={25} sx={{
 					height: progressHeight,

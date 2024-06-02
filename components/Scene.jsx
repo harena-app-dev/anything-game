@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 import Chat from './Chat';
-import PlayerStatus from './status/Status';
+import Status from './status/Status';
 
 export default function Scene({ app }) {
 	const { registry, systems } = app;
@@ -49,7 +49,7 @@ export default function Scene({ app }) {
 			}}
 				app={app}
 			/>
-			<PlayerStatus sx={{
+			<Status sx={{
 				position: 'absolute',
 				mx: 'auto',
 				mt: 'auto',
