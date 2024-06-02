@@ -23,7 +23,6 @@ export default function App() {
 
 		const client = systemsRef.current.get("Client");
 		client.promiseConnect().then(() => {
-			Log.debug(`client.promiseConnect resolved`);
 			client.promiseSync().then(() => {
 				setContent(<React.Fragment>
 					<Login registry={registryRef.current} systems={systemsRef.current} />
