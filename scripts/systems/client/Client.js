@@ -17,9 +17,6 @@ export function fetchCmd(wsm, name, ...args) {
 		wsm.addHandler(`${name}${fetchId}`, handler);
 		wsm.sendToAll(name, fetchId, ...args);
 	})
-	// register a handler for the response
-	// send handler name and args to the server
-
 }
 export default function (registry, systems) {
 	Log.debug(`Client`);
@@ -29,38 +26,47 @@ export default function (registry, systems) {
 		_c2s: {},
 		promiseConnect() {
 			const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
-			const ws = new WebSocket(wsUrl);
+			// const ws = new WebSocket(wsUrl);
 			return new Promise((resolve, reject) => {
 				wsm.setWsw({
+					ws: new WebSocket(wsUrl),
 					forEachConnection(f) {
-						f(ws);
+						// f(ws);
+						f(this.ws);
 					},
 					onConnection(f) {
-						ws.onopen = () => {
-							Log.info('WebSocketMessager onopen');
-							resolve();
+						this.ws.onopen = function (event)  {
+							// Log.debug('WebSocketMessager onopen', this.ws);
+							// Log.debug('WebSocketMessager onopen', this.ws.readyState);
+							// this.forEachConnection = function (f) {
+								// Log.debug('forEachConnection', this.ws);
+								// f(this.ws);
+							// }
+							// Log.debug('this.forEachConnection', this.forEachConnection);
+							// Log.debug('this', this);
 							f({
-								ws,
-								onMessage(f) {
-									// ws.on('message', f);
-									// ws.onmessage = f;
-									ws.onmessage = (e) => {
+								ws: this.ws,
+								onMessage: function (f) {
+									// this.ws.on('message', f);
+									// this.ws.onmessage = f;
+									this.ws.onmessage = (e) => {
 										f(e.data);
 									};
 								},
 								send(data) {
-									ws.send(data);
+									this.ws.send(data);
 								}
 							})
+							resolve();
 						};
 					},
 					onListening(f) {
 					},
 					onClose(f) {
-						ws.onclose = f;
+						this.ws.onclose = f;
 					},
 					onError(f) {
-						ws.onerror = f;
+						this.ws.onerror = f;
 					}
 				})
 			})
@@ -171,15 +177,15 @@ export default function (registry, systems) {
 				password,
 				isCreate,
 			}).then((data) => {
-				Log.info(`promiseLogin`, data);
+				Log.debug(`promiseLogin`, data);
 				const { accountEntity, message } = data;
 				// const playerEntity = this._s2c[accountEntity];
 				const account = registry.get('Account', this._s2c[accountEntity]);
-				Log.info(`promiseLogin`, account);
+				Log.debug(`promiseLogin`, account);
 				if (account === undefined) {
 					return data;
 				}
-				Log.info(`promiseLogin`, message, account);
+				Log.debug(`promiseLogin`, message, account);
 				systems.get('Player').setPlayerEntity(account.playerEntity);
 				return data;
 			})

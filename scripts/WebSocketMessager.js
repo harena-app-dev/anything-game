@@ -12,11 +12,13 @@ export default function WebSocketMessager(wsw) {
 			this.messageNamesToHandlers.get(name)?.delete(handler);
 		},
 		send(ws, name, ...data) {
-			// Log.debug('send', ws, name, data);
+			Log.debug('send', ws, name, data);
 			// ws.send(JSON.stringify({ name, data }));
 			ws.send(JSON.stringify({ name, data }));
+			Log.debug('send', ws, name, data);
 		},
 		forEachConnection(callback) {
+			Log.debug('forEachConnection', this._wsw);
 			// this.wss.clients.forEach(callback);
 			this._wsw.forEachConnection(callback);
 		},
@@ -24,6 +26,8 @@ export default function WebSocketMessager(wsw) {
 			Log.debug(`sendToAll ${name} ${JSON.stringify(data)}`);
 			// this.wss.clients.forEach(ws => {
 			this.forEachConnection(ws => {
+				Log.debug('sendToAll', ws);
+				Log.debug('sendToAll', ws.readyState);
 				this.send(ws, name, ...data);
 			});
 		},
@@ -35,7 +39,10 @@ export default function WebSocketMessager(wsw) {
 		},
 		setWsw(wsw) {
 			this._wsw = wsw;
+			Log.debug('setWsw', wsw);
 			wsw.onConnection((ws) => {
+				Log.debug('connection', ws);
+				// Log.debug('connection', ws.ws.readyState);
 				const connectionHandlers = wsm.connectionHandlers;
 				connectionHandlers.forEach(handler => handler(ws));
 				ws.onMessage((str) => {
