@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 import Chat from './Chat';
-import PlayerStatus from './status/PlayerStatus';
+import PlayerStatus from './status/Status';
 
 export default function Scene({ app }) {
 	const { registry, systems } = app;
