@@ -15,13 +15,13 @@ export default function (registry, systems) {
 			if (fieldName.endsWith('Rpc')) {
 				continue;
 			}
+			const parameterNames = getParameterNames(field);
 			rpcs[`${fieldName}Rpc`] = function (...args) {
 				const client = systems.get('Client');
-				const parameterNames = getParameterNames(field);
 				// if a param name ends with 'entity', then map it to a server entity using client.e2s
 				const serverArgs = args.map((arg, i) => {
 					if (parameterNames[i].toLowerCase().endsWith('entity')) {
-						return client.e2s(arg);
+						return client.c2s(arg);
 					}
 					return arg;
 				});

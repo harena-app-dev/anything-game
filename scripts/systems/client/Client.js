@@ -27,6 +27,12 @@ export default function (registry, systems) {
 	const system = {
 		_s2c: {},
 		_c2s: {},
+		c2s(clientEntity) {
+			return this._c2s[clientEntity];
+		},
+		s2c(serverEntity) {
+			return this._s2c[serverEntity];
+		},
 		promiseConnect() {
 			const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
 			const ws = new WebSocket(wsUrl);
