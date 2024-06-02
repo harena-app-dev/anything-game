@@ -23,9 +23,7 @@ const darkTheme = createTheme({
 });
 
 export default function GamePage() {
-
 	return <ThemeProvider theme={darkTheme}>
-
 		<CssBaseline />
 		<App />
 	</ThemeProvider>

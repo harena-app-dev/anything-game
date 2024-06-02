@@ -18,12 +18,15 @@ export default function ({ app, ...props }) {
 			<Stack direction="column" spacing={0}>
 				<LinearProgress variant="determinate" value={25} sx={{
 					height: progressHeight,
+					backgroundColor: 'white',
 				}}
-					color="success" />
+				/>
 				<LinearProgress variant="determinate" value={25} sx={{
 					height: progressHeight,
+					backgroundColor: 'white',
 				}}
-					color="secondary" />
+					// color="secondary" 
+					/>
 			</Stack>
 		</Box>
 	);
