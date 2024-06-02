@@ -1,3 +1,5 @@
+import Log from '../Log.js';
+import { getParameterNames } from '../Utils.js';
 export default function (registry, systems) {
 	this.tick = function () {
 	}
@@ -14,7 +16,17 @@ export default function (registry, systems) {
 				continue;
 			}
 			rpcs[`${fieldName}Rpc`] = function (...args) {
-				systems.get('Wsm').getWsm().sendToAll(`${name}.${fieldName}`, ...args);
+				const client = systems.get('Client');
+				const parameterNames = getParameterNames(field);
+				// if a param name ends with 'entity', then map it to a server entity using client.e2s
+				const serverArgs = args.map((arg, i) => {
+					if (parameterNames[i].toLowerCase().endsWith('entity')) {
+						return client.e2s(arg);
+					}
+					return arg;
+				});
+				// systems.get('Wsm').getWsm().sendToAll(`${name}.${fieldName}`, ...args);
+				systems.get('Wsm').getWsm().sendToAll(`${name}.${fieldName}`, ...serverArgs);
 			}
 			wsm.addHandler(`${name}.${fieldName}`, (ws, ...args) => {
 				system[fieldName](...args);

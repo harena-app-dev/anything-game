@@ -49,8 +49,9 @@ export default function Registry() {
 			if (component === undefined) {
 				if (!(this.typesToConstructors[type] instanceof Function)) {
 					component = structuredClone(this.typesToConstructors[type]);
+				} else {
+					component = this.typesToConstructors[type]();
 				}
-				component = this.typesToConstructors[type]();
 			}
 			this.getPool(type)[entity] = component;
 			this.entitiesToTypes[entity].push(type);

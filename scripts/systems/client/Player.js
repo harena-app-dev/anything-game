@@ -21,6 +21,9 @@ export default function (registry, systems) {
 		Log.debug(`Player.setPlayerEntity`, entity);
 		this._playerEntity = entity;
 	}
+	this.getPlayerEntity = function () {
+		return this._playerEntity;
+	}
 	// const client = systems.get('Client');
 
 	this.destructor = function () {

@@ -12,3 +12,16 @@ export function offsetPortOfCurrentUrl(offset) {
 	const protocol = currentUrl[0] === 'http:' ? 'http' : 'https'
 	return `${protocol}://${address[0]}:${port + offset}`
 }
+export function getParameterNames(func) {
+	// Convert the function to a string
+	const funcStr = func.toString();
+
+	// Use a regular expression to extract the parameter list
+	const paramStr = funcStr.match(/\(([^)]*)\)/)[1];
+
+	// Split the parameters by comma and remove any extra whitespace
+	const params = paramStr.split(',').map(param => param.trim());
+
+	// Return the parameter names as an array
+	return params;
+}

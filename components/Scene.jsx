@@ -11,8 +11,8 @@ export default function Scene({ registry, systems }) {
 	const onRightClick = (e) => {
 		e.preventDefault();
 		const intersection = raycaster.getCursorIntersection();
-		// moba.moveToRpc(intersection.worldPosition);
-		moba.moveToRpc(0, intersection.worldPosition);
+		const player = systems.get('Player');
+		moba.moveToRpc(player.getPlayerEntity(), intersection.worldPosition);
 	}
 	useEffect(() => {
 		// Log.debug(`Scene.useEffect`);
