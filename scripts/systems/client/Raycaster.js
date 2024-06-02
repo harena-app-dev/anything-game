@@ -16,9 +16,13 @@ export default function (registry, systems) {
 	const renderer = systems.get('Renderer')
 	this.raycastFromCursor = function () {
 		const intersects = this.raycaster.intersectObjects(renderer.getScene().children);
-		Log.debug(`Raycaster.raycastFromCursor`, intersects);
+		Log.info(`num intersects`, intersects.length);
 		if (intersects.length > 0) {
-			return renderer.t2e(intersects[intersects.length - 1].object);
+			for (let i = 0; i < intersects.length; i++) {
+				const entity = renderer.t2e(intersects[i].object.id);
+				Log.info(entity, registry.getTypes(entity));
+			}
+			return renderer.t2e(intersects[0].object.id);
 		}
 		return nullEntity;
 	}

@@ -14,8 +14,8 @@ export default function (registry, systems) {
 	this.e2t = function (entity) {
 		return this._entitiesToThree[entity];
 	}
-	this.t2e = function (threeObject) {
-		return this._threeToEntities[threeObject];
+	this.t2e = function (id) {
+		return this._threeToEntities[id];
 	}
 	this.setSceneElement = function (sceneElement) {
 		this._renderer = new three.WebGLRenderer();
@@ -38,17 +38,24 @@ export default function (registry, systems) {
 	}
 	this.onUpdatePosition = function (entity, position) {
 		Log.debug(`Renderer.onUpdatePosition`, entity, position);
-		const threeObject = this._entitiesToThree[entity];
-		if (threeObject === undefined) {
+		const threeId = this._entitiesToThree[entity];
+		if (threeId === undefined) {
 			return;
 		}
+		const threeObject = this._scene.getObjectById(threeId);
 		threeObject.position.x = position.x;
 		threeObject.position.y = position.y;
 		threeObject.position.z = position.z;
 	}
 	registry.onUpdate("Position").connect(this.onUpdatePosition.bind(this));
+	this.getThreeObject = function (entity) {
+		return this._scene.getObjectById(this._entitiesToThree[entity]);
+	}
 	this.onUpdateScale = function (entity, scale) {
-		const threeObject = this._entitiesToThree[entity];
+		const threeObject = this.getThreeObject(entity);
+		if (threeObject === undefined) {
+			return;
+		}
 		threeObject.scale.x = scale.x;
 		threeObject.scale.y = scale.y;
 		threeObject.scale.z = scale.z;
@@ -57,8 +64,8 @@ export default function (registry, systems) {
 	this.add = function (entity, threeObject) {
 		Log.debug(`Renderer.add:`, entity, threeObject);
 		this._scene.add(threeObject);
-		this._entitiesToThree[entity] = threeObject;
-		this._threeToEntities[threeObject] = entity;
+		this._entitiesToThree[entity] = threeObject.id;
+		this._threeToEntities[threeObject.id] = entity;
 		this.onUpdatePosition(entity, registry.getOrEmplace("Position", entity));
 		this.onUpdateScale(entity, registry.getOrEmplace("Scale", entity));
 		registry.getOrEmplace("Position", entity);
