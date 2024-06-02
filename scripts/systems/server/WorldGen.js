@@ -14,6 +14,10 @@ export default function (registry) {
 				registry.emplace("Position", tree, { x, y: 0, z })
 				registry.emplace("Scale", tree, { x: treeScale, y: treeScale, z: treeScale })
 				registry.emplace("Sprite", tree, { path: "tree.png" })
+			} else if (rng < 0.15) {
+				const dirtWall = registry.create()
+				registry.emplace("Position", dirtWall, { x, y: 0, z })
+				registry.emplace("Block", dirtWall, { texture: "dirt.png" })
 			}
 		}
 	}

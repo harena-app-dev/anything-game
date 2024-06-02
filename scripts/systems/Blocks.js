@@ -21,6 +21,7 @@ export default function (registry, systems) {
 				texture.minFilter = THREE.NearestFilter
 				this._pathsToTextures[block.texture] = texture
 				material = new THREE.MeshBasicMaterial({ map: texture });
+				// material = new THREE.MeshStandardMaterial({ map: texture });
 				this._pathsToMaterials[block.texture] = material
 			}
 		}

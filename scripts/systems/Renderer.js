@@ -5,8 +5,11 @@ export default function (registry, systems) {
 	this.getScene = function () {
 		return this._scene;
 	}
-	const light = new three.AmbientLight(0x404040); // soft white light
-	this._scene.add(light);
+	// const light = new three.AmbientLight(0x404040); // soft white light
+	// this._scene.add(light);
+	// const directionalLight = new three.DirectionalLight( 0xffffff, 1 ); 
+	// directionalLight.position.set( 0.3, 1, 0 ).normalize();
+	// this._scene.add( directionalLight );
 	this._entitiesToThree = {}
 	this._threeToEntities = {}
 	this._pathsToTextures = {}
