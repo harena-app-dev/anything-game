@@ -37,7 +37,7 @@ export default function (registry, systems) {
 					},
 					onConnection(f) {
 						ws.onopen = () => {
-							Log.info('WebSocketMessager onopen');
+							Log.debug('WebSocketMessager onopen');
 							resolve();
 							f({
 								ws,
@@ -171,15 +171,15 @@ export default function (registry, systems) {
 				password,
 				isCreate,
 			}).then((data) => {
-				Log.info(`promiseLogin`, data);
+				Log.debug(`promiseLogin`, data);
 				const { accountEntity, message } = data;
 				// const playerEntity = this._s2c[accountEntity];
 				const account = registry.get('Account', this._s2c[accountEntity]);
-				Log.info(`promiseLogin`, account);
+				Log.debug(`promiseLogin`, account);
 				if (account === undefined) {
 					return data;
 				}
-				Log.info(`promiseLogin`, message, account);
+				Log.debug(`promiseLogin`, message, account);
 				systems.get('Player').setPlayerEntity(account.playerEntity);
 				return data;
 			})

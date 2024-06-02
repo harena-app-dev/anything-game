@@ -3,7 +3,7 @@ import Log from '../../Log.js';
 export default function (registry, systems) {
 	this._playerEntity = nullEntity;
 	this.tick = function () {
-		Log.info(`Player.tick`, this._playerEntity);
+		Log.debug(`Player.tick`, this._playerEntity);
 		if (!registry.valid(this._playerEntity)) {
 			return;
 		}
@@ -18,7 +18,7 @@ export default function (registry, systems) {
 
 	}
 	this.setPlayerEntity = function (entity) {
-		Log.info(`Player.setPlayerEntity`, entity);
+		Log.debug(`Player.setPlayerEntity`, entity);
 		this._playerEntity = entity;
 	}
 	// const client = systems.get('Client');
