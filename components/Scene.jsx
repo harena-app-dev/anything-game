@@ -10,6 +10,7 @@ export default function Scene({ registry, systems }) {
 	const moba = systems.get('Moba');
 	const onRightClick = (e) => {
 		e.preventDefault();
+		raycaster.getCursorIntersection();
 		// moba.cmdMoveTo(
 		// client.promiseCreate().then((entity) => {
 		// 	client.promiseEmplace("MoveGoal", entity, { x: e
