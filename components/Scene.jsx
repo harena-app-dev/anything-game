@@ -13,7 +13,7 @@ export default function Scene({ app }) {
 	const raycaster = systems.get('Raycaster');
 	const moba = systems.get('Moba');
 	const onRightClick = (e) => {
-		// e.preventDefault();
+		e.preventDefault();
 		const intersection = raycaster.getCursorIntersection();
 		const player = systems.get('Player');
 		moba.moveToRpc(player.getPlayerEntity(), intersection.worldPosition);
@@ -64,10 +64,10 @@ export default function Scene({ app }) {
 
 				app={app}
 			/> */}
-			<div className='row' style={{ position:"absolute", width: itemWidth*4, height: itemWidth*2, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+			<div className='row' style={{ position:"absolute", width: itemWidth*4, backgroundColor: 'rgba(0,0,0,0.5)' }}>
 				{
 					[...Array(8)].map((_, i) => (
-							<img src="textures/tree.png"
+							<img src="textures/rogue.png"
 								key={i}
 								className='itemIcon' style={{ width: itemWidth, height: itemWidth }}
 								> 
