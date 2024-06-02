@@ -10,6 +10,8 @@ export default function ({ app, ...props }) {
 	const sx = {
 		...props.sx,
 		width: 200,
+		p: 1,
+		backgroundColor: 'rgba(0,0,0,0.5)',
 	};
 	delete props.sx;
 	return (
