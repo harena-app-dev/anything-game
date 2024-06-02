@@ -11,7 +11,7 @@ export default function (registry) {
 			if (rng < 0.1) {
 				const tree = registry.create()
 				const treeScale = 1.5;
-				registry.emplace("Position", tree, { x, y: 0, z })
+				registry.emplace("Position", tree, { x, y: 0.25, z })
 				registry.emplace("Scale", tree, { x: treeScale, y: treeScale, z: treeScale })
 				registry.emplace("Sprite", tree, { path: "tree.png" })
 			} else if (rng < 0.15) {
