@@ -37,7 +37,7 @@ export default function (registry, systems) {
 					},
 					onConnection(f) {
 						ws.onopen = () => {
-							Log.debug('WebSocketMessager onopen');
+							Log.info('WebSocketMessager onopen');
 							resolve();
 							f({
 								ws,

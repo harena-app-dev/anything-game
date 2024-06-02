@@ -8,29 +8,30 @@ import Systems from '@/scripts/Systems';
 import { CircularProgress } from '@mui/material';
 import Log from '@/scripts/Log';
 import Login from './Login';
-
 export default function App() {
-	const webSocketMessager = useRef();
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
+	// const registry = Registry()
+	const registryRef = useRef(Registry());
+	// const systems = new Systems({
+	const systemsRef = useRef(new Systems({
+		constructors: { ...commonSystems, ...clientSystems },
+		// registry,
+		registry: registryRef.current
+	}));
 	useEffect(function () {
 		Log.debug(`App.useEffect`);
-		const registry = Registry()
-		const systems = new Systems({
-			constructors: { ...commonSystems, ...clientSystems },
-			registry,
-		});
-		const client = systems.get("Client");
+
+		const client = systemsRef.current.get("Client");
 		client.promiseConnect().then(() => {
 			client.promiseSync().then(() => {
 				setContent(<React.Fragment>
-					<Login registry={registry} systems={systems} />
-					<Scene registry={registry} systems={systems} />
+					<Login registry={registryRef.current} systems={systemsRef.current} />
+					<Scene registry={registryRef.current} systems={systemsRef.current} />
 				</React.Fragment>);
 			});
 		});
 		return () => {
-			webSocketMessager.current?.close()
-			systems.destructor()
+			// systems.destructor()
 		};
 	}, []);
 

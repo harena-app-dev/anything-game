@@ -20,7 +20,6 @@ export default function Scene({ registry, systems }) {
 		const renderer = systems.get('Renderer')
 		renderer.setSceneElement(document.getElementById("scene"));
 		function loop() {
-			// Log.info(`loop`);
 			requestAnimationFrame(loop);
 			systems.tick();	
 		}
