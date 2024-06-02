@@ -20,13 +20,18 @@ export default function (registry, systems) {
 				texture.magFilter = THREE.NearestFilter
 				texture.minFilter = THREE.NearestFilter
 				this._pathsToTextures[block.texture] = texture
-				material = new THREE.MeshBasicMaterial({ map: texture });
-				// material = new THREE.MeshStandardMaterial({ map: texture });
+				// material = new THREE.MeshBasicMaterial({ map: texture });
+				material = new THREE.MeshStandardMaterial({ map: texture });
+				// material = new THREE.MeshPhongMaterial()
 				this._pathsToMaterials[block.texture] = material
 			}
 		}
 		const geometry = new THREE.BoxGeometry(1, 1, 1)
+		// geometry.castShadow = true;
+		// geometry.receiveShadow = true;
 		const threeObject = new THREE.Mesh(geometry, material)
+		// threeObject.castShadow = true;
+		// threeObject.receiveShadow = true;
 		renderer.add(entity, threeObject)
 	}
 	this._onErase = function(entity) {
