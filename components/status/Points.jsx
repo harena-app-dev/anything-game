@@ -10,7 +10,7 @@ export default function ({ app, ...props }) {
 	const progressHeight = 25;
 	const sx = {
 		...props.sx,
-		width: 300,
+		width: 400,
 	};
 	delete props.sx;
 	return (
