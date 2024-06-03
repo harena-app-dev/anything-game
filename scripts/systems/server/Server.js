@@ -40,7 +40,7 @@ export default function (registry, systems) {
 				}
 				const accountEntity = registry.create();
 				const playerEntity = registry.create();
-				registry.emplace('Sprite', playerEntity, { path: 'rogue.png' });
+				registry.emplace('Sprite', playerEntity, { path: 'anime_girl.png' });
 				registry.emplace('Account', accountEntity, { username, password, playerEntity });
 				registry.emplace('AccountOwner', playerEntity, { accountEntity });
 				usernames[username] = accountEntity;

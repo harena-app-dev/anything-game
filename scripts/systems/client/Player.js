@@ -24,20 +24,6 @@ export default function (registry, systems) {
 	this.getPlayerEntity = function () {
 		return this._playerEntity;
 	}
-	// const client = systems.get('Client');
-
 	this.destructor = function () {
-		Log.debug('Player.destructor');
-		// if (registry.valid(this._playerEntity)) {
-			// client.promiseDestroy(this._playerEntity);
-		// }
 	}
-	// client.promiseCreate().then((entity) => {
-	// 	Log.debug('promiseCreate', entity);
-
-	// 	// client.promiseEmplace({ entity, type: 'Spawner' });
-	// 	client.promiseEmplace("Sprite", entity, { path: "rogue.png" }).then(() => {
-	// 		this._playerEntity = entity;
-	// 	})
-	// });
 }
