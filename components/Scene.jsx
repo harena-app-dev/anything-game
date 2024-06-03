@@ -16,6 +16,7 @@ export default function Scene({ app }) {
 	const [registry, systems] = app.get();
 	const raycaster = systems.get('Raycaster');
 	const moba = systems.get('Moba');
+	const [isInventoryOpen, setInventoryOpen] = useState(false);
 	const onRightClick = (e) => {
 		// e.preventDefault();
 		const intersection = raycaster.getCursorIntersection();
@@ -35,20 +36,44 @@ export default function Scene({ app }) {
 			renderer.onSceneElementResize();
 		};
 	}, []);
+	function onKeyDown(e) {
+		Log.info(`Key pressed: ${e.key}`);
+		// if pressed e, toggle inventory
+		if (e.key === 'e') {
+			setInventoryOpen(prev => !prev);
+		}
+	}
 	return (
-		<Box className="col grow" id="scene" onContextMenu={onRightClick}>
-			<div style={{
-				position: 'absolute',
-				top: 0,
-				left: 0,
-				width: '100%',
-				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-				pointerEvents: 'none',
-				backgroundColor: 'transparent',
-			}}
+		<Box className="col grow" id="scene" onContextMenu={onRightClick} >
+			<div
+				style={{
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					width: '100%',
+					height: '100%',
+					display: 'flex',
+					flexDirection: 'column',
+					pointerEvents: 'none',
+					backgroundColor: 'transparent',
+				}}
+				tabIndex="0"
+				onKeyDown={onKeyDown}
 			>
+				{
+					isInventoryOpen && <div style={{
+						display: 'flex',
+						flexDirection: 'column',
+						width: '512px',
+						height: '512px',
+						margin: 'auto',
+						marginBottom: 0,
+						backgroundColor: 'rgba(0,0,0,0.5)',
+					}}>
+
+					</div>
+				}
+
 				<div style={{
 					display: 'flex',
 					marginLeft: 'auto',
@@ -57,7 +82,10 @@ export default function Scene({ app }) {
 					pointerEvents: 'auto',
 					flexDirection: 'column',
 				}}>
-					Use mouse left/right click and scroll to move camera.
+
+					<Typography variant="h6">
+						Use mouse left/right click and scroll to move camera.
+					</Typography>
 					<div style={{
 						display: 'flex',
 						flexDirection: 'column',

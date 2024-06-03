@@ -1,11 +1,15 @@
 import Log from '../../Log.js';
+import Observable from '@/scripts/Observable.js';
 export default function () {
 	this._keys = {};
 	Log.debug(`KeyboardState`);
+	this.keyDownObservable = new Observable();
 	const onKeyDown = (e) => {
 		Log.debug(`keydown ${e.key}`);
 		this._keys[e.key.toLowerCase()] = true;
+		this.keyDownObservable.notify(e.key);
 	}
+
 	window.addEventListener('keydown', onKeyDown);
 	const onKeyUp = (e) => {
 		Log.debug(`keyup ${e.key}`);
