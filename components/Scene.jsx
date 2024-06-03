@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
-import { Alert, Stack, TextField, Typography } from '@mui/material';
+import { Alert, LinearProgress, Stack, TextField, Typography } from '@mui/material';
 import Log from '@/scripts/Log';
 import Chat from './Chat';
 import Status from './status/Status';
 import ShieldIcon from '@mui/icons-material/Shield';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
+import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 import { createRoot } from 'react-dom/client';
 
 export default function Scene({ app }) {
@@ -33,6 +37,11 @@ export default function Scene({ app }) {
 			systems.tick();
 		}
 		loop();
+		const theme = app.theme;
+		theme.palette["health"] = {
+			main: 'green',
+		};
+		app.setTheme(theme);
 		return () => {
 			Log.debug(`Scene.useEffect return`);
 			renderer.onSceneElementResize();
@@ -47,6 +56,7 @@ export default function Scene({ app }) {
 		// return () => {
 		// 	clearInterval(intervalId);
 		// };
+
 	}, []);
 	const itemWidth = 32;
 
@@ -75,9 +85,88 @@ export default function Scene({ app }) {
 					marginRight: 'auto',
 					marginTop: 'auto',
 					pointerEvents: 'auto',
+					flexDirection: 'column',
 				}}>
 					Welcome to game. Use mouse left/right click and scroll to move camera.
-
+					<div style={{
+						display: 'flex',
+						flexDirection: 'column',
+						width: '100%',
+						padding: 0,
+						margin: 0,
+					}}>
+						<div style={{
+							display: 'flex',
+							flexDirection: 'row',
+							width: '100%',
+							margin: 0,
+							padding: 0,
+						}}>
+							<div style={{
+							}}>
+								<Typography variant="h6" component="div" gutterBottom>
+									<FavoriteIcon />
+								</Typography>
+							</div>
+							<div style={{
+								width: '100%',
+							}}>
+								<LinearProgress variant="determinate"
+									value={75}
+									color="primary"
+									sx={{
+										height: 25,
+									}}
+								/>
+							</div>
+						</div>
+						<div style={{
+							display: 'flex',
+							flexDirection: 'row',
+							width: '100%',
+						}}>
+							<div style={{
+							}}>
+								<Typography variant="h6" component="div" gutterBottom>
+									<RestaurantIcon />
+								</Typography>
+							</div>
+							<div style={{
+								width: '100%',
+							}}>
+								<LinearProgress variant="determinate"
+									value={75}
+									color="primary"
+									sx={{
+										height: 25,
+									}}
+								/>
+							</div>
+						</div>
+						<div style={{
+							display: 'flex',
+							flexDirection: 'row',
+							width: '100%',
+						}}>
+							<div style={{
+							}}>
+								<Typography variant="h6" component="div" gutterBottom>
+									<LocalDrinkIcon />
+								</Typography>
+							</div>
+							<div style={{
+								width: '100%',
+							}}>
+								<LinearProgress variant="determinate"
+									value={75}
+									color="primary"
+									sx={{
+										height: 25,
+									}}
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			{/* <div className='row' style={{ position: "absolute", width: itemWidth * 4, backgroundColor: 'rgba(0,0,0,0.5)' }}>

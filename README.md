@@ -1,19 +1,20 @@
 # Moddable Javascript Game
 A very moddable game.
 You can add anything you'd like to the game. E.g. add content/functionality for first-person shooting, MOBA, RPG, RTS, or any other genre
-
+## Collaboration
+Am looking for collaborators of any background. Contact me if you're interested.
+## Features
 - ECS pattern
 	- automatic registration of components and systems
 	- easy multiplayer
 		- server-client architecture
 		- automatic synchronization of components with observers 
 		- automatically-generated remote-procedure functions for your systems
-- React for UI
-- ThreeJS for rendering
-- NextJS for frontend
+- React + NextJS for UI
+- ThreeJS for 3D graphics
 - Potential future systems
-	- Replace Websockets with WebRTC for lower latency
-	- Add WebGPU GPGPU for high performance
+	- Add WebRTC for better networking
+	- Add WebGPU GPGPU for higher performance graphics and systems
 ```bash
 npm run dev
 # or
