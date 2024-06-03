@@ -52,27 +52,6 @@ export default function Scene({ app }) {
 
 	return (
 		<Box className="col grow" id="scene" onContextMenu={onRightClick}>
-			<Chat sx={{
-				position: 'absolute', left: 0, bottom: 0, zIndex: 1, padding: 0,
-				backgroundColor: 'rgba(0,0,0,0.5)'
-			}}
-				app={app}
-			/>
-			{/* <Status sx={{
-				position: 'absolute',
-				mx: 'auto',
-				mt: 'auto',
-				height: 'fit-content',
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-			}}
-				app={app}
-			/> */}
-			{/* <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, marginTop: "auto", marginLeft: "auto", marginRight: "auto", height: "fit-content", width: "100px", backgroundColor: 'rgba(0,0,0,0.5)' }}>
-				Hi!!!
-			</div> */}
 			<div style={{
 				position: 'absolute',
 				top: 0,
@@ -81,7 +60,9 @@ export default function Scene({ app }) {
 				height: '100%',
 				display: 'flex',
 				flexDirection: 'column',
-			}}>
+				pointerEvents: 'none',
+			}}
+			>
 				{/* <div style={{
 					display: 'flex',
 					flex: 1,
@@ -93,7 +74,8 @@ export default function Scene({ app }) {
 					marginRight: 'auto',
 					marginTop: 'auto',
 				}}>
-					Hi!
+					Welcome to game. Use mouse left/right click and scroll to move camera.
+
 				</div>
 			</div>
 			{/* <div className='row' style={{ position: "absolute", width: itemWidth * 4, backgroundColor: 'rgba(0,0,0,0.5)' }}>

@@ -10,11 +10,16 @@ import Log from '@/scripts/Log';
 import Login from './Login';
 export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
-	const darkTheme = createTheme({
+	// const theme = createTheme({
+		// palette: {
+			// mode: 'dark',
+		// },
+	// });
+	const [theme, setTheme] = useState(createTheme({
 		palette: {
 			mode: 'dark',
 		},
-	});
+	}));
 	
 	// const registry = Registry()
 	// const registryRef = useRef(Registry());
@@ -57,7 +62,7 @@ export default function App() {
 	// return <Box className="row grow">
 	// 	{content}
 	// </Box>
-	return <ThemeProvider theme={darkTheme}>
+	return <ThemeProvider theme={theme}>
 		<CssBaseline />
 		{/* <App /> */}
 		{content}
