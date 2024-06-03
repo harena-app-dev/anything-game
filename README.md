@@ -1,4 +1,14 @@
-ReactJS + NextJS
+# Moddable Javascript Game
+- ECS pattern
+	- automatic registration of components and systems
+	- automatic synchronization of components with observers 
+	- synchronization of systems with automatically-generated remote-procedure-calls
+- React for UI
+- ThreeJS for rendering
+- NextJS for frontend
+- Potential future systems
+	- Replace Websockets with WebRTC for lower latency
+	- Add WebGPU GPGPU for high performance computing
 ```bash
 npm run dev
 # or
