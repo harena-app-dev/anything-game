@@ -2,6 +2,7 @@
 - ECS pattern
 	- automatic registration of components and systems
 	- easy multiplayer
+		- server-client architecture
 		- automatic synchronization of components with observers 
 		- automatically-generated remote-procedure functions for your systems
 - React for UI
