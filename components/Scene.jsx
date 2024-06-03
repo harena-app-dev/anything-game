@@ -7,7 +7,7 @@ import Status from './status/Status';
 import ShieldIcon from '@mui/icons-material/Shield';
 
 export default function Scene({ app }) {
-	const { registry, systems } = app;
+	const [registry, systems] = app.get();
 
 	const client = systems.get('Client');
 	const raycaster = systems.get('Raycaster');

@@ -67,6 +67,9 @@ export default function (registry, systems) {
 					},
 					onError(f) {
 						ws.onerror = f;
+					},
+					close() {
+						ws.close();
 					}
 				})
 			})
@@ -96,6 +99,7 @@ export default function (registry, systems) {
 			Log.debug(`tempRegistry`, tempRegistry.size());
 
 			const update = wsm.addHandler('update', (ws, type, serverEntity, component) => {
+				Log.debug(`onJson update`, type, serverEntity, component);
 				registry.emplaceOrReplace(type, this.s2cEntity(serverEntity), this.s2cComponent(component));
 			});
 			tempRegistry.each((entity) => {

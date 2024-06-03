@@ -83,13 +83,22 @@ export default function Registry() {
 			return this.get(type, entity);
 		},
 		emplaceOrReplace(type, entity, component) {
+			if (type === "MoveGoal") {
+				Log.info(`emplaceOrReplace`, type, entity, component);
+			}
 			if (!this.has(type, entity)) {
+				Log.debug(`emplaceOrReplace has ${type} ${entity}`);
 				this.emplace(type, entity, component);
 			} else {
+				Log.debug(`emplaceOrReplace replace ${type} ${entity}`);
 				this.replace(type, entity, component);
 			}
 		},
 		erase(type, entity) {
+			if (type === "MoveGoal") {
+				Log.info(`erase`, type, entity);
+				console.trace();
+			}
 			if (!this.has(type, entity)) {
 				Log.error(`Entity ${entity} does not have component of type ${type}`);
 			}
@@ -136,7 +145,10 @@ export default function Registry() {
 				Log.error(`Entity ${entity} does not have component of type ${type}`);
 				return;
 			}
-			this.getPool(type)[entity] = component;
+			// this.getPool(type)[entity] = component;
+			for (let [key, value] of Object.entries(component)) {
+				this.get(type, entity)[key] = value;
+			}
 			this.onUpdate().notify(type, entity, component);
 			this.onUpdate(type).notify(entity, component);
 			const component1 = this.get(type, entity);

@@ -1,4 +1,5 @@
 import { nullEntity } from "../Core";
+import Position from "./Position";
 export default {
-	entity: nullEntity,
+	position: new Position(),
 }

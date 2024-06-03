@@ -25,7 +25,8 @@ export default function (registry, systems) {
 		wsm.sendToAll('update', ...args);
 	})
 	registry.onErase().connect(function (...args) {
-		wsm.sendToAll('erase', ...args);
+		const [type, entity] = args;
+		wsm.sendToAll('erase', type, entity);
 	})
 	registry.onDestroy().connect(function (...args) {
 		wsm.sendToAll('destroy', ...args);

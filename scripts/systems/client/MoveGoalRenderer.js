@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Log from '../../Log.js';
 export default function (registry, systems) {
-	registry.onEmplace('MoveGoal', (entity, moveGoal) => {
+	registry.onUpdate('MoveGoal', (entity, moveGoal) => {
 		Log.info(`MoveGoalRenderer onUpdate`, entity, moveGoal);
 		const position = registry.get('Position', entity);
 		const points = [];

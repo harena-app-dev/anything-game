@@ -11,22 +11,33 @@ import Login from './Login';
 export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
 	// const registry = Registry()
-	const registryRef = useRef(Registry());
-	// const systems = new Systems({
-	const systemsRef = useRef(new Systems({
-		constructors: { ...commonSystems, ...clientSystems },
-		// registry,
-		registry: registryRef.current
-	}));
+	// const registryRef = useRef(Registry());
+	// // const systems = new Systems({
+	// const systemsRef = useRef(new Systems({
+	// 	constructors: { ...commonSystems, ...clientSystems },
+	// 	// registry,
+	// 	registry: registryRef.current
+	// }));
+	const registryRef = useRef();
+	const systemsRef = useRef();
 	useEffect(function () {
 		Log.debug(`App.useEffect`);
-
+		registryRef.current = Registry();
+		systemsRef.current = new Systems({
+			constructors: { ...commonSystems, ...clientSystems },
+			registry: registryRef.current
+		});
 		const client = systemsRef.current.get("Client");
-		const app = { registry: registryRef.current, systems: systemsRef.current };
+		// const app = { registry: registryRef.current, systems: systemsRef.current };
+		const app = { registryRef, systemsRef,
+			get() {
+				return [registryRef.current, systemsRef.current];
+			}
+		 };
 		client.promiseConnect().then(() => {
 			client.promiseSync().then(() => {
 				setContent(<React.Fragment>
-					<Login registry={registryRef.current} systems={systemsRef.current} />
+					<Login app={app} />
 					<Scene app={app}/>
 				</React.Fragment>);
 			});

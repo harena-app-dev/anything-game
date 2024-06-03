@@ -16,9 +16,11 @@ const style = {
 	px: 4,
 	pb: 3,
 };
-export default function ({ registry, systems }) {
+export default function ({ app }) {
 	const [open, setOpen] = React.useState(true);
 	function login(isCreate) {
+		// const systems = app.getSystems();
+		const [registry, systems] = app.get();
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 		systems.get("Client").promiseLogin({ username, password, isCreate }).then(({ accountEntity, message }) => {

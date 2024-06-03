@@ -3,10 +3,7 @@ import Log from "../../Log";
 import http from 'http';
 import { WebSocketServer } from 'ws';
 export default function (registry, systems) {
-	this.tick = function () {
-	}
-	this.destructor = function () {
-	}
+
 	const server = http.createServer();
 	const wss = new WebSocketServer({ server });
 	const wsm = WebSocketMessager(server);
@@ -42,7 +39,14 @@ export default function (registry, systems) {
 		},
 		onError(f) {
 			wss.on('error', f);
+		},
+		close() {
+			wss.close();
 		}
 	})
 	server.listen(3001, function () {});
+	this.tick = function () {
+	}
+	this.destructor = function () {
+	}
 }
