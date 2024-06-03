@@ -6,37 +6,35 @@ export default function (registry, systems) {
 		if (client !== undefined) {
 			return;
 		}
-		registry.view('MoveGoal').each((entity, moveGoal) => {
-			const position = registry.get('Position', entity);
-			let dx = moveGoal.position.x - position.x;
-			let dy = moveGoal.position.y - position.y;
-			let dz = moveGoal.position.z - position.z;
-			const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		registry.view('MoveGoal').each((goalEntity, moveGoal) => {
+			const goalPosition = registry.get('Position', goalEntity);
+			const objectPosition = registry.get('Position', moveGoal.entity);
+			// let dx = moveGoal.position.x - position.x;
+			// let dy = moveGoal.position.y - position.y;
+			// let dz = moveGoal.position.z - position.z;
+			// const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+			const distance = objectPosition.distanceTo(goalPosition);
 			if (distance < 0.001) {
-				registry.erase('MoveGoal', entity);
+				registry.erase('MoveGoal', goalEntity);
 				return;
 			}
-			Log.info(`Moba.tick`, { entity, position, moveGoal, distance });
-			dx = dx / distance;
-			dy = dy / distance;
-			dz = dz / distance;
-			const speed = 0.1;
-			position.x += dx * Math.min(speed, distance);
-			position.y += dy * Math.min(speed, distance);
-			position.z += dz * Math.min(speed, distance);
-			registry.replace('Position', entity, position);
+			Log.info(`Moba.tick`, { goalEntity, goalPosition, moveGoal, distance });
+			const direction = goalPosition.clone().sub(objectPosition).normalize();
+			const speed = Math.min(distance, 0.1);
+			const delta = direction.clone().multiplyScalar(speed);
+			objectPosition.add(delta);
+			registry.replace('Position', moveGoal.entity, objectPosition);
 
 		});
 	}
 	this.destructor = function () {
 	}
-	this.moveTo = function (entity, position) {
-		Log.info(`Moba.moveTo`, entity, position);
+	this.moveTo = function (entity, _position) {
+		// copy _position
+		const position = { ..._position };
 		position.y = 0;
-		const moveGoal = registry.getOrEmplace('MoveGoal', entity);
-		moveGoal.position = position;
+		const goalEntity = registry.create();
+		const goal = registry.emplace('MoveGoal', goalEntity, { entity });
+		const goalPosition = registry.emplace('Position', goalEntity, position);
 	}
-	// this.rpcMoveTo = function (entity, x, y) {
-	// 	systems.get('Client').wsm.sendToAll('Moba.moveTo', entity, x, y);
-	// }
 }

@@ -4,6 +4,8 @@ import Keyboard from './Keyboard.js';
 export { Keyboard };
 import Mouse from './Mouse.js';
 export { Mouse };
+import MoveGoalRenderer from './MoveGoalRenderer.js';
+export { MoveGoalRenderer };
 import Player from './Player.js';
 export { Player };
 import Raycaster from './Raycaster.js';

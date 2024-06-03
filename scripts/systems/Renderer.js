@@ -57,6 +57,7 @@ export default function (registry, systems) {
 		if (threeObject === undefined) {
 			return;
 		}
+		// Log.info(`Renderer.onUpdateScale`, entity, scale);
 		threeObject.scale.x = scale.x;
 		threeObject.scale.y = scale.y;
 		threeObject.scale.z = scale.z;
