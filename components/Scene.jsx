@@ -70,16 +70,30 @@ export default function Scene({ app }) {
 				onKeyDown={onKeyDown}
 			>
 				{
-					isInventoryOpen && <div style={{
-						display: 'flex',
-						flexDirection: 'column',
-						width: '512px',
-						height: '512px',
-						margin: 'auto',
-						marginBottom: 0,
-						backgroundColor: 'rgba(0,0,0,0.5)',
-					}}>
-
+					isInventoryOpen && <div
+						className="row"
+						style={{
+							width: '512px',
+							height: '512px',
+							margin: 'auto',
+							marginBottom: 0,
+							backgroundColor: 'rgba(0,0,0,0.75)',
+						}}>
+						<div className='col section'>
+							<Typography variant="overline">
+								Vicinity
+							</Typography>
+						</div>
+						<div className='col section'>
+							<Typography variant="overline">
+								Inventory
+							</Typography>
+						</div>
+						<div className='col grow section'>
+							<Typography variant="overline">
+								Character
+							</Typography>
+						</div>
 					</div>
 				}
 
@@ -93,7 +107,7 @@ export default function Scene({ app }) {
 				}}>
 
 					<Typography variant="h6">
-						Use mouse left/right click and scroll to move camera.
+						Controls: left/right click/drag, scroll, e
 					</Typography>
 					<div style={{
 						display: 'flex',

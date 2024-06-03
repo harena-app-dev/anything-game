@@ -45,6 +45,10 @@ body {
 	cursor: ew-resize;
 }
 
+.section {
+	padding: 4px;
+}
+
 .col,
 .row {
 	display: flex;
