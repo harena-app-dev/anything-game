@@ -1,8 +1,9 @@
 # Moddable Javascript Game
 - ECS pattern
 	- automatic registration of components and systems
-	- automatic synchronization of components with observers 
-	- synchronization of systems with automatically-generated remote-procedure-calls
+	- easy multiplayer
+		- automatic synchronization of components with observers 
+		- automatically-generated remote-procedure functions for your systems
 - React for UI
 - ThreeJS for rendering
 - NextJS for frontend
