@@ -61,6 +61,7 @@ export default function Scene({ app }) {
 				display: 'flex',
 				flexDirection: 'column',
 				pointerEvents: 'none',
+				backgroundColor: 'transparent',
 			}}
 			>
 				{/* <div style={{
@@ -73,6 +74,7 @@ export default function Scene({ app }) {
 					marginLeft: 'auto',
 					marginRight: 'auto',
 					marginTop: 'auto',
+					pointerEvents: 'auto',
 				}}>
 					Welcome to game. Use mouse left/right click and scroll to move camera.
 
