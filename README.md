@@ -1,4 +1,7 @@
 # Moddable Javascript Game
+A very moddable game.
+You can add anything you'd like to the game. E.g. add content/functionality for first-person shooting, MOBA, RPG, RTS, or any other genre
+
 - ECS pattern
 	- automatic registration of components and systems
 	- easy multiplayer
