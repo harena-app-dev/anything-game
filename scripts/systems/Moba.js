@@ -14,12 +14,12 @@ export default function (registry, systems) {
 			// let dz = moveGoal.position.z - position.z;
 			// const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 			const distance = objectPosition.distanceTo(goalPosition);
-			Log.info(`Moba.tick`, { goalEntity: entity, goalPosition, objectPosition, distance });
+			Log.debug(`Moba.tick`, { goalEntity: entity, goalPosition, objectPosition, distance });
 			if (distance < 0.001) {
 				registry.erase('MoveGoal', entity);
 				return;
 			}
-			// Log.info(`Moba.tick`, { goalEntity, goalPosition, moveGoal, distance });
+			// Log.debug(`Moba.tick`, { goalEntity, goalPosition, moveGoal, distance });
 			const direction = goalPosition.clone().sub(objectPosition).normalize();
 			const speed = Math.min(distance, 0.1);
 			const delta = direction.clone().multiplyScalar(speed);
@@ -33,7 +33,7 @@ export default function (registry, systems) {
 	}
 	this.moveTo = function (entity, _position) {
 		// copy _position
-		Log.info(`Moba.moveTo`, entity, _position);
+		Log.debug(`Moba.moveTo`, entity, _position);
 		const position = new THREE.Vector3();
 		position.y = 0;
 		position.x = _position.x;

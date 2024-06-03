@@ -16,7 +16,7 @@ export default function (registry, systems) {
 		const intersects = this.raycaster.intersectObjects(renderer.getScene().children);
 		if (intersects.length > 0) {
 			const worldPosition = intersects[0].point;
-			Log.info(`Raycaster.getCursorIntersection`, intersects[0].object.id, worldPosition);
+			Log.debug(`Raycaster.getCursorIntersection`, intersects[0].object.id, worldPosition);
 			const entity = renderer.t2e(intersects[0].object.id);
 			return { entity, worldPosition };
 		}

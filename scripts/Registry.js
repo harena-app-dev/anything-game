@@ -37,7 +37,7 @@ export default function Registry() {
 			return entity;
 		},
 		emplace(type, entity, _component) {
-			// Log.info(`emplace`, type, entity, _component);
+			// Log.debug(`emplace`, type, entity, _component);
 			if (!this.valid(entity)) {
 				Log.error(`Entity ${entity} does not exist`);
 				return;
