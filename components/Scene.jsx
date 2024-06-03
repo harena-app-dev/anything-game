@@ -35,8 +35,6 @@ export default function Scene({ app }) {
 			renderer.onSceneElementResize();
 		};
 	}, []);
-	const itemWidth = 32;
-
 	return (
 		<Box className="col grow" id="scene" onContextMenu={onRightClick}>
 			<div style={{
@@ -51,11 +49,6 @@ export default function Scene({ app }) {
 				backgroundColor: 'transparent',
 			}}
 			>
-				{/* <div style={{
-					display: 'flex',
-					flex: 1,
-				}}>
-				</div> */}
 				<div style={{
 					display: 'flex',
 					marginLeft: 'auto',
@@ -64,7 +57,7 @@ export default function Scene({ app }) {
 					pointerEvents: 'auto',
 					flexDirection: 'column',
 				}}>
-					Welcome to game. Use mouse left/right click and scroll to move camera.
+					Use mouse left/right click and scroll to move camera.
 					<div style={{
 						display: 'flex',
 						flexDirection: 'column',

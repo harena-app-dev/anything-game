@@ -33,7 +33,7 @@ export default function ({ app, ...props }) {
 		<Box {...props}>
 			<Stack spacing={0}>
 				<Typography component="pre">
-					{"Welcome to game. Use mouse left/right click and scroll to move camera."} 
+					{"Use mouse left/right click and scroll to move camera."} 
 				</Typography>
 				{messages.map((message, i) => (
 					<Typography key={i} component="pre">
