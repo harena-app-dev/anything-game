@@ -48,21 +48,24 @@ export default function Registry() {
 			}
 			let component;
 			if (!(this.typesToConstructors[type] instanceof Function)) {
-				component = structuredClone(this.typesToConstructors[type]);
-				// component = this.typesToConstructors[type].clone();
-				// component = { ...this.typesToConstructors[type] };
-				// component = { ...this.typesToConstructors[type] };
+				// component = structuredClone(this.typesToConstructors[type]);
+				// Log.error(`type ${type} is not a function`);
+				component = { ...this.typesToConstructors[type] };
+				if (_component !== undefined) {
+					component = { ...component, ..._component };
+				}
 			} else {
-				// component = this.typesToConstructors[type]();
 				if (_component !== undefined) {
 					if (_component instanceof Array) {
 						component = new this.typesToConstructors[type](..._component);
 					}
 					else {
 						component = new this.typesToConstructors[type]();
-						component = { ...component, ..._component };
+						// component = { ...component, ..._component };
+						for (let [key, value] of Object.entries(_component)) {
+							component[key] = value;
+						}
 					}
-					// component = { ...component, ..._component };
 				} else {
 					component = new this.typesToConstructors[type]();
 				}

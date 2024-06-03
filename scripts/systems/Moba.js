@@ -1,5 +1,5 @@
 import Log from '../Log.js';
-import * as three from 'three';
+import * as THREE from 'three';
 export default function (registry, systems) {
 	this.tick = function () {
 		const client = systems.get('Client');
@@ -33,8 +33,10 @@ export default function (registry, systems) {
 	this.moveTo = function (entity, _position) {
 		// copy _position
 		Log.info(`Moba.moveTo`, entity, _position);
-		const position = { ..._position };
+		const position = new THREE.Vector3();
 		position.y = 0;
+		position.x = _position.x;
+		position.z = _position.z;
 		const goalEntity = registry.create();
 		const goal = registry.emplace('MoveGoal', goalEntity, { entity });
 		const goalPosition = registry.emplace('Position', goalEntity, position);
