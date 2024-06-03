@@ -84,7 +84,7 @@ export default function Registry() {
 		},
 		emplaceOrReplace(type, entity, component) {
 			if (type === "MoveGoal") {
-				Log.info(`emplaceOrReplace`, type, entity, component);
+				Log.debug(`emplaceOrReplace`, type, entity, component);
 			}
 			if (!this.has(type, entity)) {
 				Log.debug(`emplaceOrReplace has ${type} ${entity}`);
@@ -96,7 +96,7 @@ export default function Registry() {
 		},
 		erase(type, entity) {
 			if (type === "MoveGoal") {
-				Log.info(`erase`, type, entity);
+				Log.debug(`erase`, type, entity);
 				console.trace();
 			}
 			if (!this.has(type, entity)) {

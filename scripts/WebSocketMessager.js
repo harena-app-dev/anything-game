@@ -21,7 +21,7 @@ export default function WebSocketMessager(wsw) {
 			this._wsw.forEachConnection(callback);
 		},
 		sendToAll(name, ...data) {
-			Log.info(`sendToAll ${name} ${JSON.stringify(data)}`);
+			Log.debug(`sendToAll ${name} ${JSON.stringify(data)}`);
 			// this.wss.clients.forEach(ws => {
 			this.forEachConnection(ws => {
 				this.send(ws, name, ...data);
@@ -39,7 +39,7 @@ export default function WebSocketMessager(wsw) {
 				const connectionHandlers = wsm.connectionHandlers;
 				connectionHandlers.forEach(handler => handler(ws));
 				ws.onMessage((str) => {
-					Log.info(`received message: ${str}`);
+					Log.debug(`received message: ${str}`);
 					let message;
 					try {
 						Log.debug('data', str);
