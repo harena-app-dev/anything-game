@@ -16,6 +16,12 @@ export default function (registry) {
 				registry.emplace("Position", tree, [x, 0.25, z])
 				registry.emplace("Scale", tree, { x: treeScale, y: treeScale, z: treeScale })
 				registry.emplace("Sprite", tree, { path: "tree.png" })
+
+				const circleOutline = registry.create()
+				registry.emplace("Position", circleOutline, { x, y: 0.35, z })
+				registry.emplace("Scale", circleOutline, { x: treeScale, y: treeScale, z: treeScale })
+				registry.emplace("Sprite", circleOutline, { path: "whiteCircle.png" })
+
 			} else if (rng < 0.15) {
 				const dirtWall = registry.create()
 				// registry.emplace("Position", dirtWall, { x, y: 0, z })
