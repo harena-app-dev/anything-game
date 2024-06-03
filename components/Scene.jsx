@@ -10,6 +10,7 @@ import RestaurantIcon from '@mui/icons-material/Restaurant';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 import { createRoot } from 'react-dom/client';
+import Statusbar from './Statusbar';
 
 export default function Scene({ app }) {
 	const [registry, systems] = app.get();
@@ -71,71 +72,9 @@ export default function Scene({ app }) {
 						padding: 0,
 						margin: 0,
 					}}>
-						<div style={{
-							display: 'flex',
-							flexDirection: 'row',
-							width: '100%',
-							margin: 0,
-							padding: 0,
-						}}>
-							<div style={{
-							}}>
-								<FavoriteIcon />
-							</div>
-							<div style={{
-								width: '100%',
-							}}>
-								<LinearProgress variant="determinate"
-									value={75}
-									color="primary"
-									sx={{
-										height: 25,
-									}}
-								/>
-							</div>
-						</div>
-						<div style={{
-							display: 'flex',
-							flexDirection: 'row',
-							width: '100%',
-						}}>
-							<div style={{
-							}}>
-									<RestaurantIcon />
-							</div>
-							<div style={{
-								width: '100%',
-							}}>
-								<LinearProgress variant="determinate"
-									value={75}
-									color="primary"
-									sx={{
-										height: 25,
-									}}
-								/>
-							</div>
-						</div>
-						<div style={{
-							display: 'flex',
-							flexDirection: 'row',
-							width: '100%',
-						}}>
-							<div style={{
-							}}>
-									<LocalDrinkIcon />
-							</div>
-							<div style={{
-								width: '100%',
-							}}>
-								<LinearProgress variant="determinate"
-									value={75}
-									color="primary"
-									sx={{
-										height: 25,
-									}}
-								/>
-							</div>
-						</div>
+						<Statusbar app={app} icon={<FavoriteIcon />} />
+						<Statusbar app={app} icon={<RestaurantIcon />} />
+						<Statusbar app={app} icon={<LocalDrinkIcon />} />
 					</div>
 				</div>
 			</div>
