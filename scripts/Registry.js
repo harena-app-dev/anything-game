@@ -95,10 +95,6 @@ export default function Registry() {
 			}
 		},
 		erase(type, entity) {
-			if (type === "MoveGoal") {
-				Log.debug(`erase`, type, entity);
-				console.trace();
-			}
 			if (!this.has(type, entity)) {
 				Log.error(`Entity ${entity} does not have component of type ${type}`);
 			}

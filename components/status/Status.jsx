@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import { Alert, LinearProgress, Stack, TextField, Typography, linearProgressClasses, styled } from '@mui/material';
 import Log from '@/scripts/Log';
-import Points from './Health';
+import Health from './Health';
 import Stats from './Stats';
 import Inventory from './Inventory';
 
@@ -22,6 +22,7 @@ export default function ({ app, ...props }) {
 		// 		<Points app={app} />
 		// 	</Stack>
 		// </Box>
-		<Inventory app={app} />
+		<Health app={app} />
+		// <Inventory app={app} />
 	);
 }

@@ -51,7 +51,7 @@ export default function Scene({ app }) {
 			}}
 				app={app}
 			/>
-			{/* <Status sx={{
+			<Status sx={{
 				// position: 'absolute',
 				// mx: 'auto',
 				// mt: 'auto',
@@ -63,7 +63,7 @@ export default function Scene({ app }) {
 			}}
 
 				app={app}
-			/> */}
+			/>
 			<div className='row' style={{ position:"absolute", width: itemWidth*4, backgroundColor: 'rgba(0,0,0,0.5)' }}>
 				{
 					[...Array(8)].map((_, i) => (
