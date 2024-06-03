@@ -25,6 +25,14 @@ export default function Scene({ app }) {
 	}
 	useEffect(() => {
 		const renderer = systems.get('Renderer')
+		const keyboard = systems.get('Keyboard');
+		function onKeydown(key) {
+			Log.info(`Key pressed: ${key}`);
+			if (key === 'e') {
+				setInventoryOpen(prev => !prev);
+			}
+		}
+		keyboard.keyDownObservable.connect(onKeydown);
 		renderer.setSceneElement(document.getElementById("scene"));
 		function loop() {
 			requestAnimationFrame(loop);
@@ -34,6 +42,7 @@ export default function Scene({ app }) {
 		return () => {
 			Log.debug(`Scene.useEffect return`);
 			renderer.onSceneElementResize();
+			keyboard.keyDownObservable.disconnect(onKeydown);
 		};
 	}, []);
 	function onKeyDown(e) {
