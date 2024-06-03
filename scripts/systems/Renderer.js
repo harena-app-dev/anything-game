@@ -37,6 +37,9 @@ export default function (registry, systems) {
 			sceneElement.removeChild(this._renderer.domElement);
 		}
 	}
+	this.getDomElement = function () {
+		return this._renderer.domElement;
+	}
 	this.onUpdatePosition = function (entity, position) {
 		Log.debug(`Renderer.onUpdatePosition`, entity, position);
 		const threeId = this._entitiesToThree[entity];

@@ -18,7 +18,7 @@ export default function ({ app, ...props }) {
 			<Stack direction="column" spacing={0}>
 				<LinearProgress variant="determinate" value={25} sx={{
 					height: progressHeight,
-					backgroundColor: 'white',
+					backgroundColor: 'green',
 				}}
 				/>
 				<LinearProgress variant="determinate" value={25} sx={{
