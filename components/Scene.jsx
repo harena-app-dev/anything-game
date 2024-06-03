@@ -104,9 +104,7 @@ export default function Scene({ app }) {
 						}}>
 							<div style={{
 							}}>
-								<Typography variant="h6" component="div" gutterBottom>
-									<FavoriteIcon />
-								</Typography>
+								<FavoriteIcon />
 							</div>
 							<div style={{
 								width: '100%',
@@ -127,9 +125,7 @@ export default function Scene({ app }) {
 						}}>
 							<div style={{
 							}}>
-								<Typography variant="h6" component="div" gutterBottom>
 									<RestaurantIcon />
-								</Typography>
 							</div>
 							<div style={{
 								width: '100%',
@@ -150,9 +146,7 @@ export default function Scene({ app }) {
 						}}>
 							<div style={{
 							}}>
-								<Typography variant="h6" component="div" gutterBottom>
 									<LocalDrinkIcon />
-								</Typography>
 							</div>
 							<div style={{
 								width: '100%',
