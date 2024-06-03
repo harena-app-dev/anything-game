@@ -9,7 +9,7 @@
 - NextJS for frontend
 - Potential future systems
 	- Replace Websockets with WebRTC for lower latency
-	- Add WebGPU GPGPU for high performance computing
+	- Add WebGPU GPGPU for high performance
 ```bash
 npm run dev
 # or
