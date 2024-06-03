@@ -10,25 +10,12 @@ import Log from '@/scripts/Log';
 import Login from './Login';
 export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);
-	// const theme = createTheme({
-		// palette: {
-			// mode: 'dark',
-		// },
-	// });
 	const [theme, setTheme] = useState(createTheme({
 		palette: {
 			mode: 'dark',
 		},
 	}));
 	
-	// const registry = Registry()
-	// const registryRef = useRef(Registry());
-	// // const systems = new Systems({
-	// const systemsRef = useRef(new Systems({
-	// 	constructors: { ...commonSystems, ...clientSystems },
-	// 	// registry,
-	// 	registry: registryRef.current
-	// }));
 	const registryRef = useRef();
 	const systemsRef = useRef();
 	useEffect(function () {
@@ -39,9 +26,8 @@ export default function App() {
 			registry: registryRef.current
 		});
 		const client = systemsRef.current.get("Client");
-		// const app = { registry: registryRef.current, systems: systemsRef.current };
 		const app = {
-			registryRef, systemsRef,
+			registryRef, systemsRef, theme, setTheme,
 			get() {
 				return [registryRef.current, systemsRef.current];
 			}
