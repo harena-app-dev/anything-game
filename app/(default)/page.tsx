@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Minecraft at Home',
+  title: 'Anything, The Game',
   description: 'some random game',
 }
 

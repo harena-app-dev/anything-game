@@ -1,6 +1,8 @@
 # Moddable Javascript Game
-A very moddable game.
+A very moddable, open-source game.
 You can add anything you'd like to the game. E.g. add content/functionality for first-person shooting, MOBA, RPG, RTS, or any other genre
+## License
+Perhaps you can use this project as a game engine, and pay 1% of your revenue as royalties. 
 ## Collaboration
 Am looking for collaborators of any background. Contact me if you're interested.
 ## Features
