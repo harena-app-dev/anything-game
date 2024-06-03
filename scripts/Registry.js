@@ -37,7 +37,7 @@ export default function Registry() {
 			return entity;
 		},
 		emplace(type, entity, _component) {
-			Log.debug(`emplace`, type, entity, _component);
+			// Log.info(`emplace`, type, entity, _component);
 			if (!this.valid(entity)) {
 				Log.error(`Entity ${entity} does not exist`);
 				return;
@@ -49,11 +49,23 @@ export default function Registry() {
 			let component;
 			if (!(this.typesToConstructors[type] instanceof Function)) {
 				component = structuredClone(this.typesToConstructors[type]);
+				// component = this.typesToConstructors[type].clone();
+				// component = { ...this.typesToConstructors[type] };
+				// component = { ...this.typesToConstructors[type] };
 			} else {
-				component = this.typesToConstructors[type]();
-			}
-			if (_component !== undefined) {
-				component = { ...component, ..._component };
+				// component = this.typesToConstructors[type]();
+				if (_component !== undefined) {
+					if (_component instanceof Array) {
+						component = new this.typesToConstructors[type](..._component);
+					}
+					else {
+						component = new this.typesToConstructors[type]();
+						component = { ...component, ..._component };
+					}
+					// component = { ...component, ..._component };
+				} else {
+					component = new this.typesToConstructors[type]();
+				}
 			}
 			this.getPool(type)[entity] = component;
 			this.entitiesToTypes[entity].push(type);

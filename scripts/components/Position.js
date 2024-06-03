@@ -1,10 +1,5 @@
-export default function (args = { x: 0, y: 0, z: 0 }) {
-	return args;
-}
-// import { nullEntity } from "../Core";
-// import * as THREE from 'three';
-// export default new THREE.Vector3(0, 0, 0);
-
+import * as THREE from 'three';
+export default THREE.Vector3;
 // emplace(type, entity, _component) {
 // 	Log.debug(`emplace`, type, entity, _component);
 // 	if (!this.valid(entity)) {
