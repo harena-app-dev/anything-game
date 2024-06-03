@@ -36,8 +36,8 @@ export default function Registry() {
 			Log.debug(`create ${entity}`);
 			return entity;
 		},
-		emplace(type, entity, component) {
-			Log.debug(`emplace`, type, entity, component);
+		emplace(type, entity, _component) {
+			Log.debug(`emplace`, type, entity, _component);
 			if (!this.valid(entity)) {
 				Log.error(`Entity ${entity} does not exist`);
 				return;
@@ -46,12 +46,14 @@ export default function Registry() {
 				Log.error(`Entity ${entity} already has component of type ${type}`);
 				return;
 			}
-			if (component === undefined) {
-				if (!(this.typesToConstructors[type] instanceof Function)) {
-					component = structuredClone(this.typesToConstructors[type]);
-				} else {
-					component = this.typesToConstructors[type]();
-				}
+			let component;
+			if (!(this.typesToConstructors[type] instanceof Function)) {
+				component = structuredClone(this.typesToConstructors[type]);
+			} else {
+				component = this.typesToConstructors[type]();
+			}
+			if (_component !== undefined) {
+				component = { ...component, ..._component };
 			}
 			this.getPool(type)[entity] = component;
 			this.entitiesToTypes[entity].push(type);
