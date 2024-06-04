@@ -1,4 +1,4 @@
-import Log from './Log.js';
+import Log from './log.js';
 export default function WebSocketMessager(wsw) {
 	const wsm = {
 		addHandler(name, handler) {

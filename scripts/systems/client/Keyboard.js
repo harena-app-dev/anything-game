@@ -1,4 +1,4 @@
-import Log from '../../Log.js';
+import Log from '../../log.js';
 import Observable from '@/scripts/Observable.js';
 export default function () {
 	this._keys = {};

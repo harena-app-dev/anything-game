@@ -1,4 +1,4 @@
-import Log from '../Log.js';
+import Log from '../log.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Sky } from 'three/addons/objects/Sky.js';

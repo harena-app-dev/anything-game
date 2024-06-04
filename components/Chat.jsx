@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
-import Log from '@/scripts/Log';
+import Log from '@/scripts/log';
 
 export default function ({ app, ...props }) {
 	// const { registry, systems } = app;

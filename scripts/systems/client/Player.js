@@ -1,5 +1,5 @@
 import { nullEntity } from '@/scripts/Core.js';
-import Log from '../../Log.js';
+import Log from '../../log.js';
 export default function (registry, systems) {
 	this._playerEntity = nullEntity;
 	this.tick = function () {

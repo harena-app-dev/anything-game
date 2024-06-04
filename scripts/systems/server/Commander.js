@@ -1,5 +1,5 @@
 const { Command } = require('commander');
-import Log from '../../Log';
+import Log from '../../log';
 
 export default function (registry, systems) {
 	this._program = new Command();

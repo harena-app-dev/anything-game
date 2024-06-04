@@ -1,6 +1,6 @@
 // import fs from 'fs';
 // import path from 'path';
-import Log from './Log';
+import Log from './log';
 import View from './View';
 import * as Components from './components/index.auto.js';
 import Observable from './Observable';

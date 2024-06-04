@@ -1,4 +1,4 @@
-import Log from '../Log';
+import Log from '../log';
 import * as THREE from 'three';
 import { nullEntity } from '../Core';
 export default function (registry, systems) {

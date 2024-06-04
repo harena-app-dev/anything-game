@@ -1,4 +1,4 @@
-import Log from './Log.js';
+import Log from './log.js';
 export default function (registry, ...types) {
 	Log.debug(`View`, types);
 	this._entities = []

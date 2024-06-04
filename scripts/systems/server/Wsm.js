@@ -1,5 +1,5 @@
 import WebSocketMessager from "../../WebSocketMessager";
-import Log from "../../Log";
+import Log from "../../log";
 import http from 'http';
 import https from 'https';
 import fs from 'fs';

@@ -1,4 +1,4 @@
-import Log from '../../Log';
+import Log from '../../log';
 export default function (registry) {
 	const radius = 20
 	for (let x = -radius; x < radius; x++) {

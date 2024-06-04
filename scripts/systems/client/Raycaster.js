@@ -1,6 +1,6 @@
 import { nullEntity } from '@/scripts/Core'
 import * as THREE from 'three'
-import Log from '@/scripts/Log'
+import Log from '@/scripts/log'
 export default function (registry, systems) {
 	this.raycaster = new THREE.Raycaster()
 	this.tick = function () {

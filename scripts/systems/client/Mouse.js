@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Log from '../../Log'
+import Log from '../../log'
 export default function (registry, systems) {
 	this.pointer = new THREE.Vector2()
 	this.tick = function () {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import { Alert, LinearProgress, Stack, TextField, Typography, createTheme } from '@mui/material';
-import Log from '@/scripts/Log';
+import Log from '@/scripts/log';
 import Chat from './Chat';
 import Status from './status/Status';
 import ShieldIcon from '@mui/icons-material/Shield';

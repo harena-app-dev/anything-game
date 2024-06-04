@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Log from '../../Log.js';
+import Log from '../../log.js';
 export default function (registry, systems) {
 	registry.onUpdate('MoveGoal', (entity, moveGoal) => {
 		Log.debug(`MoveGoalRenderer onUpdate`, entity, moveGoal);

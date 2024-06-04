@@ -24,7 +24,7 @@ import BasicMenu from "../BasicMenu";
 import { MoreHorizRounded } from "@mui/icons-material";
 import Console from "../Console";
 import { nullEntity } from "@/scripts/Registry";
-import Log from "@/scripts/Log";
+import Log from "@/scripts/log";
 
 function createData(id) {
 	return {

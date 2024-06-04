@@ -1,4 +1,4 @@
-import Log from './Log';
+import Log from './log';
 export default function () {
 	return {
 		observers: new Set(),

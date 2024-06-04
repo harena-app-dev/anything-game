@@ -1,4 +1,4 @@
-import Log from '../Log.js';
+import Log from '../log.js';
 import { getParameterNames } from '../Utils.js';
 export default function (registry, systems) {
 	this.tick = function () {

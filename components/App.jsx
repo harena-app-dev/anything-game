@@ -6,7 +6,7 @@ import * as commonSystems from '@/scripts/systems/index.auto.js';
 import * as clientSystems from '@/scripts/systems/client/index.auto.js';
 import Systems from '@/scripts/Systems';
 import { CircularProgress, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import Log from '@/scripts/Log';
+import Log from '@/scripts/log';
 import Login from './Login';
 export default function App() {
 	const [content, setContent] = useState(<CircularProgress sx={{ margin: 'auto' }} />);

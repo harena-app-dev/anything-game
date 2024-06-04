@@ -1,5 +1,5 @@
 // import WebSocketMessager from "../../client/WebSocketMessager";
-import Log from "../../Log";
+import Log from "../../log";
 import { offsetPortOfCurrentUrl } from "../../Utils";
 import Registry from "../../Registry";
 

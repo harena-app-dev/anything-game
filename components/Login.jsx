@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Button, Stack, TextField, Typography } from '@mui/material';
-import Log from '@/scripts/Log';
+import Log from '@/scripts/log';
 
 const style = {
 	position: 'absolute',
