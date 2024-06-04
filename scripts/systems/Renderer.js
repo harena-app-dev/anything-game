@@ -1,12 +1,23 @@
 import Log from '../Log.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
+import { Sky } from 'three/addons/objects/Sky.js';
 export default function (registry, systems) {
 	this._scene = new THREE.Scene()
 	this.getScene = function () {
 		return this._scene;
 	}
+	const sky = new Sky();
+	sky.scale.setScalar(450000);
+
+	const phi = THREE.MathUtils.degToRad(90);
+	const theta = THREE.MathUtils.degToRad(180);
+	const sunPosition = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
+
+	sky.material.uniforms.sunPosition.value = sunPosition;
+
+	this._scene.add(sky);
+
 	const light = new THREE.AmbientLight(0xffffff);
 	this._scene.add(light);
 	this._entitiesToThree = {}
@@ -25,7 +36,7 @@ export default function (registry, systems) {
 		sceneElement.appendChild(this._renderer.domElement);
 		const widthHeight = new THREE.Vector2(sceneElement.clientWidth, sceneElement.clientHeight);
 		this.camera = new THREE.PerspectiveCamera(75, widthHeight.x / widthHeight.y, 0.1, 1000);
-		const controls = new OrbitControls( this.camera, this._renderer.domElement );
+		const controls = new OrbitControls(this.camera, this._renderer.domElement);
 		this.camera.position.y = 10;
 		this.camera.rotation.x = -1.5;
 		this.tick = function () {
