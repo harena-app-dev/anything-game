@@ -1,0 +1,1 @@
+export default { vertices: [], indices: [] };
