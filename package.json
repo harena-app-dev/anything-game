@@ -9,7 +9,7 @@
     "dev-con": "concurrently --kill-others \"npm run dev-next\" \"npm run dev-server\"",
     "dev": "tsx ./scripts/prebuild/main.js && npm run dev-con",
     "build": "next build",
-    "start": "next start",
+    "start": "next start && tsx ./scripts/server/main.js",
     "lint": "next lint"
   },
   "dependencies": {
