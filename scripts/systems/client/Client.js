@@ -34,7 +34,9 @@ export default function (registry, systems) {
 			return this._s2c[serverEntity];
 		},
 		promiseConnect() {
-			const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
+			// const wsUrl = offsetPortOfCurrentUrl(1).replace('http', 'ws');
+			const wsUrl = offsetPortOfCurrentUrl(1).replace('https', 'wss');
+			// const regex
 			const ws = new WebSocket(wsUrl);
 			return new Promise((resolve, reject) => {
 				wsm.setWsw({

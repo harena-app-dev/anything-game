@@ -6,6 +6,8 @@ import Block from './Block.js';
 export { Block };
 import Camera from './Camera.js';
 export { Camera };
+import Mesh from './Mesh.js';
+export { Mesh };
 import Message from './Message.js';
 export { Message };
 import MoveGoal from './MoveGoal.js';

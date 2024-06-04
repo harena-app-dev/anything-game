@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev-next": "next dev",
+    "dev-next": "next dev --experimental-https",
     "dev-server": "tsx watch ./scripts/server/main.js",
     "dev-con": "concurrently --kill-others \"npm run dev-next\" \"npm run dev-server\"",
     "dev": "tsx ./scripts/prebuild/main.js && npm run dev-con",

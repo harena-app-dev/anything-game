@@ -1,10 +1,16 @@
 import WebSocketMessager from "../../WebSocketMessager";
 import Log from "../../Log";
 import http from 'http';
+import https from 'https';
+import fs from 'fs';
 import { WebSocketServer } from 'ws';
 export default function (registry, systems) {
 
-	const server = http.createServer();
+	// const server = http.createServer();
+	const server = https.createServer({
+		cert: fs.readFileSync('certificates/localhost.pem'),
+		key: fs.readFileSync('certificates/localhost-key.pem')
+	  });
 	const wss = new WebSocketServer({ server });
 	const wsm = WebSocketMessager(server);
 	this.getWsm = function () {
