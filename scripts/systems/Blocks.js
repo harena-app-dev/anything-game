@@ -30,8 +30,8 @@ export default function (registry, systems) {
 		// geometry.castShadow = true;
 		// geometry.receiveShadow = true;
 		const threeObject = new THREE.Mesh(geometry, material)
-		// threeObject.castShadow = true;
-		// threeObject.receiveShadow = true;
+		threeObject.castShadow = true;
+		threeObject.receiveShadow = true;
 		renderer.add(entity, threeObject)
 	}
 	this._onErase = function(entity) {

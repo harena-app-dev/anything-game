@@ -39,6 +39,47 @@ export default function (registry, systems) {
 		const controls = new OrbitControls(this.camera, this._renderer.domElement);
 		this.camera.position.y = 10;
 		this.camera.rotation.x = -1.5;
+
+		this._renderer.shadowMap.enabled = true;
+		this._renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
+		//Create a DirectionalLight and turn on shadows for the light
+		const light = new THREE.DirectionalLight(0xffffff, 1);
+		light.position.set(0, 20, 20); //default; light shining from top
+		light.castShadow = true; // default false
+		this._scene.add(light);
+
+		//Set up shadow properties for the light
+		const shadowMapSize = 2048;
+		light.shadow.mapSize.width = shadowMapSize; // default
+		light.shadow.mapSize.height = shadowMapSize; // default
+		light.shadow.camera.near = 0.1; // default
+		light.shadow.camera.far = 500; // default
+		const shadowRenderDistance = 64;
+		light.shadow.camera.top = shadowRenderDistance;
+		light.shadow.camera.bottom = -shadowRenderDistance ;
+		light.shadow.camera.left = -shadowRenderDistance ;
+		light.shadow.camera.right = shadowRenderDistance;
+
+		// //Create a sphere that cast shadows (but does not receive them)
+		// const sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
+		// const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+		// const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		// sphere.castShadow = true; //default is false
+		// sphere.receiveShadow = false; //default
+		// this._scene.add(sphere);
+
+		// //Create a plane that receives shadows (but does not cast them)
+		// const planeGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
+		// const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+		// const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+		// plane.receiveShadow = true;
+		// this._scene.add(plane);
+
+		//Create a helper for the shadow camera (optional)
+		const helper = new THREE.CameraHelper(light.shadow.camera);
+		// this._scene.add(helper);
+
 		this.tick = function () {
 			Log.debug(`Renderer.tick`);
 			this._renderer.render(this._scene, this.camera);
